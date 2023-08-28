@@ -57,9 +57,9 @@ getData()
 </script>
 
 <template>
-  <Form @register="register">
+  <Form register="register">
     <template #active>
-      <ElButton type="primary" @click="save">立即提交</ElButton>
+      <ElButton :loading="loading" type="primary" click="save">立即提交</ElButton>
     </template>
   </Form>
 </template>

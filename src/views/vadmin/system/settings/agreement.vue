@@ -67,14 +67,9 @@ getData()
 </script>
 
 <template>
-  <Editor
-    v-model="defaultHtml"
-    ref="editorRef"
-    editorId="web_agreement"
-    :editorConfig="editorConfig"
-  />
+  <Editor v-model="defaultHtml" ref="editorRef" editorId="web_agreement" :editorConfig="editorConfig" />
   <div class="mt-10px" style="float: right">
-    <ElButton type="primary" @click="save">立即保存</ElButton>
+    <ElButton :loading="loading" type="primary" click="save">立即保存</ElButton>
   </div>
 </template>
 

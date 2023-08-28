@@ -114,45 +114,29 @@ getData()
 <template>
   <Form @register="register">
     <template #web_logo="form">
-      <ElUpload
-        class="main-image-uploader"
-        action="/api/vadmin/system/upload/image/to/local"
-        :data="{ path: 'system' }"
-        :show-file-list="false"
-        :before-upload="beforeLogoImageUpload"
-        :on-success="handleLogoUploadSuccess"
-        accept="image/jpeg,image/gif,image/png"
-        name="file"
-        :headers="{ Authorization: token }"
-      >
+      <ElUpload class="main-image-uploader" action="/api/vadmin/system/upload/image/to/local" :data="{ path: 'system' }"
+        :show-file-list="false" :before-upload="beforeLogoImageUpload" :on-success="handleLogoUploadSuccess"
+        accept="image/jpeg,image/gif,image/png" name="file" :headers="{ Authorization: token }">
         <img v-if="form.web_logo" :src="form.web_logo" class="logo-image" />
-        <ElIcon v-else class="logo-image-uploader-icon"
-          ><Icon icon="akar-icons:plus" :size="23"
-        /></ElIcon>
+        <ElIcon v-else class="logo-image-uploader-icon">
+          <Icon icon="akar-icons:plus" :size="23" />
+        </ElIcon>
       </ElUpload>
     </template>
 
     <template #web_ico="form">
-      <ElUpload
-        class="main-image-uploader"
-        action="/api/vadmin/system/upload/image/to/local"
-        :data="{ path: 'system' }"
-        :show-file-list="false"
-        :before-upload="beforeICOImageUpload"
-        :on-success="handleICOUploadSuccess"
-        accept="image/x-icon"
-        name="file"
-        :headers="{ Authorization: token }"
-      >
+      <ElUpload class="main-image-uploader" action="/api/vadmin/system/upload/image/to/local" :data="{ path: 'system' }"
+        :show-file-list="false" :before-upload="beforeICOImageUpload" :on-success="handleICOUploadSuccess"
+        accept="image/x-icon" name="file" :headers="{ Authorization: token }">
         <img v-if="form.web_ico" :src="form.web_ico" class="ico-image" />
-        <ElIcon v-else class="ico-image-uploader-icon"
-          ><Icon icon="akar-icons:plus" :size="23"
-        /></ElIcon>
+        <ElIcon v-else class="ico-image-uploader-icon">
+          <Icon icon="akar-icons:plus" :size="23" />
+        </ElIcon>
       </ElUpload>
     </template>
 
     <template #active>
-      <ElButton type="primary" @click="save">立即提交</ElButton>
+      <ElButton :loading="loading" type="primary" click="save">立即提交</ElButton>
     </template>
   </Form>
 </template>
