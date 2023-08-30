@@ -66,9 +66,14 @@ getData()
 </script>
 
 <template>
-  <Editor v-model="defaultHtml" ref="editorRef" editorId="web_privacy" :editorConfig="editorConfig" />
+  <Editor
+    v-model="defaultHtml"
+    ref="editorRef"
+    editorId="web_privacy"
+    :editorConfig="editorConfig"
+  />
   <div class="mt-10px" style="float: right">
-    <ElButton :loading="loading" type="primary" click="save">立即保存</ElButton>
+    <ElButton :loading="loading" type="primary" @click="save">立即保存</ElButton>
   </div>
 </template>
 
