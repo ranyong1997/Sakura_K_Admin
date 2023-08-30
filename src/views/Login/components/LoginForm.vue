@@ -40,7 +40,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'telephone',
     label: t('login.telephone'),
-    value: '15020221010',
+    value: '13206269804',
     component: 'Input',
     colProps: {
       span: 24
@@ -56,8 +56,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'password',
     label: t('login.password'),
-    value: 'kinit2022',
-    // value: '000006',
+    value: 'Ranyong_123',
     component: 'InputPassword',
     colProps: {
       span: 24
