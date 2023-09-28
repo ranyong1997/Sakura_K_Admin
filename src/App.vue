@@ -4,7 +4,7 @@ import { useAppStore } from '@/store/modules/app'
 import { ConfigGlobal } from '@/components/ConfigGlobal'
 import { isDark } from '@/utils/is'
 import { useDesign } from '@/hooks/web/useDesign'
-import { useCache } from '@/hooks/web/useCache'
+import { useStorage } from '@/hooks/web/useStorage'
 import { getSystemBaseConfigApi } from '@/api/vadmin/system/settings'
 
 const { getPrefixCls } = useDesign()
@@ -12,6 +12,22 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('app')
 
 const appStore = useAppStore()
+
+const currentSize = computed(() => appStore.getCurrentSize)
+
+const greyMode = computed(() => appStore.getGreyMode)
+
+const { getStorage } = useStorage()
+
+// 根据浏览器当前主题设置系统主题色
+const setDefaultTheme = () => {
+  if (getStorage('isDark') !== null) {
+    appStore.setIsDark(getStorage('isDark'))
+    return
+  }
+  const isDarkTheme = isDark()
+  appStore.setIsDark(isDarkTheme)
+}
 
 // 添加mate标签
 const addMeta = (name: string, content: string) => {
@@ -27,7 +43,7 @@ const setSystemConfig = async () => {
   if (res) {
     appStore.setTitle(res.data.web_title || import.meta.env.VITE_APP_TITLE)
     appStore.setLogoImage(res.data.web_logo || '/media/system/logo.png')
-    appStore.setFooterContent(res.data.web_copyright || 'ranyong')
+    appStore.setFooterContent(res.data.web_copyright || 'Copyright ©2022-present K')
     appStore.setIcpNumber(res.data.web_icp_number || '')
     addMeta(
       'description',
@@ -36,25 +52,8 @@ const setSystemConfig = async () => {
   }
 }
 
-setSystemConfig()
-
-const currentSize = computed(() => appStore.getCurrentSize)
-
-const greyMode = computed(() => appStore.getGreyMode)
-
-const { wsCache } = useCache()
-
-// 根据浏览器当前主题设置系统主题色
-const setDefaultTheme = () => {
-  if (wsCache.get('isDark') !== null) {
-    appStore.setIsDark(wsCache.get('isDark'))
-    return
-  }
-  const isDarkTheme = isDark()
-  appStore.setIsDark(isDarkTheme)
-}
-
 setDefaultTheme()
+setSystemConfig()
 </script>
 
 <template>

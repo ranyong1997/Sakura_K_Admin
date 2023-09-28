@@ -1,0 +1,27 @@
+version: "3"
+services:
+  Sakura_K_admin:
+    container_name: Sakura_K_admin
+    restart: always
+    ports:
+      - "80:80"
+    expose:
+      - "80"
+    image: nginx:latest
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./docker_env/Sakura_K_admin/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./:/usr/share/nginx/html
+    networks:
+      Sakura_network:
+        ipv4_address: "177.8.0.3"
+
+networks:
+  Sakura_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "177.8.0.0/16"
+          gateway: "177.8.0.1"
