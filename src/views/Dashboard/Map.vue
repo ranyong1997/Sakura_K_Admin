@@ -14,35 +14,6 @@ let AMap = shallowRef()
 // AMap.Map 参数大全：https://lbs.amap.com/api/javascript-api/reference/map
 // InfoWindow 参数大全：https://lbs.amap.com/api/javascript-api/reference/infowindow#InfoWindow
 // 标记点添加动画：https://blog.csdn.net/qq_39417037/article/details/124040318
-
-const initMap = async () => {
-  const res = await getSystemSettingsApi({ tab_id: 8 })
-  if (res) {
-    AMapLoader.load({
-      key: res.data.map_key, // 申请好的Web端开发者Key，首次调用 load 时必填
-      version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-      plugins: [''] // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-    })
-      .then(async (A) => {
-        AMap.value = A
-        map.value = new A.Map('map-container', {
-          // 设置地图容器id
-          pitch: res.data.map_pitch, // 地图初始俯仰角度，有效范围 0 度- 83 度
-          terrain: true, // 开启地形图
-          viewMode: res.data.map_view_mode, // 是否为3D地图模式
-          zoom: res.data.map_zoom, // 初始化地图级别
-          resizeEnable: true,
-          mapStyle: res.data.map_style, // 设置地图的显示样式
-          center: JSON.parse(res.data.map_center) // 初始化地图中心点位置
-        })
-        await setValues()
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
-}
-
 const setValues = async () => {
   const infoWindow = new AMap.value.InfoWindow({
     offset: new AMap.value.Pixel(2, 15),
@@ -104,7 +75,6 @@ const setValues = async () => {
   }
 }
 
-initMap()
 </script>
 
 <template>
