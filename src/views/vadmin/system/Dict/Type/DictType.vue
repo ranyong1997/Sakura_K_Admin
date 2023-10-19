@@ -245,7 +245,7 @@ const handleCurrentChange = async (val: any | undefined) => {
 const clearCurrentRow = async () => {
   const elTableExpost = await getElTableExpose()
   elTableExpost?.setCurrentRow(null)
-  emit('updateDictTypeId', null)
+  emit('updateDictTypeId', val ? val.id : val)
 }
 </script>
 

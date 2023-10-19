@@ -74,7 +74,6 @@ const setValues = async () => {
     map.value.add(markers)
   }
 }
-
 </script>
 
 <template>
