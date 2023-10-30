@@ -53,7 +53,7 @@ export default defineComponent({
     // 表头对齐方式
     headerAlign: propTypes.string
       .validate((v: string) => ['left', 'center', 'right'].includes(v))
-      .def('left'),
+      .def('center'),
     data: {
       type: Array as PropType<Recordable[]>,
       default: () => []

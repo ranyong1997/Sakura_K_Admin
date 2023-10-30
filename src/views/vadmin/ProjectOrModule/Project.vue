@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { reactive, ref, unref } from 'vue'
+import { computed, onMounted,reactive, ref, unref } from 'vue'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
@@ -10,8 +10,11 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { selectDictLabel, DictDetail } from '@/utils/dict'
 import { useDictStore } from '@/store/modules/dict'
+import { getProjectList } from '@/api/vadmin/projectormodule/project'
+import { useAuthStoreWithOut } from '@/store/modules/auth'
 
 const { t } = useI18n()
+const authStore = useAuthStoreWithOut()
 
 const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
@@ -89,13 +92,19 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'created_by_name',
     label: '更新人',
     show: true,
-    width: '190px'
+    disabled: true
   },
   {
     field: 'create_datetime',
     label: '创建时间',
     width: '190px',
     show: true
+  },
+  {
+    field: 'create_user',
+    label: '创建人',
+    show: true,
+    disabled: true
   },
   {
     field: 'action',
@@ -199,6 +208,15 @@ const addAction = () => {
 }
 
 const selections = ref([] as any[])
+
+const user = computed(() => authStore.getUser)
+console.log('--------',user.value.id)
+onMounted(async () => {
+  getProjectList({}).then(res=>{
+    console.log('res',res)
+  });
+})
+
 </script>
 
 <template>
