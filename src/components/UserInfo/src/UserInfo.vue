@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElMessageBox } from 'element-plus'
 import { useI18n } from '@/hooks/web/useI18n'
-import { useAuthStoreWithOut } from '@/store/modules/auth'
+import { useAuthStore } from '@/store/modules/auth'
 import { useDesign } from '@/hooks/web/useDesign'
 import LockDialog from './components/LockDialog.vue'
 import { ref, computed } from 'vue'
@@ -14,7 +14,7 @@ const lockStore = useLockStore()
 
 const getIsLock = computed(() => lockStore.getLockInfo?.isLock ?? false)
 
-const authStore = useAuthStoreWithOut()
+const authStore = useAuthStore()
 
 const { getPrefixCls } = useDesign()
 
@@ -65,7 +65,7 @@ const user = computed(() => authStore.getUser)
     <template #dropdown>
       <ElDropdownMenu>
         <ElDropdownItem>
-          <ElButton @click="toHome" link>个人主页</ElButton>
+          <BaseButton @click="toHome" link>个人主页</BaseButton>
         </ElDropdownItem>
 
         <ElDropdownItem divided>

@@ -88,6 +88,9 @@ const newSchema = computed(() => {
                   />
                 </div>
               )
+            },
+            label: () => {
+              return <span>&nbsp;</span>
             }
           }
         }
@@ -116,6 +119,8 @@ const setProps = (props: SearchProps = {}) => {
   // @ts-ignore
   outsideProps.value = props
 }
+
+const schemaRef = ref<FormSchema[]>([])
 
 // 监听表单结构化数组，重新生成formModel
 watch(
@@ -241,7 +246,7 @@ const onFormValidate = (prop: FormItemProp, isValid: boolean, message: string) =
     hide-required-asterisk
     :inline="getProps.inline"
     :is-col="getProps.isCol"
-    :schema="newSchema"
+    :schema="schemaRef"
     @register="formRegister"
     @validate="onFormValidate"
   />
