@@ -6,3 +6,4 @@ dist-ssr
 *-lock.*
 pnpm-debug
 .vscode
+stats.html
