@@ -105,7 +105,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     build: {
       target: 'es2015',
       outDir: env.VITE_OUT_DIR || 'dist',
-      sourcemap: env.VITE_SOURCEMAP === 'true'
+      sourcemap: env.VITE_SOURCEMAP === 'true',
       // brotliSize: false,
       rollupOptions: {
         plugins: env.VITE_USE_BUNDLE_ANALYZER === 'true' ? [visualizer()] : undefined,
