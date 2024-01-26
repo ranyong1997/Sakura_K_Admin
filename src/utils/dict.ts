@@ -18,6 +18,7 @@ export const selectDictLabel = (datas: DictDetail[], value: string) => {
   } else {
     const result = datas.find((item) => item.value === value)?.label
     if (result === undefined) {
+      console.log("ddddd");
       return '获取失败'
     } else {
       return result
