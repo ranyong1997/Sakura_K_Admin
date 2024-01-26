@@ -49,7 +49,6 @@ const setMenuTheme = (color: string) => {
   appStore.setMenuTheme(color)
 }
 
-// 监听layout变化，重置一些主题色
 // watch(
 //   () => layout.value,
 //   (n) => {
@@ -129,7 +128,7 @@ const copyConfig = async () => {
         // 头部边框颜色
         topToolBorderColor: '${appStore.getTheme.topToolBorderColor}'
       }
-      `,
+    `,
     legacy: true
   })
   if (!isSupported) {
@@ -147,6 +146,7 @@ const clear = () => {
   storageClear()
   window.location.reload()
 }
+
 const themeChange = () => {
   const color = getCssVar('--el-bg-color')
   setMenuTheme(color)

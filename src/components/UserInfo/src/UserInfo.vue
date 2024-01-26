@@ -47,6 +47,14 @@ const toHome = () => {
   push('/home')
 }
 
+const toGitee = () => {
+  window.open('https://gitee.com/ktianc/kinit')
+}
+
+const toGithub = () => {
+  window.open('https://github.com/vvandk/kinit')
+}
+
 const user = computed(() => authStore.getUser)
 </script>
 
@@ -67,7 +75,12 @@ const user = computed(() => authStore.getUser)
         <ElDropdownItem>
           <BaseButton @click="toHome" link>个人主页</BaseButton>
         </ElDropdownItem>
-
+        <ElDropdownItem>
+          <BaseButton @click="toGitee" link>Gitee</BaseButton>
+        </ElDropdownItem>
+        <ElDropdownItem>
+          <BaseButton @click="toGithub" link>Github</BaseButton>
+        </ElDropdownItem>
         <ElDropdownItem divided>
           <div @click="lockScreen">{{ t('lock.lockScreen') }}</div>
         </ElDropdownItem>

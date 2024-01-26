@@ -123,7 +123,6 @@ export default defineComponent({
 <style lang="less" scoped>
 @prefix-cls: ~'@{namespace}-menu';
 
-
 .@{prefix-cls} {
   position: relative;
   transition: width var(--transition-time-02);
@@ -179,10 +178,6 @@ export default defineComponent({
     & > .is-active > .@{elNamespace}-sub-menu__title {
       position: relative;
       background-color: var(--left-menu-collapse-bg-active-color) !important;
-
-      // &:after {
-      //   .is-active--after;
-      // }
     }
   }
 
@@ -228,7 +223,6 @@ export default defineComponent({
 
 <style lang="less">
 @prefix-cls: ~'@{namespace}-menu-popper';
-
 
 .@{prefix-cls}--vertical,
 .@{prefix-cls}--horizontal {

@@ -19,8 +19,8 @@ router.beforeEach(async (to, from, next) => {
   loadStart()
   const permissionStore = usePermissionStoreWithOut()
   const authStore = useAuthStoreWithOut()
-  if (authStore.getToken) {
 
+  if (authStore.getToken) {
     if (to.path === '/login') {
       next({ path: '/' })
     } else if (to.path === '/reset/password') {

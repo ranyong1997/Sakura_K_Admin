@@ -127,6 +127,7 @@ watch(
   () => unref(newSchema),
   async (schema = []) => {
     formModel.value = initModel(schema, unref(formModel))
+    schemaRef.value = schema
   },
   {
     immediate: true,

@@ -7,7 +7,6 @@ import request from '@/config/axios'
 
 const { result_code, unauthorized_code, request_timeout } = config
 
-
 // 创建axios实例
 const service: AxiosInstance = axios.create({
   baseURL: '/api', // api 的 base_url
@@ -19,7 +18,7 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const authStore = useAuthStoreWithOut()
-    const token = authStore.getToken()
+    const token = authStore.getToken
     if (token !== '') {
       ;(config.headers as any)[authStore.getTokenKey ?? 'Authorization'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
     }

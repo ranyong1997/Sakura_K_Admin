@@ -114,15 +114,16 @@ const dialogStyle = computed(() => {
   align-items: center;
 }
 
-
 .@{elNamespace}-dialog {
   margin: 0 !important;
+
   &__header {
-    margin-right: 0 !important;
-    border-bottom: 1px solid var(--el-border-color);
     height: 54px;
     padding: 0;
+    margin-right: 0 !important;
+    border-bottom: 1px solid var(--el-border-color);
   }
+
   &__body {
     padding: 15px !important;
   }
@@ -130,7 +131,7 @@ const dialogStyle = computed(() => {
   &__footer {
     border-top: 1px solid var(--el-border-color);
   }
-  
+
   &__headerbtn {
     top: 0;
   }

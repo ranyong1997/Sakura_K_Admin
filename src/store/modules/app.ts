@@ -33,6 +33,7 @@ interface AppState {
   footer: boolean
   theme: ThemeTypes
   fixedMenu: boolean
+
   logoImage: string
   footerContent: string
   icpNumber: string
@@ -62,6 +63,7 @@ export const useAppStore = defineStore('app', {
       dynamicRouter: true, // 是否动态路由
       serverDynamicRouter: true, // 是否服务端渲染动态路由
       fixedMenu: false, // 是否固定菜单
+
       layout: 'classic', // layout布局
       isDark: false, // 是否是暗黑模式
       currentSize: 'default', // 组件尺寸
@@ -95,6 +97,7 @@ export const useAppStore = defineStore('app', {
         // 头部边框颜色
         topToolBorderColor: '#eee'
       },
+
       logoImage: '', // logo图片
       footerContent: '', // 页脚内容
       icpNumber: '' // 备案号
@@ -288,72 +291,72 @@ export const useAppStore = defineStore('app', {
     setIcpNumber(icpNumber: string) {
       this.icpNumber = icpNumber
     },
-  },
-  setPrimaryLight() {
-    if (this.theme.elColorPrimary) {
-      const elColorPrimary = this.theme.elColorPrimary
-      const color = this.isDark ? '#000000' : '#ffffff'
-      const lightList = [3, 5, 7, 8, 9]
-      lightList.forEach((v) => {
-        setCssVar(`--el-color-primary-light-${v}`, mix(color, elColorPrimary, v / 10))
+    setPrimaryLight() {
+      if (this.theme.elColorPrimary) {
+        const elColorPrimary = this.theme.elColorPrimary
+        const color = this.isDark ? '#000000' : '#ffffff'
+        const lightList = [3, 5, 7, 8, 9]
+        lightList.forEach((v) => {
+          setCssVar(`--el-color-primary-light-${v}`, mix(color, elColorPrimary, v / 10))
+        })
+        setCssVar(`--el-color-primary-dark-2`, mix(color, elColorPrimary, 0.2))
+      }
+    },
+    setMenuTheme(color: string) {
+      const primaryColor = useCssVar('--el-color-primary', document.documentElement)
+      const isDarkColor = colorIsDark(color)
+      const theme: Recordable = {
+        // 左侧菜单边框颜色
+        leftMenuBorderColor: isDarkColor ? 'inherit' : '#eee',
+        // 左侧菜单背景颜色
+        leftMenuBgColor: color,
+        // 左侧菜单浅色背景颜色
+        leftMenuBgLightColor: isDarkColor ? lighten(color!, 6) : color,
+        // 左侧菜单选中背景颜色
+        leftMenuBgActiveColor: isDarkColor
+          ? 'var(--el-color-primary)'
+          : hexToRGB(unref(primaryColor), 0.1),
+        // 左侧菜单收起选中背景颜色
+        leftMenuCollapseBgActiveColor: isDarkColor
+          ? 'var(--el-color-primary)'
+          : hexToRGB(unref(primaryColor), 0.1),
+        // 左侧菜单字体颜色
+        leftMenuTextColor: isDarkColor ? '#bfcbd9' : '#333',
+        // 左侧菜单选中字体颜色
+        leftMenuTextActiveColor: isDarkColor ? '#fff' : 'var(--el-color-primary)',
+        // logo字体颜色
+        logoTitleTextColor: isDarkColor ? '#fff' : 'inherit',
+        // logo边框颜色
+        logoBorderColor: isDarkColor ? color : '#eee'
+      }
+      this.setTheme(theme)
+      this.setCssVarTheme()
+    },
+    setHeaderTheme(color: string) {
+      const isDarkColor = colorIsDark(color)
+      const textColor = isDarkColor ? '#fff' : 'inherit'
+      const textHoverColor = isDarkColor ? lighten(color!, 6) : '#f6f6f6'
+      const topToolBorderColor = isDarkColor ? color : '#eee'
+      setCssVar('--top-header-bg-color', color)
+      setCssVar('--top-header-text-color', textColor)
+      setCssVar('--top-header-hover-color', textHoverColor)
+      this.setTheme({
+        topHeaderBgColor: color,
+        topHeaderTextColor: textColor,
+        topHeaderHoverColor: textHoverColor,
+        topToolBorderColor
       })
-      setCssVar(`--el-color-primary-dark-2`, mix(color, elColorPrimary, 0.2))
+      if (this.getLayout === 'top') {
+        this.setMenuTheme(color)
+      }
+    },
+    initTheme() {
+      const isDark = useDark({
+        valueDark: 'dark',
+        valueLight: 'light'
+      })
+      isDark.value = this.getIsDark
     }
-  },
-  setMenuTheme(color: string) {
-    const primaryColor = useCssVar('--el-color-primary', document.documentElement)
-    const isDarkColor = colorIsDark(color)
-    const theme: Recordable = {
-      // 左侧菜单边框颜色
-      leftMenuBorderColor: isDarkColor ? 'inherit' : '#eee',
-      // 左侧菜单背景颜色
-      leftMenuBgColor: color,
-      // 左侧菜单浅色背景颜色
-      leftMenuBgLightColor: isDarkColor ? lighten(color!, 6) : color,
-      // 左侧菜单选中背景颜色
-      leftMenuBgActiveColor: isDarkColor
-        ? 'var(--el-color-primary)'
-        : hexToRGB(unref(primaryColor), 0.1),
-      // 左侧菜单收起选中背景颜色
-      leftMenuCollapseBgActiveColor: isDarkColor
-        ? 'var(--el-color-primary)'
-        : hexToRGB(unref(primaryColor), 0.1),
-      // 左侧菜单字体颜色
-      leftMenuTextColor: isDarkColor ? '#bfcbd9' : '#333',
-      // 左侧菜单选中字体颜色
-      leftMenuTextActiveColor: isDarkColor ? '#fff' : 'var(--el-color-primary)',
-      // logo字体颜色
-      logoTitleTextColor: isDarkColor ? '#fff' : 'inherit',
-      // logo边框颜色
-      logoBorderColor: isDarkColor ? color : '#eee'
-    }
-    this.setTheme(theme)
-    this.setCssVarTheme()
-  },
-  setHeaderTheme(color: string) {
-    const isDarkColor = colorIsDark(color)
-    const textColor = isDarkColor ? '#fff' : 'inherit'
-    const textHoverColor = isDarkColor ? lighten(color!, 6) : '#f6f6f6'
-    const topToolBorderColor = isDarkColor ? color : '#eee'
-    setCssVar('--top-header-bg-color', color)
-    setCssVar('--top-header-text-color', textColor)
-    setCssVar('--top-header-hover-color', textHoverColor)
-    this.setTheme({
-      topHeaderBgColor: color,
-      topHeaderTextColor: textColor,
-      topHeaderHoverColor: textHoverColor,
-      topToolBorderColor
-    })
-    if (this.getLayout === 'top') {
-      this.setMenuTheme(color)
-    }
-  },
-  initTheme() {
-    const isDark = useDark({
-      valueDark: 'dark',
-      valueLight: 'light'
-    })
-    isDark.value = this.getIsDark
   },
   persist: true
 })

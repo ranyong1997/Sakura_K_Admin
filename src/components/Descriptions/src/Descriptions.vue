@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { ElCollapseTransition, ElDescriptions, ElTooltip, ElRow, ElCol } from 'element-plus'
+import { ElCollapseTransition, ElTooltip, ElRow, ElCol } from 'element-plus'
 import { useDesign } from '@/hooks/web/useDesign'
 import { propTypes } from '@/utils/propTypes'
 import { ref, unref, PropType, computed, defineComponent } from 'vue'
@@ -50,10 +50,7 @@ export default defineComponent({
       if (unref(mobile)) {
         obj.direction = 'vertical'
       }
-      return {
-        labelClassName: `${prefixCls}-label`,
-        ...obj
-      }
+      return obj
     })
 
     const getBindItemValue = (item: DescriptionsSchema) => {
@@ -64,7 +61,10 @@ export default defineComponent({
           delete obj[key]
         }
       }
-      return obj
+      return {
+        labelClassName: `${prefixCls}-label`,
+        ...obj
+      }
     }
 
     // 折叠
@@ -186,4 +186,10 @@ export default defineComponent({
 :deep(.@{prefix-cls}-label) {
   width: 150px !important;
 }
+
+// .@{prefix-cls}-content {
+//   :deep(.@{elNamespace}-descriptions__cell) {
+//     width: 0;
+//   }
+// }
 </style>
