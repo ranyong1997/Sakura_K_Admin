@@ -52,6 +52,7 @@ export default {
     isEqual: 'The two are not equal',
     // 列设置
     setting: 'Setting',
+    selectAll: 'Select all',
     SerialNumberColumn: 'Index column'
   },
   lock: {

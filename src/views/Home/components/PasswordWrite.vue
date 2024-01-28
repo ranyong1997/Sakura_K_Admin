@@ -60,7 +60,7 @@ const formSchema = reactive<FormSchema[]>([
               <div class="w-[50%]">
                 <BaseButton loading={loading.value} type="primary" class="w-[100%]" onClick={save}>
                   保存
-                </BaseButton >
+                </BaseButton>
               </div>
             </>
           )

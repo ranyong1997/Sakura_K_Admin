@@ -141,7 +141,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-            <BaseButton  type="primary" link onClick={() => action(row, 'detail')}>
+            <BaseButton type="primary" link onClick={() => action(row, 'detail')}>
               详情
             </BaseButton>
           </>
@@ -222,7 +222,7 @@ const action = (row: any, type: string) => {
     <Detail v-if="actionType === 'detail'" :current-row="currentRow" />
 
     <template #footer>
-      <BaseButton  @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
+      <BaseButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
     </template>
   </Dialog>
 </template>

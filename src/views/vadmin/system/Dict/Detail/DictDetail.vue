@@ -80,7 +80,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={!row.disabled} disabled />
+            <ElSwitch modelValue={!row.disabled} disabled />
           </>
         )
       }
@@ -106,10 +106,10 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-            <BaseButton  type="primary" link size="small" onClick={() => editAction(row)}>
+            <BaseButton type="primary" link size="small" onClick={() => editAction(row)}>
               编辑
             </BaseButton>
-            <BaseButton 
+            <BaseButton
               type="danger"
               loading={delLoading.value}
               link
@@ -238,7 +238,7 @@ watch(
       <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5">
-            <BaseButton  type="primary" @click="addAction">新增字典元素</BaseButton>
+            <BaseButton type="primary" @click="addAction">新增字典元素</BaseButton>
           </ElCol>
         </ElRow>
       </template>
@@ -249,10 +249,10 @@ watch(
     <Write ref="writeRef" :current-row="currentRow" :dict-type-id="dictTypeId" />
 
     <template #footer>
-      <BaseButton  type="primary" :loading="saveLoading" @click="save">
+      <BaseButton type="primary" :loading="saveLoading" @click="save">
         {{ t('exampleDemo.save') }}
       </BaseButton>
-      <BaseButton  @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
+      <BaseButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
     </template>
   </Dialog>
 </template>

@@ -129,7 +129,7 @@ const downloadErrorFile = async (row: Recordable) => {
             :disabled="tableData.length > 0"
           >
             <ElTooltip effect="dark" content="只支持上传XLSX文件" placement="top">
-              <BaseButton  type="primary" size="small" :disabled="tableData.length > 0"
+              <BaseButton type="primary" size="small" :disabled="tableData.length > 0"
                 >上传文件</BaseButton
               >
             </ElTooltip>
@@ -137,7 +137,7 @@ const downloadErrorFile = async (row: Recordable) => {
         </div>
       </ElCol>
       <ElCol :span="1.5">
-        <BaseButton 
+        <BaseButton
           type="primary"
           size="small"
           :disabled="tableData.length === 0"
@@ -155,7 +155,7 @@ const downloadErrorFile = async (row: Recordable) => {
         <template #default>
           <ElPopconfirm title="确认删除吗?" @confirm="handleDelete">
             <template #reference>
-              <BaseButton  link type="primary" size="small">删除</BaseButton>
+              <BaseButton link type="primary" size="small">删除</BaseButton>
             </template>
           </ElPopconfirm>
         </template>

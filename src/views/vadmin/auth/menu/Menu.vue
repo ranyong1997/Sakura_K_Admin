@@ -123,7 +123,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={!row.noCache} disabled />
+            <ElSwitch modelValue={!row.noCache} disabled />
           </>
         )
       }
@@ -139,7 +139,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={!row.hidden} disabled />
+            <ElSwitch modelValue={!row.hidden} disabled />
           </>
         )
       }
@@ -155,7 +155,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={!row.disabled} disabled />
+            <ElSwitch modelValue={!row.disabled} disabled />
           </>
         )
       }

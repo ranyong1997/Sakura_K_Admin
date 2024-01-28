@@ -86,7 +86,7 @@ const initPassword = async () => {
         <template #default="scope">
           <ElPopconfirm title="确认移除吗?" @confirm="handleDelete(scope.$index)">
             <template #reference>
-              <BaseButton  v-if="scope.row.send_sms_status !== true" link type="primary" size="small"
+              <BaseButton v-if="scope.row.send_sms_status !== true" link type="primary" size="small"
                 >移除</BaseButton
               >
             </template>

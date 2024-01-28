@@ -124,7 +124,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <BaseButton type="primary" link size="small" onClick={() => toCopy(row.id)}>
+            <BaseButton type="primary" link size="small" onClick={() => toCopy(row.id)}>
               复制编号
             </BaseButton>
             <BaseButton type="primary" link size="small" onClick={() => toCopy(row.image_url)}>

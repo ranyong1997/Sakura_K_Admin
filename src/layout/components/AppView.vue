@@ -13,13 +13,12 @@ const tagsViewStore = useTagsViewStore()
 const getCaches = computed((): string[] => {
   return tagsViewStore.getCachedViews
 })
-
 </script>
 
 <template>
   <section
     :class="[
-    'flex-1 p-[var(--app-content-padding)] w-[calc(100%-var(--app-content-padding)-var(--app-content-padding))] bg-[var(--app-content-bg-color)] dark:bg-[var(--el-bg-color)]'
+      'flex-1 p-[var(--app-content-padding)] w-[calc(100%-var(--app-content-padding)-var(--app-content-padding))] bg-[var(--app-content-bg-color)] dark:bg-[var(--el-bg-color)]'
     ]"
   >
     <router-view>

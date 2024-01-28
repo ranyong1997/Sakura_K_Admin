@@ -90,7 +90,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={!row.disabled} disabled />
+            <ElSwitch modelValue={!row.disabled} disabled />
           </>
         )
       }
@@ -106,7 +106,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <BaseButton type="primary" link size="small" onClick={() => editAction(row)}>
+            <BaseButton type="primary" link size="small" onClick={() => editAction(row)}>
               编辑
             </BaseButton>
             <BaseButton type="primary" link size="small" onClick={() => addSonAction(row)}>
@@ -225,11 +225,11 @@ const save = async () => {
 
     <template #footer>
       <BaseButton
-      v-if="actionType !== 'detail'"
-      type="primary"
-      :loading="saveLoading"
-      @click="save"
-    >
+        v-if="actionType !== 'detail'"
+        type="primary"
+        :loading="saveLoading"
+        @click="save"
+      >
         {{ t('exampleDemo.save') }}
       </BaseButton>
       <BaseButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>

@@ -117,11 +117,11 @@ const maxLimit = ref(50)
 const fileList = ref<UploadUserFile[]>([])
 
 const beforeImageUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  const isIMAGE = ['image/jpeg', 'image/gif', 'image/png','image/webp'].includes(rawFile.type)
+  const isIMAGE = ['image/jpeg', 'image/gif', 'image/png'].includes(rawFile.type)
   const isLtSize = rawFile.size / 1024 / 1024 < 3
 
   if (!isIMAGE) {
-    ElMessage.error('上传图片素材必须是 JPG/PNG 格式！')
+    ElMessage.error('上传图片素材必须是 JPG/PNG/ 格式!')
   }
   if (!isLtSize) {
     ElMessage.error('上传图片素材大小不能超过 3MB!')

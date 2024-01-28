@@ -21,7 +21,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src1/*"]
     },
     "types": [
       "vite/client",
@@ -30,6 +30,6 @@
       "vite-plugin-svg-icons/client"
     ]
   },
-  "include": ["src", "types/**/*.d.ts"],
+  "include": ["src1", "types/**/*.d.ts"],
   // "exclude": ["dist", "node_modules"]
 }

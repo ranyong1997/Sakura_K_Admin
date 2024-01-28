@@ -165,7 +165,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={row.is_active} disabled />
+            <ElSwitch modelValue={row.is_active} disabled />
           </>
         )
       }
@@ -180,7 +180,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={row.is_staff} disabled />
+            <ElSwitch modelValue={row.is_staff} disabled />
           </>
         )
       }

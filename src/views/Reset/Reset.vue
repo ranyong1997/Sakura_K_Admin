@@ -15,6 +15,7 @@ import { Footer } from '@/components/Footer'
 const { required } = useValidator()
 const { addRoute, push, currentRoute } = useRouter()
 
+const authStore = useAuthStore()
 const appStore = useAppStore()
 const permissionStore = usePermissionStore()
 

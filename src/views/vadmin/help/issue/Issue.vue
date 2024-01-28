@@ -86,7 +86,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-          <ElSwitch modelValue={row.is_active} disabled />
+            <ElSwitch modelValue={row.is_active} disabled />
           </>
         )
       }
@@ -225,7 +225,7 @@ const addAction = () => {
       <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5">
-            <BaseButton  type="primary" @click="addAction">新增常见问题</BaseButton>
+            <BaseButton type="primary" @click="addAction">新增常见问题</BaseButton>
           </ElCol>
         </ElRow>
       </template>

@@ -150,7 +150,7 @@ const tableColumns = reactive<TableColumn[]>([
         const row = data.row
         return (
           <>
-            <BaseButton  type="primary" link size="small" onClick={() => view(row)}>
+            <BaseButton type="primary" link size="small" onClick={() => view(row)}>
               详情
             </BaseButton>
           </>
@@ -234,7 +234,7 @@ if (job_id) {
     <Detail v-if="actionType === 'detail'" :current-row="currentRow" />
 
     <template #footer>
-      <BaseButton  @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
+      <BaseButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
     </template>
   </Dialog>
 </template>
