@@ -65,7 +65,7 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       placeholder:
-        '调用示例：test.main.Test("kinit", 1314, True)；参数仅支持字符串，整数，浮点数，布尔类型。'
+        '调用示例：test.main.Test("Sakura", 1314, True)；参数仅支持字符串，整数，浮点数，布尔类型。'
     },
     formItemProps: {
       rules: [required()]
