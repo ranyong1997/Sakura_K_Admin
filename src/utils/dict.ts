@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: 冉勇
+ * @Date: 2024-01-26 23:15:16
+ * @LastEditTime: 2024-01-28 17:10:50
+ */
 /**
  * 回显数据字典
  *
@@ -18,7 +25,6 @@ export const selectDictLabel = (datas: DictDetail[], value: string) => {
   } else {
     const result = datas.find((item) => item.value === value)?.label
     if (result === undefined) {
-      console.log("ddddd");
       return '获取失败'
     } else {
       return result
