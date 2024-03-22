@@ -86,7 +86,7 @@ const formSchema = reactive<FormSchema[]>([
           return (
             <>
               <div style="display: flex; justify-content: space-between">
-                <IconPicker style="width: 470px" input-disabled={false} v-model={data['icon']} />
+                <IconPicker style="width: 440px" input-disabled={false} v-model={data['icon']} />
                 <div style="margin-left: 10px">
                   <BaseButton type="primary" onClick={toIconify}>
                     Iconify
