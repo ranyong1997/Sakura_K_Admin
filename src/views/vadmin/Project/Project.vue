@@ -10,8 +10,9 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { selectDictLabel, DictDetail } from '@/utils/dict'
 import { useDictStore } from '@/store/modules/dict'
-import { getProjectList } from '@/api/vadmin/projectormodule/project'
+import { getProjectList } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
+import Write from './components/Write.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStoreWithOut()
@@ -180,6 +181,10 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const currentRow = ref()
 const actionType = ref('')
+
+const writeRef = ref<ComponentRef<typeof Write>>()
+
+
 const editAction = async (row: any) => {
   const res = await getProjectApi(row.id)
   if (res) {
@@ -198,6 +203,8 @@ const addAction = () => {
 }
 const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
+
+
 console.log('--------',user.value.id)
 onMounted(async () => {
   getProjectList({}).then(res=>{
@@ -225,7 +232,7 @@ onMounted(async () => {
       @register="tableRegister"
       @refresh="getList"
     >
-      <template #toolbar>
+    <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
             <ElButton type="primary" @click="addAction">新增项目</ElButton>
