@@ -5,7 +5,6 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
 import { ElButton, ElSwitch, ElRow, ElCol, ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
-import { FormSchema } from '@/components/Form'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { selectDictLabel, DictDetail } from '@/utils/dict'
@@ -31,7 +30,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
-const { getList, delList, getSelections, exportQueryList } = tableMethods
+const { getList, delList} = tableMethods
 const tableColumns = reactive<TableColumn[]>([
   {
     field: 'selection',
@@ -182,7 +181,6 @@ const dialogTitle = ref('')
 const currentRow = ref()
 const actionType = ref('')
 
-const writeRef = ref<ComponentRef<typeof Write>>()
 
 
 const editAction = async (row: any) => {
