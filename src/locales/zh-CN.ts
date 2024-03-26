@@ -109,7 +109,7 @@ export default {
   },
   login: {
     welcome: '欢迎使用本系统',
-    message: '开箱即用的中后台管理系统',
+    message: '自动化平台',
     username: '用户名',
     telephone: '手机号',
     password: '密码',
