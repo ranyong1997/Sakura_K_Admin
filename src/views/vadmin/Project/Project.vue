@@ -206,6 +206,8 @@ const user = computed(() => authStore.getUser)
 console.log('--------',user.value.id)
 onMounted(async () => {
   getProjectList({}).then(res=>{
+    dataList.value = res.data;
+    console.log("---->",dataList.value)
     console.log('res--->',res)
   });
 })
