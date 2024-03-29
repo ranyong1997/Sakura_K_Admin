@@ -46,13 +46,13 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'name',
+    field: 'project_name',
     label: '项目名称',
     show: true,
     disabled: true
   },
   {
-    field: 'principal',
+    field: 'responsible_name',
     label: '负责人',
     show: true
   },
@@ -70,24 +70,24 @@ const tableColumns = reactive<TableColumn[]>([
   },
   {
     field: 'simple_desc',
-    label: '描述',
+    label: '简要描述',
     show: true,
     disabled: true
   },
   {
     field: 'config_id',
-    label: '关联配置',
+    label: '关联配置id',
     show: true,
     disabled: true
   },
   {
-    field: 'last_login',
+    field: 'update_datetime',
     label: '更新时间',
     show: true,
     width: '190px'
   },
   {
-    field: 'created_by_name',
+    field: 'create_user_id',
     label: '更新人',
     show: true,
     disabled: true
@@ -99,7 +99,7 @@ const tableColumns = reactive<TableColumn[]>([
     show: true
   },
   {
-    field: 'create_user',
+    field: 'create_user_id',
     label: '创建人',
     show: true,
     disabled: true
