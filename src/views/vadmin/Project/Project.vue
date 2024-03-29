@@ -18,7 +18,7 @@ const authStore = useAuthStoreWithOut()
 const { tableRegister, tableState, tableMethods } = useTable({
   fetchDataApi: async () => {
     const { pageSize, currentPage } = tableState
-    const res = await getUserListApi({
+    const res = await getProjectList({
       page: unref(currentPage),
       limit: unref(pageSize),
       ...unref(searchParams)
@@ -32,6 +32,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
 const { dataList, loading, total, pageSize, currentPage } = tableState
 const { getList, delList} = tableMethods
 const tableColumns = reactive<TableColumn[]>([
+  // 多选框
   {
     field: 'selection',
     type: 'selection',
@@ -75,12 +76,6 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'config_id',
-    label: '关联配置id',
-    show: true,
-    disabled: true
-  },
-  {
     field: 'update_datetime',
     label: '更新时间',
     show: true,
@@ -112,26 +107,26 @@ const tableColumns = reactive<TableColumn[]>([
     slots: {
       default: (data: any) => {
         const row = data.row
-        const update = ['auth.user.update']
-        const del = ['auth.user.delete']
+        const update = ['auth.user.update'] // 编辑权限控制
+        const del = ['auth.user.delete'] // 删除权限控制
         return (
           <>
             <ElButton
               type="primary"
-              v-hasPermi={update}
+              v-hasPermi={update} // 检查编辑权限
               link
               size="small"
-              onClick={() => editAction(row)}
+              onClick={() => editAction(row)} // 调用editAction方法
             >
               编辑
             </ElButton>
             <ElButton
               type="danger"
-              v-hasPermi={del}
+              v-hasPermi={del} // 检查删除权限
               loading={delLoading.value}
               link
               size="small"
-              onClick={() => delData(row)}
+              onClick={() => delData(row)} // 调用delData方法
             >
               删除
             </ElButton>
@@ -141,6 +136,7 @@ const tableColumns = reactive<TableColumn[]>([
     }
   }
 ])
+// 项目名称
 const searchSchema = reactive<FormSchema[]>([
   {
     field: 'projectname',
@@ -157,6 +153,7 @@ const searchSchema = reactive<FormSchema[]>([
     }
   }
 ])
+
 const searchParams = ref({})
 const setSearchParams = (data: any) => {
   currentPage.value = 1
@@ -167,14 +164,11 @@ const delLoading = ref(false)
 const delData = async (row?: any) => {
   delLoading.value = true
   if (row) {
-    await delList(true, [row.id]).finally(() => {
-      delLoading.value = false
-    })
+    await delList(true, [row.id]) // 删除单个项目
   } else {
-    await delList(true).finally(() => {
-      delLoading.value = false
-    })
+    await delList(true) // 批量删除选中的项目
   }
+  delLoading.value = false
 }
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
@@ -182,20 +176,22 @@ const currentRow = ref()
 const actionType = ref('')
 
 
-
+// 编辑方法
 const editAction = async (row: any) => {
-  const res = await getProjectApi(row.id)
+  const res = await getProjectList(row.id)
   if (res) {
     dialogTitle.value = '编辑项目'
     res.data.role_ids = res.data.roles.map((item: any) => item.id)
-    actionType.value = 'editproject'
+    actionType.value = 'edit'
     currentRow.value = res.data
     dialogVisible.value = true
   }
 }
+
+// 新增方法
 const addAction = () => {
   dialogTitle.value = '新增项目'
-  actionType.value = 'addproject'
+  actionType.value = 'add'
   currentRow.value = undefined
   dialogVisible.value = true
 }
@@ -203,7 +199,8 @@ const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
 
 
-console.log('--------',user.value.id)
+console.log('--------',user.value.name)
+
 onMounted(async () => {
   getProjectList({}).then(res=>{
     dataList.value = res.data;
@@ -211,7 +208,6 @@ onMounted(async () => {
     console.log('res--->',res)
   });
 })
-
 </script>
 
 <template>
