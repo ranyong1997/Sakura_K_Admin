@@ -82,19 +82,13 @@ const tableColumns = reactive<TableColumn[]>([
     width: '190px'
   },
   {
-    field: 'create_user_id',
-    label: '更新人',
-    show: true,
-    disabled: true
-  },
-  {
     field: 'create_datetime',
     label: '创建时间',
     width: '190px',
     show: true
   },
   {
-    field: 'create_user_id',
+    field: 'username',
     label: '创建人',
     show: true,
     disabled: true
@@ -198,12 +192,16 @@ const addAction = () => {
 const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
 
-
-console.log('--------',user.value.name)
+console.log('------',user.value.name)
 
 onMounted(async () => {
   getProjectList({}).then(res=>{
-    dataList.value = res.data;
+    dataList.value = res.data.map(item=>{
+      item.username= user.value.name
+      console.log("--->item.username",item.username)
+      return item
+    });
+    
     console.log("---->",dataList.value)
     console.log('res--->',res)
   });
