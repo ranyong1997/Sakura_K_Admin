@@ -148,6 +148,7 @@ const searchSchema = reactive<FormSchema[]>([
   }
 ])
 
+
 const searchParams = ref({})
 const setSearchParams = (data: any) => {
   currentPage.value = 1
@@ -166,7 +167,7 @@ const delData = async (row?: any) => {
 }
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const currentRow = ref()
+const currentRow = ref({})
 const actionType = ref('')
 
 
@@ -186,7 +187,7 @@ const editAction = async (row: any) => {
 const addAction = () => {
   dialogTitle.value = '新增项目'
   actionType.value = 'add'
-  currentRow.value = undefined
+  currentRow.value = {}
   dialogVisible.value = true
 }
 const selections = ref([] as any[])
@@ -238,4 +239,7 @@ onMounted(async () => {
       </template>
     </Table>
   </ContentWrap>
+  <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
+    <!-- <Write ref="writeRef" :current-row="currentRow" /> -->
+  </Dialog>
 </template>
