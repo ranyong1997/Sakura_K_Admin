@@ -169,7 +169,7 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const currentRow = ref({})
 const actionType = ref('')
-
+const saveLoading = ref(false)
 
 // 编辑方法
 const editAction = async (row: any) => {
@@ -190,6 +190,12 @@ const addAction = () => {
   currentRow.value = {}
   dialogVisible.value = true
 }
+
+// 保存方法
+const save = async () =>{
+
+}
+
 const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
 
@@ -240,6 +246,12 @@ onMounted(async () => {
     </Table>
   </ContentWrap>
   <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
-    <!-- <Write ref="writeRef" :current-row="currentRow" /> -->
+    <Write  :current-row="currentRow" />
+    <template #footer>
+      <BaseButton type="primary" :loading="saveLoading" @click="save">
+        {{ t('exampleDemo.save') }}
+      </BaseButton>
+      <BaseButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</BaseButton>
+    </template>
   </Dialog>
 </template>
