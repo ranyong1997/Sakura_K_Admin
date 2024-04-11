@@ -43,16 +43,15 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
+      },
+      props:{
+        label:'nickname',
+        value:'id'
       }
     },
     // 下拉选择用户
     optionApi: async () => {
       const res = await getUserListApi()
-      res.data.map(item=>{
-        item.label = item.nickname;
-        item.value = item.id;
-        return item;
-      })
       return res.data
     },
     // 必填规则
@@ -70,16 +69,15 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
+      },
+      props:{
+        label:'nickname',
+        value:'id'
       }
     },
     // 下拉选择用户
     optionApi: async () => {
       const res = await getUserListApi()
-      res.data.map(item=>{
-        item.label = item.nickname;
-        item.value = item.id;
-        return item;
-      })
       return res.data
     },
     // 必填规则
