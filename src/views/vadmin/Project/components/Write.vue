@@ -1,9 +1,11 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch } from 'vue'
+import { PropType, reactive, watch,unref } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
 import { useDictStore } from '@/store/modules/dict'
+import { getUserListApi } from '@/api/vadmin/auth/user'
+import {ref} from 'vue'
 
 const { required } = useValidator()
 
@@ -43,12 +45,17 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       }
     },
-    // 下拉选择当前用户
+    // 下拉选择用户
     optionApi: async () => {
-      const dictStore = useDictStore()
-      const dictOptions = await dictStore.getDictObj(['sys_vadmin_platform'])
-      return dictOptions.sys_vadmin_platform
+      const res = await getUserListApi()
+      res.data.map(item=>{
+        item.label = item.nickname;
+        item.value = item.id;
+        return item;
+      })
+      return res.data
     },
+    // 必填规则
     formItemProps: {
       rules: [required()]
     }
@@ -65,12 +72,17 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       }
     },
-    // 下拉开发角色
+    // 下拉选择用户
     optionApi: async () => {
-      const dictStore = useDictStore()
-      const dictOptions = await dictStore.getDictObj(['sys_vadmin_platform'])
-      return dictOptions.sys_vadmin_platform
+      const res = await getUserListApi()
+      res.data.map(item=>{
+        item.label = item.nickname;
+        item.value = item.id;
+        return item;
+      })
+      return res.data
     },
+    // 必填规则
     formItemProps: {
       rules: [required()]
     }
