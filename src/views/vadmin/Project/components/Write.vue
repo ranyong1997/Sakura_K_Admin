@@ -86,6 +86,32 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
+    field: 'test_user',
+    label: '测试人员',
+    colProps: {
+      span: 24
+    },
+    component: 'Select',
+    componentProps: {
+      style: {
+        width: '100%'
+      },
+      props:{
+        label:'nickname',
+        value:'id'
+      }
+    },
+    // 下拉选择用户
+    optionApi: async () => {
+      const res = await getUserListApi()
+      return res.data
+    },
+    // 必填规则
+    formItemProps: {
+      rules: [required()]
+    }
+  },
+  {
     field: 'publish_app',
     label: '发布应用',
     component: 'Input',

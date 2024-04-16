@@ -9,3 +9,7 @@ export const getProjectList = (params: ProjectType): Promise<IResponse> => {
 export const createProject = (data: any): Promise<IResponse> => {
     return request.post({ url: '/vadmin/autotest/project/createproject', data })
 }
+
+export const editProject = (data: any): Promise<IResponse> => {
+    return request.put({ url: `/vadmin/autotest/project/${data.id}`, data })
+}

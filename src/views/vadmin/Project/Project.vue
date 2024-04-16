@@ -9,7 +9,7 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { selectDictLabel, DictDetail } from '@/utils/dict'
 import { useDictStore } from '@/store/modules/dict'
-import { getProjectList } from '@/api/vadmin/project/project'
+import { getProjectList,createProject,editProject } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import Write from './components/Write.vue'
 
@@ -55,6 +55,11 @@ const tableColumns = reactive<TableColumn[]>([
   {
     field: 'responsible_name',
     label: '负责人',
+    show: true
+  },
+  {
+    field: 'test_user',
+    label: '测试人',
     show: true
   },
   {
@@ -171,6 +176,9 @@ const currentRow = ref({})
 const actionType = ref('')
 const saveLoading = ref(false)
 
+const writeRef = ref<ComponentRef<typeof Write>>()
+
+
 // 编辑方法
 const editAction = async (row: any) => {
   const res = await getProjectList(row.id)
@@ -193,7 +201,31 @@ const addAction = () => {
 
 // 保存方法
 const save = async () =>{
-
+  const write = unref(writeRef)
+  const formData = await write?.submit()
+  console.log(formData);
+  
+  if (formData) {
+    saveLoading.value = true
+    try {
+      const res = ref({})
+      if (actionType.value === 'add') {
+        res.value = await createProject(formData)
+        if (res.value) {
+          dialogVisible.value = false
+          getList()
+        }
+      } else if (actionType.value === 'edit') {
+        res.value = await editProject(formData)
+        if (res.value) {
+          dialogVisible.value = false
+          getList()
+        }
+      }
+    } finally {
+      saveLoading.value = false
+    }
+  }
 }
 
 const selections = ref([] as any[])
@@ -246,7 +278,8 @@ onMounted(async () => {
     </Table>
   </ContentWrap>
   <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
-    <Write  :current-row="currentRow" />
+    <Write ref="writeRef" :current-row="currentRow" />
+
     <template #footer>
       <BaseButton type="primary" :loading="saveLoading" @click="save">
         {{ t('exampleDemo.save') }}
