@@ -81,6 +81,12 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
+    field: 'remarks',
+    label: '备注',
+    show: true,
+    disabled: true
+  },
+  {
     field: 'update_datetime',
     label: '更新时间',
     show: true,
@@ -210,7 +216,11 @@ const save = async () =>{
     try {
       const res = ref({})
       if (actionType.value === 'add') {
+        formData.create_user_id = user.value.id;
+        formData.remark = ''
+        formData.simple_desc = ''
         res.value = await createProject(formData)
+        
         if (res.value) {
           dialogVisible.value = false
           getList()
@@ -232,7 +242,7 @@ const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
 
 console.log('------',user.value.name)
-
+console.log('----111--',user.value.id)
 onMounted(async () => {
   getProjectList({}).then(res=>{
     dataList.value = res.data.map(item=>{

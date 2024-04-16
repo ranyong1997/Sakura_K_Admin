@@ -46,7 +46,7 @@ const formSchema = reactive<FormSchema[]>([
       },
       props:{
         label:'nickname',
-        value:'id'
+        value:'nickname'
       }
     },
     // 下拉选择用户
@@ -72,7 +72,7 @@ const formSchema = reactive<FormSchema[]>([
       },
       props:{
         label:'nickname',
-        value:'id'
+        value:'nickname'
       }
     },
     // 下拉选择用户
@@ -98,7 +98,7 @@ const formSchema = reactive<FormSchema[]>([
       },
       props:{
         label:'nickname',
-        value:'id'
+        value:'nickname'
       }
     },
     // 下拉选择用户
@@ -139,10 +139,20 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       }
     },
-    formItemProps: {
-      rules: [required()]
-    }
-  }
+  },
+  {
+    field: 'remarks',
+    label: '备注',
+    component: 'Input',
+    colProps: {
+      span: 24
+    },
+    componentProps: {
+      style: {
+        width: '100%'
+      }
+    },
+  },
 ])
 
 const { formRegister, formMethods } = useForm()
