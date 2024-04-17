@@ -3,12 +3,10 @@ import {computed,onMounted, reactive, ref, unref } from 'vue'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
-import { ElButton, ElSwitch, ElRow, ElCol, ElMessage } from 'element-plus'
+import { ElButton, ElRow, ElCol } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { selectDictLabel, DictDetail } from '@/utils/dict'
-import { useDictStore } from '@/store/modules/dict'
 import { getProjectList,createProject,editProject } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import Write from './components/Write.vue'
@@ -235,8 +233,6 @@ const save = async () =>{
     }
   }
 }
-
-const selections = ref([] as any[])
 const user = computed(() => authStore.getUser)
 
 console.log('------',user.value.name)
@@ -248,7 +244,6 @@ onMounted(async () => {
       console.log("--->item.username",item.username)
       return item
     });
-    
     console.log("---->",dataList.value)
     console.log('res--->',res)
   });

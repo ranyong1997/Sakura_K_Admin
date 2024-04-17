@@ -1,11 +1,9 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch,unref } from 'vue'
+import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
-import { useDictStore } from '@/store/modules/dict'
 import { getUserListApi } from '@/api/vadmin/auth/user'
-import {ref} from 'vue'
 
 const { required } = useValidator()
 
