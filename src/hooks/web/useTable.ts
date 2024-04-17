@@ -226,13 +226,6 @@ export const useTable = (config: UseTableConfig) => {
       return (unref(elTableRef)?.getSelectionRows() || []) as any[]
     },
 
-    setDataListIndex:()=>{
-      dataList.value = dataList.value.map((item, index) => {
-        item.index = index + 1 + pageSize.value * (currentPage.value -1)
-        return item
-      })
-    },
-
     // 导出筛选列表
     exportQueryList: async (headers?: any[]) => {
       const { fetchExportApi } = config
@@ -273,10 +266,7 @@ export const useTable = (config: UseTableConfig) => {
 
   return {
     tableRegister: register,
-    tableMethods: {
-      ...methods,
-      setDataListIndex: methods.setDataListIndex // 添加新方法到 tableMethods 对象
-    },
+    tableMethods: methods,
     tableState: {
       currentPage,
       pageSize,

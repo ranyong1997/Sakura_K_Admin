@@ -11,7 +11,7 @@ import { getProjectList,createProject,editProject } from '@/api/vadmin/project/p
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import Write from './components/Write.vue'
 
-
+// 获取数据
 const getLists = async (data:any) => {
   const { pageSize, currentPage } = tableState
   const res = await getProjectList({
@@ -19,16 +19,10 @@ const getLists = async (data:any) => {
     limit: unref(pageSize),
     ...unref(searchParams)
   })
-  res.data = tableMethods.setDataListIndex(res.data);
-  res.data = res.data.map((item,indx) => {
+  res.data = res.data.map((item) => {
     item.username = user.value.nickname
-    // 序号重组
-    // item.index = indx + 1 + pageSize.value*(currentPage.value-1);
     return item
   })
-  // res.data = tableMethods.setDataListIndex(res.data);
-  // console.log("res.data",res.data);
-  
   return {
     list: res.data || [],
     total: res.count || 0
@@ -44,7 +38,6 @@ const { tableRegister, tableState, tableMethods } = useTable({
       limit: unref(pageSize),
       ...unref(searchParams),
     })
-    tableMethods.setDataListIndex(); // 调用该方法设置 index 属性
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
@@ -60,6 +53,7 @@ const tableColumns = reactive<TableColumn[]>([
   {
     field: 'index',
     label: '序号',
+    type: 'index',
     width: '100px',
     show: true,
     disabled: false,
