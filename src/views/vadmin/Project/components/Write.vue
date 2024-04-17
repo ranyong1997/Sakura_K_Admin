@@ -6,14 +6,12 @@ import { useValidator } from '@/hooks/web/useValidator'
 import { getUserListApi } from '@/api/vadmin/auth/user'
 
 const { required } = useValidator()
-
 const props = defineProps({
   currentRow: {
     type: Object as PropType<any>,
     default: () => null
   }
 })
-
 const formSchema = reactive<FormSchema[]>([
   {
     field: 'project_name',
@@ -149,17 +147,14 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
 ])
-
 const rules = reactive({
   project_name: [required()],
   responsible_name: [required()],
   dev_user: [required()],
   test_user: [required()]
 })
-
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose } = formMethods
-
 const submit = async () => {
   const elForm = await getElFormExpose()
   const valid = await elForm?.validate()
@@ -168,7 +163,6 @@ const submit = async () => {
     return formData
   }
 }
-
 watch(
   () => props.currentRow,
   (currentRow) => {
@@ -180,7 +174,6 @@ watch(
     immediate: true
   }
 )
-
 defineExpose({
   submit
 })

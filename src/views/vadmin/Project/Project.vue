@@ -11,24 +11,36 @@ import { getProjectList,createProject,editProject } from '@/api/vadmin/project/p
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import Write from './components/Write.vue'
 
-const { t } = useI18n()
-const authStore = useAuthStoreWithOut()
-const { tableRegister, tableState, tableMethods } = useTable({
-  fetchDataApi: async () => {
-    const { pageSize, currentPage } = tableState
+
+const getLists = async (data:any) => {
+  const { pageSize, currentPage } = tableState
     const res = await getProjectList({
       page: unref(currentPage),
       limit: unref(pageSize),
       ...unref(searchParams)
     })
-    res.data = res.data.map(item => {
+    res.data = res.data.map((item,indx) => {
       item.username = user.value.nickname
+      // 序号重组
+      item.index = indx + 1 + pageSize.value*(currentPage.value-1);
       return item
     })
     return {
       list: res.data || [],
       total: res.count || 0
     }
+}
+const { t } = useI18n()
+const authStore = useAuthStoreWithOut()
+const { tableRegister, tableState, tableMethods } = useTable({
+  fetchDataApi: 
+  async () => {
+    const { pageSize, currentPage } = tableState
+    return getLists({
+      page: unref(currentPage),
+      limit: unref(pageSize),
+      ...unref(searchParams)
+    })
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
@@ -42,11 +54,13 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'id',
+    field: 'index',
     label: '序号',
     width: '100px',
     show: true,
-    disabled: true
+    disabled: false,
+    align: 'center',
+    headerAlign: 'center',
   },
   {
     field: 'project_name',
@@ -158,8 +172,6 @@ const searchSchema = reactive<FormSchema[]>([
     }
   }
 ])
-
-
 const searchParams = ref({})
 const setSearchParams = (data: any) => {
   currentPage.value = 1
@@ -181,10 +193,7 @@ const dialogTitle = ref('')
 const currentRow = ref({})
 const actionType = ref('')
 const saveLoading = ref(false)
-
 const writeRef = ref<ComponentRef<typeof Write>>()
-
-
 // 编辑方法
 const editAction = async (row: any) => {
   const res = await getProjectList(row.id)
@@ -196,7 +205,6 @@ const editAction = async (row: any) => {
     dialogVisible.value = true
   }
 }
-
 // 新增方法
 const addAction = () => {
   dialogTitle.value = '新增项目'
@@ -204,7 +212,6 @@ const addAction = () => {
   currentRow.value = {}
   dialogVisible.value = true
 }
-
 // 保存方法
 const save = async () =>{
   const write = unref(writeRef)
@@ -234,19 +241,11 @@ const save = async () =>{
   }
 }
 const user = computed(() => authStore.getUser)
-
 console.log('------',user.value.name)
 console.log('----111--',user.value.id)
+console.log('zzzzzzzzzzzz',tableState);
 onMounted(async () => {
-  getProjectList({}).then(res=>{
-    dataList.value = res.data.map(item=>{
-      item.username= user.value.name
-      console.log("--->item.username",item.username)
-      return item
-    });
-    console.log("---->",dataList.value)
-    console.log('res--->',res)
-  });
+  getLists({});
 })
 </script>
 
