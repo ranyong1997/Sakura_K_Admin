@@ -14,33 +14,37 @@ import Write from './components/Write.vue'
 
 const getLists = async (data:any) => {
   const { pageSize, currentPage } = tableState
-    const res = await getProjectList({
-      page: unref(currentPage),
-      limit: unref(pageSize),
-      ...unref(searchParams)
-    })
-    res.data = res.data.map((item,indx) => {
-      item.username = user.value.nickname
-      // 序号重组
-      item.index = indx + 1 + pageSize.value*(currentPage.value-1);
-      return item
-    })
-    return {
-      list: res.data || [],
-      total: res.count || 0
-    }
+  const res = await getProjectList({
+    page: unref(currentPage),
+    limit: unref(pageSize),
+    ...unref(searchParams)
+  })
+  res.data = tableMethods.setDataListIndex(res.data);
+  res.data = res.data.map((item,indx) => {
+    item.username = user.value.nickname
+    // 序号重组
+    // item.index = indx + 1 + pageSize.value*(currentPage.value-1);
+    return item
+  })
+  // res.data = tableMethods.setDataListIndex(res.data);
+  // console.log("res.data",res.data);
+  
+  return {
+    list: res.data || [],
+    total: res.count || 0
+  }
 }
 const { t } = useI18n()
 const authStore = useAuthStoreWithOut()
 const { tableRegister, tableState, tableMethods } = useTable({
-  fetchDataApi: 
-  async () => {
+  fetchDataApi: async () => {
     const { pageSize, currentPage } = tableState
     return getLists({
       page: unref(currentPage),
       limit: unref(pageSize),
-      ...unref(searchParams)
+      ...unref(searchParams),
     })
+    tableMethods.setDataListIndex(); // 调用该方法设置 index 属性
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
