@@ -23,6 +23,10 @@ const { tableRegister, tableState, tableMethods } = useTable({
       limit: unref(pageSize),
       ...unref(searchParams)
     })
+    res.data = res.data.map(item => {
+      item.username = user.value.nickname
+      return item
+    })
     return {
       list: res.data || [],
       total: res.count || 0
