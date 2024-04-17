@@ -28,9 +28,6 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       }
-    },
-    formItemProps: {
-      rules: [required()]
     }
   },
   {
@@ -54,10 +51,6 @@ const formSchema = reactive<FormSchema[]>([
       const res = await getUserListApi()
       return res.data
     },
-    // 必填规则
-    formItemProps: {
-      rules: [required()]
-    }
   },
   {
     field: 'dev_user',
@@ -79,10 +72,6 @@ const formSchema = reactive<FormSchema[]>([
     optionApi: async () => {
       const res = await getUserListApi()
       return res.data
-    },
-    // 必填规则
-    formItemProps: {
-      rules: [required()]
     }
   },
   {
@@ -105,10 +94,6 @@ const formSchema = reactive<FormSchema[]>([
     optionApi: async () => {
       const res = await getUserListApi()
       return res.data
-    },
-    // 必填规则
-    formItemProps: {
-      rules: [required()]
     }
   },
   {
@@ -138,7 +123,7 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       }
-    },
+    }
   },
   {
     field: 'remarks',
@@ -151,9 +136,18 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       }
-    },
+    }
   },
 ])
+
+const rules = reactive({
+  project_name: [required()],
+  responsible_name: [required()],
+  dev_user: [required()],
+  test_user: [required()],
+  simple_desc: [required()],
+  remarks: [required()]
+})
 
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose } = formMethods
@@ -185,5 +179,5 @@ defineExpose({
 </script>
 
 <template>
-  <Form @register="formRegister" :schema="formSchema" />
+  <Form :rules="rules" @register="formRegister" :schema="formSchema" />
 </template>

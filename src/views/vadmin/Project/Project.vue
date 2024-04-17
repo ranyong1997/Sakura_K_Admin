@@ -77,14 +77,12 @@ const tableColumns = reactive<TableColumn[]>([
   {
     field: 'simple_desc',
     label: '简要描述',
-    show: true,
-    disabled: true
+    show: true
   },
   {
     field: 'remarks',
     label: '备注',
-    show: true,
-    disabled: true
+    show: true
   },
   {
     field: 'update_datetime',
@@ -209,18 +207,14 @@ const addAction = () => {
 const save = async () =>{
   const write = unref(writeRef)
   const formData = await write?.submit()
-  console.log(formData);
-  
+  console.log("----1",formData);
   if (formData) {
     saveLoading.value = true
     try {
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        formData.remark = ''
-        formData.simple_desc = ''
         res.value = await createProject(formData)
-        
         if (res.value) {
           dialogVisible.value = false
           getList()
