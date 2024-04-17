@@ -42,7 +42,8 @@ const formSchema = reactive<FormSchema[]>([
       props:{
         label:'nickname',
         value:'nickname'
-      }
+      },
+      filterable:true
     },
     // 下拉选择用户
     optionApi: async () => {
@@ -64,7 +65,8 @@ const formSchema = reactive<FormSchema[]>([
       props:{
         label:'nickname',
         value:'nickname'
-      }
+      },
+      filterable:true
     },
     // 下拉选择用户
     optionApi: async () => {
@@ -86,7 +88,8 @@ const formSchema = reactive<FormSchema[]>([
       props:{
         label:'nickname',
         value:'nickname'
-      }
+      },
+      filterable:true
     },
     // 下拉选择用户
     optionApi: async () => {
