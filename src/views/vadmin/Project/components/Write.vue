@@ -27,7 +27,9 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
-      }
+      },
+      maxlength: 10,
+      showWordLimit: true
     }
   },
   {
@@ -106,11 +108,15 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
-      }
+      },
+      maxlength: 10,
+      showWordLimit: true
     },
     formItemProps: {
       rules: [required()]
-    }
+    },
+    maxlength: 10,
+    showWordLimit: true
   },
   {
     field: 'simple_desc',
@@ -122,7 +128,9 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
-      }
+      },
+      maxlength: 20,
+      showWordLimit: true
     }
   },
   {
@@ -133,9 +141,13 @@ const formSchema = reactive<FormSchema[]>([
       span: 24
     },
     componentProps: {
+      rows:4,
+      type: 'textarea',
       style: {
-        width: '100%'
-      }
+        width: '600px'
+      },
+      maxlength: 100,
+      showWordLimit: true
     }
   },
 ])
@@ -144,9 +156,7 @@ const rules = reactive({
   project_name: [required()],
   responsible_name: [required()],
   dev_user: [required()],
-  test_user: [required()],
-  simple_desc: [required()],
-  remarks: [required()]
+  test_user: [required()]
 })
 
 const { formRegister, formMethods } = useForm()
