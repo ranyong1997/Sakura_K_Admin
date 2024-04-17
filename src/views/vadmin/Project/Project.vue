@@ -142,11 +142,11 @@ const tableColumns = reactive<TableColumn[]>([
 // 项目名称
 const searchSchema = reactive<FormSchema[]>([
   {
-    field: 'projectname',
+    field: 'project_name',
     label: '项目名称',
     component: 'Input',
     componentProps: {
-      clearable: false,
+      clearable: true,
       style: {
         width: '214px'
       }
@@ -283,7 +283,6 @@ onMounted(async () => {
   </ContentWrap>
   <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
     <Write ref="writeRef" :current-row="currentRow" />
-
     <template #footer>
       <BaseButton type="primary" :loading="saveLoading" @click="save">
         {{ t('exampleDemo.save') }}

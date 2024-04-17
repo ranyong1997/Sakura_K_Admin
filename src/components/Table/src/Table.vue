@@ -308,10 +308,10 @@ export default defineComponent({
           background: false,
           pagerCount: 7,
           layout: 'sizes, prev, pager, next, jumper, ->, total',
-          pageSizes: [10, 20, 30, 40, 50, 100],
+          pageSizes: [20, 50, 100],
           disabled: false,
           hideOnSinglePage: false,
-          total: 10
+          pageSize:20
         },
         unref(getProps).pagination
       )
