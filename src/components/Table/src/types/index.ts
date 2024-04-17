@@ -88,7 +88,7 @@ export interface TableProps extends Omit<Partial<ElTableProps<any[]>>, 'data'> {
   // 是否叠加索引
   reserveIndex?: boolean
   // 对齐方式
-  align?: 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right'='center'
   // 表头对齐方式
   headerAlign?: 'left' | 'center' | 'right'
   preview?: string[]

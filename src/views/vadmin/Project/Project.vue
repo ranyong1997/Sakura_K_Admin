@@ -54,11 +54,8 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'index',
     label: '序号',
     type: 'index',
-    width: '100px',
     show: true,
     disabled: false,
-    align: 'center',
-    headerAlign: 'center',
   },
   {
     field: 'project_name',

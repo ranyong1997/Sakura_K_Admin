@@ -53,8 +53,6 @@ const tableColumns = reactive<TableColumn[]>([
     label: '编号',
     show: true,
     disabled: false,
-    align: 'center',
-    headerAlign: 'center',
     width: '80px'
   },
   {

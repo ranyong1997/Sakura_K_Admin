@@ -18,7 +18,6 @@ const config = reactive({
   data: centerBottomData.value,
   index: true,
   columnWidth: [50],
-  align: ['center'],
   rowNum: 6,
   waitTime: 2000,
   headerHeight: 40
