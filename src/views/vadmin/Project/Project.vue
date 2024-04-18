@@ -59,7 +59,7 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'index',
     label: '序号',
     type: 'index',
-    disabled: true,
+    disabled: true
   },
   {
     field: 'project_name',
@@ -183,7 +183,6 @@ const addAction = () => {
 // 编辑方法
 const editAction = async (row: any) => {
     const res =  await getProjectListApi(row.id)
-    console.log("res.data",res.data);
     if(res) {
       dialogTitle.value = '编辑项目'
       actionType.value = 'edit'
@@ -211,7 +210,6 @@ const delData = async (row?: any) => {
 const save = async () =>{
   const write = unref(writeRef)
   const formData = await write?.submit()
-  console.log("----1",formData);
   if (formData) {
     saveLoading.value = true
     try {
@@ -238,9 +236,6 @@ const save = async () =>{
   }
 }
 const user = computed(() => authStore.getUser)
-console.log('------',user.value.name)
-console.log('----111--',user.value.id)
-console.log('zzzzzzzzzzzz',tableState);
 onMounted(async () => {
   getLists({});
 })
