@@ -48,9 +48,9 @@ export default defineComponent({
     // 仅对 type=selection 的列有效，类型为 Boolean，为 true 则会在数据更新之后保留之前选中的数据（需指定 row-key）
     reserveSelection: propTypes.bool.def(false),
     // 加载状态
-    loading: propTypes.bool.def(false),
+    loading: propTypes.bool.def(true),
     // 是否叠加索引
-    reserveIndex: propTypes.bool.def(false),
+    reserveIndex: propTypes.bool.def(true),
     // 对齐方式
     align: propTypes.string
       .validate((v: string) => ['left', 'center', 'right'].includes(v))
