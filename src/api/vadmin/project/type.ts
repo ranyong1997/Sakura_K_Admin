@@ -1,5 +1,5 @@
 export type ProjectType = {
-    project_name: string
+    id: number
     page: number
     limit: number
     v_order_field: string
