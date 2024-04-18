@@ -129,10 +129,10 @@ const tableColumns = reactive<TableColumn[]>([
             </BaseButton>
             <BaseButton
               type="danger"
-              v-hasPermi={del} // 检查删除权限
-              loading={delLoading.value}
               link
               size="small"
+              v-hasPermi={del} // 检查删除权限
+              loading={delLoading.value}
               onClick={() => delData(row)} // 调用delData方法
             >
               删除
@@ -182,15 +182,14 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-  const res = await getProjectListApi(row.id)
-  console.log("res.data",res.data);
-  if (res) {
-    dialogTitle.value = '编辑项目'
-    actionType.value = 'edit'
-    currentRow.value = res.data
-    console.log("currentRow.value",currentRow.value);
-    dialogVisible.value = true
-  }
+    const res =  await getProjectListApi(row.id)
+    console.log("res.data",res.data);
+    if(res) {
+      dialogTitle.value = '编辑项目'
+      actionType.value = 'edit'
+      currentRow.value = row
+      dialogVisible.value = true
+    }
 }
 // 删除方法
 const delLoading = ref(false)
