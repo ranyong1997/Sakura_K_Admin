@@ -3,7 +3,7 @@ import {computed,onMounted, reactive, ref, unref } from 'vue'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
-import { ElButton, ElRow, ElCol } from 'element-plus'
+import { ElButton, ElRow, ElCol,ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
@@ -210,12 +210,14 @@ const save = async () =>{
         if (res.value) {
           dialogVisible.value = false
           getList()
+          return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {
         res.value = await editProject(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
+          return ElMessage.success('编辑成功')
         }
       }
     } finally {
