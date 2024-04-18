@@ -7,7 +7,7 @@ import { ElButton, ElRow, ElCol,ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getProjectList,createProject,editProject } from '@/api/vadmin/project/project'
+import { getProjectListApi,addProjectApi,putProjectApi,delProjectApi } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
@@ -15,7 +15,7 @@ import Write from './components/Write.vue'
 // 获取数据
 const getLists = async (data:any) => {
   const { pageSize, currentPage } = tableState
-  const res = await getProjectList({
+  const res = await getProjectListApi({
     page: unref(currentPage),
     limit: unref(pageSize),
     ...unref(searchParams)
@@ -39,6 +39,10 @@ const { tableRegister, tableState, tableMethods } = useTable({
       limit: unref(pageSize),
       ...unref(searchParams),
     })
+  },
+  fetchDelApi: async (value) =>{
+    const res = await delProjectApi(value)
+    return res.code === 200
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
@@ -110,7 +114,6 @@ const tableColumns = reactive<TableColumn[]>([
     slots: {
       default: (data: any) => {
         const row = data.row
-        console.log("row",row);
         const update = ['auth.user.update'] // 编辑权限控制
         const del = ['auth.user.delete'] // 删除权限控制
         return (
@@ -124,7 +127,7 @@ const tableColumns = reactive<TableColumn[]>([
             >
               编辑
             </BaseButton>
-            <ElButton
+            <BaseButton
               type="danger"
               v-hasPermi={del} // 检查删除权限
               loading={delLoading.value}
@@ -133,7 +136,7 @@ const tableColumns = reactive<TableColumn[]>([
               onClick={() => delData(row)} // 调用delData方法
             >
               删除
-            </ElButton>
+            </BaseButton>
           </>
         )
       }
@@ -163,16 +166,7 @@ const setSearchParams = (data: any) => {
   searchParams.value = data
   getList()
 }
-const delLoading = ref(false)
-const delData = async (row?: any) => {
-  delLoading.value = true
-  if (row) {
-    await delList(true, [row.id]) // 删除单个项目
-  } else {
-    await delList(true) // 批量删除选中的项目
-  }
-  delLoading.value = false
-}
+
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const currentRow = ref({})
@@ -188,7 +182,7 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-  const res = await getProjectList(row.id)
+  const res = await getProjectListApi(row.id)
   console.log("res.data",res.data);
   if (res) {
     dialogTitle.value = '编辑项目'
@@ -197,6 +191,21 @@ const editAction = async (row: any) => {
     console.log("currentRow.value",currentRow.value);
     dialogVisible.value = true
   }
+}
+// 删除方法
+const delLoading = ref(false)
+
+const delData = async (row?: any) => {
+  if (row) {
+    await delList(true, [row.id]).finally(()=>{
+      delLoading.value = false
+    }) // 删除单个项目
+  } else {
+    await delList(true).finally(()=>{
+      delLoading.value = false
+    }) // 批量删除选中的项目
+  }
+  delLoading.value = false
 }
 
 // 保存方法
@@ -210,14 +219,14 @@ const save = async () =>{
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        res.value = await createProject(formData)
+        res.value = await addProjectApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
           return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {        
-        res.value = await editProject(formData)
+        res.value = await putProjectApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
@@ -259,10 +268,10 @@ onMounted(async () => {
     <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
-            <ElButton type="primary" @click="addAction">新增项目</ElButton>
+            <BaseButton type="primary" @click="addAction">新增项目</BaseButton>
           </ElCol>
           <ElCol :span="1.5" v-hasPermi="['auth.user.delete']">
-            <ElButton type="danger" @click="delData">批量删除</ElButton>
+            <BaseButton type="danger" @click="delData(null)">批量删除</BaseButton>
           </ElCol>
         </ElRow>
       </template>
