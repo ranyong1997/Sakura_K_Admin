@@ -54,70 +54,58 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'index',
     label: '序号',
     type: 'index',
-    show: true,
-    disabled: false,
+    disabled: true,
   },
   {
     field: 'project_name',
     label: '项目名称',
-    show: true,
     disabled: true
   },
   {
     field: 'responsible_name',
     label: '负责人',
-    show: true
   },
   {
     field: 'test_user',
     label: '测试人',
-    show: true
   },
   {
     field: 'dev_user',
     label: '开发人员',
-    show: true,
     disabled: true
   },
   {
     field: 'publish_app',
     label: '发布应用',
-    show: true,
     disabled: true
   },
   {
     field: 'simple_desc',
     label: '简要描述',
-    show: true
   },
   {
     field: 'remarks',
     label: '备注',
-    show: true
   },
   {
     field: 'update_datetime',
     label: '更新时间',
-    show: true,
     width: '190px'
   },
   {
     field: 'create_datetime',
     label: '创建时间',
     width: '190px',
-    show: true
   },
   {
     field: 'username',
     label: '创建人',
-    show: true,
     disabled: true
   },
   {
     field: 'action',
     width: '150px',
     label: '操作',
-    show: true,
     slots: {
       default: (data: any) => {
         const row = data.row
