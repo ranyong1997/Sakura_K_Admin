@@ -9,6 +9,7 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { getProjectList,createProject,editProject } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
+import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
 
 // 获取数据
@@ -109,19 +110,20 @@ const tableColumns = reactive<TableColumn[]>([
     slots: {
       default: (data: any) => {
         const row = data.row
+        console.log("row",row);
         const update = ['auth.user.update'] // 编辑权限控制
         const del = ['auth.user.delete'] // 删除权限控制
         return (
           <>
-            <ElButton
-              type="primary"
-              v-hasPermi={update} // 检查编辑权限
-              link
-              size="small"
-              onClick={() => editAction(row)} // 调用editAction方法
+            <BaseButton 
+              type="primary" 
+              link 
+              size="small" 
+              v-hasPermi={update} // 检查更新权限
+              onClick={() => editAction(row)}
             >
               编辑
-            </ElButton>
+            </BaseButton>
             <ElButton
               type="danger"
               v-hasPermi={del} // 检查删除权限
@@ -177,17 +179,6 @@ const currentRow = ref({})
 const actionType = ref('')
 const saveLoading = ref(false)
 const writeRef = ref<ComponentRef<typeof Write>>()
-// 编辑方法
-const editAction = async (row: any) => {
-  const res = await getProjectList(row.id)
-  if (res) {
-    dialogTitle.value = '编辑项目'
-    res.data.role_ids = res.data.roles.map((item: any) => item.id)
-    actionType.value = 'edit'
-    currentRow.value = res.data
-    dialogVisible.value = true
-  }
-}
 // 新增方法
 const addAction = () => {
   dialogTitle.value = '新增项目'
@@ -195,6 +186,19 @@ const addAction = () => {
   currentRow.value = {}
   dialogVisible.value = true
 }
+// 编辑方法
+const editAction = async (row: any) => {
+  const res = await getProjectList(row.id)
+  console.log("res.data",res.data);
+  if (res) {
+    dialogTitle.value = '编辑项目'
+    actionType.value = 'edit'
+    currentRow.value = res.data
+    console.log("currentRow.value",currentRow.value);
+    dialogVisible.value = true
+  }
+}
+
 // 保存方法
 const save = async () =>{
   const write = unref(writeRef)
@@ -212,7 +216,7 @@ const save = async () =>{
           getList()
           return ElMessage.success('新增成功')
         }
-      } else if (actionType.value === 'edit') {
+      } else if (actionType.value === 'edit') {        
         res.value = await editProject(formData)
         if (res.value) {
           dialogVisible.value = false
@@ -258,7 +262,7 @@ onMounted(async () => {
             <ElButton type="primary" @click="addAction">新增项目</ElButton>
           </ElCol>
           <ElCol :span="1.5" v-hasPermi="['auth.user.delete']">
-            <ElButton type="danger" @click="delData(null)">批量删除</ElButton>
+            <ElButton type="danger" @click="delData">批量删除</ElButton>
           </ElCol>
         </ElRow>
       </template>
