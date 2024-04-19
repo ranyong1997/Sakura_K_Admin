@@ -78,7 +78,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }),
       UnoCSS()
     ],
-
     css: {
       preprocessorOptions: {
         less: {

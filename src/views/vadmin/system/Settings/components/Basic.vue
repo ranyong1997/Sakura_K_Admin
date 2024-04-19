@@ -261,7 +261,7 @@ const save = async () => {
       if (res) {
         appStore.setTitle(formData.web_title || import.meta.env.VITE_APP_TITLE)
         appStore.setLogoImage(formData.web_logo || '/media/system/logo.png')
-        appStore.setFooterContent(formData.web_copyright || 'Copyright ©2022-present K')
+        appStore.setFooterContent(formData.web_copyright || 'Copyright ©2022-present RY')
         appStore.setIcpNumber(formData.web_icp_number || '')
         return ElMessage.success('更新成功')
       }

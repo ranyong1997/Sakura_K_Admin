@@ -32,7 +32,7 @@ const setSystemConfig = async () => {
   if (res) {
     appStore.setTitle(res.data.web_title || import.meta.env.VITE_APP_TITLE)
     appStore.setLogoImage(res.data.web_logo || '/media/system/logo.png')
-    appStore.setFooterContent(res.data.web_copyright || 'Copyright ©2022-present K')
+    appStore.setFooterContent(res.data.web_copyright || 'Copyright ©2022-present RY')
     appStore.setIcpNumber(res.data.web_icp_number || '')
     addMeta(
       'description',
