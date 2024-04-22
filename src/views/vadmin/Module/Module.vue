@@ -7,7 +7,7 @@ import { ElButton, ElRow, ElCol,ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getProjectListApi,addProjectApi,putProjectApi,delProjectApi } from '@/api/vadmin/project/project'
+import { getModuleListApi,addModuleApi,putModuleApi,delModuleApi } from '@/api/vadmin/module/module'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
@@ -15,7 +15,7 @@ import Write from './components/Write.vue'
 // 获取数据
 const getLists = async (data:any) => {
   const { pageSize, currentPage } = tableState
-  const res = await getProjectListApi({
+  const res = await getModuleListApi({
     page: unref(currentPage),
     limit: unref(pageSize),
     ...unref(searchParams)
