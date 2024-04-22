@@ -67,17 +67,21 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'leader_user',
-    label: '负责人',
-  },
-  {
-    field: 'test_user',
-    label: '测试人',
-  },
-  {
     field: 'project_id',
     label: '所属项目',
     disabled: true
+  },
+  {
+    field: 'responsible_name',
+    label: '负责人员',
+  },
+  {
+    field: 'dev_user',
+    label: '开发人员',
+  },
+  {
+    field: 'test_user',
+    label: '测试人员',
   },
   {
     field: 'simple_desc',

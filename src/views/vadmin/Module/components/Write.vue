@@ -14,8 +14,8 @@ const props = defineProps({
 })
 const formSchema = reactive<FormSchema[]>([
   {
-    field: 'project_name',
-    label: '项目名称',
+    field: 'module_name',
+    label: '模块名称',
     component: 'Input',
     colProps: {
       span: 24
@@ -98,26 +98,6 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'publish_app',
-    label: '发布应用',
-    component: 'Input',
-    colProps: {
-      span: 24
-    },
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      maxlength: 10,
-      showWordLimit: true
-    },
-    formItemProps: {
-      rules: [required()]
-    },
-    maxlength: 10,
-    showWordLimit: true
-  },
-  {
     field: 'simple_desc',
     label: '简要描述',
     component: 'Input',
@@ -151,7 +131,7 @@ const formSchema = reactive<FormSchema[]>([
   },
 ])
 const rules = reactive({
-  project_name: [required()],
+  module_name: [required()],
   responsible_name: [required()],
   dev_user: [required()],
   test_user: [required()]

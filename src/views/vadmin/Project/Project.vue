@@ -72,7 +72,7 @@ const tableColumns = reactive<TableColumn[]>([
   },
   {
     field: 'test_user',
-    label: '测试人',
+    label: '测试人员',
   },
   {
     field: 'dev_user',
