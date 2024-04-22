@@ -17,7 +17,8 @@ const getList = () => {
         width,
         height,
         id: toAnyString(),
-        image_uri: Mock.Random.image(`${width}x${height}`)
+        // image_uri: Mock.Random.image(`${width}x${height}`)
+        image_uri: "https://ci.xiaohongshu.com/1040g2sg3116u25ke6i0g4a5646mojblt5pciam8?imageView2/2/w/format/png"
       })
     )
   }
@@ -46,6 +47,7 @@ const loadMore = () => {
     :data="data"
     :loading="loading"
     :end="end"
+    :loadingText="end ? '没有更多了' : '加载中...'"
     :props="{
       src: 'image_uri',
       height: 'height'
