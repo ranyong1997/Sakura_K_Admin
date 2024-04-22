@@ -8,23 +8,9 @@ import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { getModuleListApi,addModuleApi,putModuleApi,delModuleApi } from '@/api/vadmin/module/module'
-import { getProjectListApi} from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
-
-// 获取项目数据 那到所属项目id后去查询项目列表中project_name
-const getProjectList = async () => {
-  const res = await getProjectListApi()
-  console.log("res",res);
-  res.data = res.data.map((item)=>{
-    item.project_name = item.project_name
-    console.log("item",item.project_name);
-    return item
-  })
-  return res
-
-}
 
 // 获取数据
 const getLists = async (data:any) => {
