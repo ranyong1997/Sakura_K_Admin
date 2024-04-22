@@ -1,8 +1,8 @@
 import request from '@/config/axios'
-import type { ProjectType } from './type'
+import type { ModuleType } from './type'
 
 // 获取模块列表
-export const getModuleListApi = (params: ProjectType): Promise<IResponse> => {
+export const getModuleListApi = (params: ModuleType): Promise<IResponse> => {
     return request.get({ url: '/vadmin/autotest/module/getmodulelist', params })
 }
 
