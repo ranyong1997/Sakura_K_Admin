@@ -41,7 +41,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
     })
   },
   fetchDelApi: async (value) =>{
-    const res = await delProjectApi(value)
+    const res = await delModuleApi(value)
     return res.code === 200
   }
 })
@@ -181,7 +181,7 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-    const res =  await getProjectListApi(row.id)
+    const res =  await getModuleListApi(row.id)
     if(res) {
       dialogTitle.value = '编辑模块'
       actionType.value = 'edit'
@@ -215,14 +215,14 @@ const save = async () =>{
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        res.value = await addProjectApi(formData)
+        res.value = await addModuleApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
           return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {        
-        res.value = await putProjectApi(formData)
+        res.value = await putModuleApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
