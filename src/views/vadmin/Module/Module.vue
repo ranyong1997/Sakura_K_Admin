@@ -70,7 +70,11 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'project_name',
     label: '所属项目',
     disabled: true,
-    width: '170px'
+    width: '170px',
+    props:{
+        label:'project_name',
+        value:'project_name'
+      },
   },
   {
     field: 'priority',
