@@ -42,6 +42,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
   },
   fetchDelApi: async (value) =>{
     const res = await delModuleApi(value)
+    console.log("res--->",res)
     return res.code === 200
   }
 })

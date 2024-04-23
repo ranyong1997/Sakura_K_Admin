@@ -18,5 +18,5 @@ export const putModuleApi = (data: any): Promise<IResponse> => {
 
 // 软删除模块
 export const delModuleApi = (data: any): Promise<IResponse> => {
-    return request.delete({ url: '/vadmin/autotest/module/softdelproject', data })
+    return request.delete({ url: '/vadmin/autotest/module/softdelmodule', data })
 }
