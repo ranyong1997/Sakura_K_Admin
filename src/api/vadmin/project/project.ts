@@ -16,4 +16,4 @@ export const putProjectApi = (data: any): Promise<IResponse> => {
 
 export const delProjectApi = (data: any): Promise<IResponse> => {
     return request.delete({ url: '/vadmin/autotest/project/softdelproject', data })
-  }
+}

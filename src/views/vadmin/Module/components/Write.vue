@@ -4,6 +4,7 @@ import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
 import { getUserListApi } from '@/api/vadmin/auth/user'
+import { getProjectListApi } from '@/api/vadmin/project/project'
 
 const { required } = useValidator()
 const props = defineProps({
@@ -27,6 +28,29 @@ const formSchema = reactive<FormSchema[]>([
       maxlength: 10,
       showWordLimit: true
     }
+  },
+  {
+    field: 'project_name',
+    label: '所属项目',
+    component: 'Select',
+    colProps: {
+      span: 24
+    },
+    componentProps: {
+      style: {
+        width: '100%'
+      },
+      props:{
+        label:'project_name',
+        value:'project_name'
+      },
+      showWordLimit: true
+    },
+    // 下拉选择项目
+    optionApi: async () => {
+      const res = await getProjectListApi()
+      return res.data
+    },
   },
   {
     field: 'responsible_name',
@@ -132,6 +156,7 @@ const formSchema = reactive<FormSchema[]>([
 ])
 const rules = reactive({
   module_name: [required()],
+  project_name: [required()],
   responsible_name: [required()],
   dev_user: [required()],
   test_user: [required()]
