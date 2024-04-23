@@ -8,7 +8,6 @@ import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { getModuleListApi,addModuleApi,putModuleApi,delModuleApi } from '@/api/vadmin/module/module'
-import { getProjectListApi } from '@/api/vadmin/project/project'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
@@ -21,22 +20,10 @@ const getLists = async (data:any) => {
     limit: unref(pageSize),
     ...unref(searchParams)
   })
-  const demo = await getProjectListApi({
-    page: unref(currentPage),
-    limit: unref(pageSize),
-    ...unref(searchParams)
-  })
-  // 我需要随时刷新所属项目
-  demo.data = demo.data.map((item) => {
-    item.project_name = item.project_name
-    console.log("demo.data",item.project_name);
-    return item
-  })
   res.data = res.data.map((item) => {
     item.username = user.value.nickname
     return item
   })
-  
   return {
     list: res.data || [],
     total: res.count || 0
