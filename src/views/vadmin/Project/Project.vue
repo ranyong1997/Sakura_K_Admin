@@ -64,7 +64,8 @@ const tableColumns = reactive<TableColumn[]>([
   {
     field: 'project_name',
     label: '项目名称',
-    disabled: true
+    disabled: true,
+    width: '170px'
   },
   {
     field: 'responsible_name',
