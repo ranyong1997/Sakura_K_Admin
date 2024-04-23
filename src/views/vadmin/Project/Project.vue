@@ -94,14 +94,15 @@ const tableColumns = reactive<TableColumn[]>([
     label: '备注',
   },
   {
-    field: 'update_datetime',
-    label: '更新时间',
-    width: '190px'
-  },
-  {
     field: 'create_datetime',
     label: '创建时间',
     width: '190px',
+    sortable: true
+  },
+  {
+    field: 'update_datetime',
+    label: '更新时间',
+    width: '190px'
   },
   {
     field: 'username',
