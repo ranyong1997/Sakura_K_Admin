@@ -50,11 +50,6 @@ const formSchema = reactive<FormSchema[]>([
     // 下拉选择项目
     optionApi: async () => {
       const res = await getProjectListApi()
-      console.log("res.data", res.data);
-      
-      const projectId = res.data[0].id;
-      console.log("projectId", projectId);
-      
       return res.data
     },
   },
