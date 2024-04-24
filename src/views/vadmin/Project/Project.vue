@@ -21,7 +21,6 @@ const getLists = async (data:any) => {
     ...unref(searchParams)
   })
   res.data = res.data.map((item) => {
-    item.username = user.value.nickname
     return item
   })
   return {
@@ -105,7 +104,7 @@ const tableColumns = reactive<TableColumn[]>([
     width: '190px'
   },
   {
-    field: 'username',
+    field: 'create_user.name',
     label: '创建人',
     disabled: true
   },
