@@ -30,7 +30,7 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'project_name',
+    field: 'project_id',
     label: '所属项目',
     component: 'Select',
     colProps: {
@@ -42,7 +42,7 @@ const formSchema = reactive<FormSchema[]>([
       },
       props:{
         label:'project_name',
-        value:'project_name'
+        value:'id'
       },
       showWordLimit: true,
       filterable:true
