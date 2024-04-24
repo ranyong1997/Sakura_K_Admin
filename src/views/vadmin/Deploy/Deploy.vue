@@ -7,7 +7,7 @@ import { ElRow, ElCol,ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getProjectListApi,addProjectApi,putProjectApi,delProjectApi } from '@/api/vadmin/project/project'
+import { getEnvListApi,addEnvApi,putEnvApi,delEnvApi } from '@/api/vadmin/deploy/env'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
@@ -15,12 +15,14 @@ import Write from './components/Write.vue'
 // 获取数据
 const getLists = async (data:any) => {
   const { pageSize, currentPage } = tableState
-  const res = await getProjectListApi({
+  const res = await getEnvListApi({
     page: unref(currentPage),
     limit: unref(pageSize),
     ...unref(searchParams)
   })
   res.data = res.data.map((item) => {
+    console.log("item",item);
+    
     return item
   })
   return {
@@ -40,7 +42,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
     })
   },
   fetchDelApi: async (value) =>{
-    const res = await delProjectApi(value)
+    const res = await delEnvApi(value)
     return res.code === 200
   }
 })
@@ -61,36 +63,18 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'project_name',
-    label: '项目名称',
+    field: 'env_name',
+    label: '环境名称',
     disabled: true,
     width: '170px'
   },
   {
-    field: 'responsible_name',
-    label: '负责人',
-  },
-  {
-    field: 'test_user',
-    label: '测试人员',
-  },
-  {
-    field: 'dev_user',
-    label: '开发人员',
-    disabled: true
-  },
-  {
-    field: 'publish_app',
-    label: '发布应用',
-    disabled: true
-  },
-  {
-    field: 'simple_desc',
-    label: '简要描述',
+    field: 'dns',
+    label: '环境域名'
   },
   {
     field: 'remarks',
-    label: '备注',
+    label: '备注'
   },
   {
     field: 'create_datetime',
@@ -144,11 +128,11 @@ const tableColumns = reactive<TableColumn[]>([
     }
   }
 ])
-// 项目名称
+// 环境名称
 const searchSchema = reactive<FormSchema[]>([
   {
-    field: 'project_name',
-    label: '项目名称',
+    field: 'env_name',
+    label: '环境名称',
     component: 'Input',
     componentProps: {
       clearable: true,
@@ -176,16 +160,16 @@ const saveLoading = ref(false)
 const writeRef = ref<ComponentRef<typeof Write>>()
 // 新增方法
 const addAction = () => {
-  dialogTitle.value = '新增项目'
+  dialogTitle.value = '新增环境'
   actionType.value = 'add'
   currentRow.value = {}
   dialogVisible.value = true
 }
 // 编辑方法
 const editAction = async (row: any) => {
-    const res =  await getProjectListApi(row.id)
+    const res =  await getEnvListApi(row.id)
     if(res) {
-      dialogTitle.value = '编辑项目'
+      dialogTitle.value = '编辑环境'
       actionType.value = 'edit'
       currentRow.value = row
       dialogVisible.value = true
@@ -217,14 +201,14 @@ const save = async () =>{
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        res.value = await addProjectApi(formData)
+        res.value = await addEnvApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
           return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {        
-        res.value = await putProjectApi(formData)
+        res.value = await putEnvApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
@@ -263,7 +247,7 @@ onMounted(async () => {
     <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
-            <BaseButton type="primary" @click="addAction">新增项目</BaseButton>
+            <BaseButton type="primary" @click="addAction">新增环境</BaseButton>
           </ElCol>
           <ElCol :span="1.5" v-hasPermi="['auth.user.delete']">
             <BaseButton type="danger" @click="delData(null)">批量删除</BaseButton>

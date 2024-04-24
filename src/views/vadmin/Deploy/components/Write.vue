@@ -3,8 +3,6 @@ import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
-import { getUserListApi } from '@/api/vadmin/auth/user'
-
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -14,8 +12,8 @@ const props = defineProps({
 })
 const formSchema = reactive<FormSchema[]>([
   {
-    field: 'project_name',
-    label: '项目名称',
+    field: 'env_name',
+    label: '环境名称',
     component: 'Input',
     colProps: {
       span: 24
@@ -29,106 +27,16 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'responsible_name',
-    label: '负责人',
+    field: 'dns',
+    label: '环境地址',
     colProps: {
       span: 24
     },
-    component: 'Select',
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      props:{
-        label:'nickname',
-        value:'nickname'
-      },
-      filterable:true
-    },
-    // 下拉选择用户
-    optionApi: async () => {
-      const res = await getUserListApi()
-      return res.data
-    },
-  },
-  {
-    field: 'dev_user',
-    label: '开发人员',
-    colProps: {
-      span: 24
-    },
-    component: 'Select',
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      props:{
-        label:'nickname',
-        value:'nickname'
-      },
-      filterable:true
-    },
-    // 下拉选择用户
-    optionApi: async () => {
-      const res = await getUserListApi()
-      return res.data
-    }
-  },
-  {
-    field: 'test_user',
-    label: '测试人员',
-    colProps: {
-      span: 24
-    },
-    component: 'Select',
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      props:{
-        label:'nickname',
-        value:'nickname'
-      },
-      filterable:true
-    },
-    // 下拉选择用户
-    optionApi: async () => {
-      const res = await getUserListApi()
-      return res.data
-    }
-  },
-  {
-    field: 'publish_app',
-    label: '发布应用',
     component: 'Input',
-    colProps: {
-      span: 24
-    },
     componentProps: {
       style: {
         width: '100%'
       },
-      maxlength: 10,
-      showWordLimit: true
-    },
-    formItemProps: {
-      rules: [required()]
-    },
-    maxlength: 10,
-    showWordLimit: true
-  },
-  {
-    field: 'simple_desc',
-    label: '简要描述',
-    component: 'Input',
-    colProps: {
-      span: 24
-    },
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      maxlength: 20,
       showWordLimit: true
     }
   },
@@ -149,12 +57,59 @@ const formSchema = reactive<FormSchema[]>([
       showWordLimit: true
     }
   },
+  {
+    field: 'HTTPConfig',
+    component: 'Divider',
+    label: 'HTTP配置'
+  },
+  {
+    field: 'headers',
+    label: '通用请求头',
+    component: 'JsonEditor',
+    colProps: {
+      span: 24
+    },
+    componentProps: {
+      style: {
+        width: '100%'
+      },
+      showWordLimit: true
+    },
+    value: {
+      key: 1,
+      value:2,
+      remarks: ''
+    }
+  },
+  {
+    field: 'GenericConfig',
+    component: 'Divider',
+    label: '通用配置'
+  },
+  {
+    field: 'env_variables',
+    label: '环境变量',
+    component: 'JsonEditor',
+    colProps: {
+      span: 24
+    },
+    componentProps: {
+      style: {
+        width: '100%'
+      },
+      showWordLimit: true
+    },
+    value: {
+      key: 1,
+      value: 2,
+      remarks: ''
+    }
+  }
 ])
+
 const rules = reactive({
-  project_name: [required()],
-  responsible_name: [required()],
-  dev_user: [required()],
-  test_user: [required()]
+  env_name: [required()],
+  dns: [required()]
 })
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose } = formMethods
