@@ -150,7 +150,7 @@ const tableColumns = reactive<TableColumn[]>([
 // 模块名称
 const searchSchema = reactive<FormSchema[]>([
   {
-    field: 'project_name',
+    field: 'module_name',
     label: '模块名称',
     component: 'Input',
     componentProps: {
