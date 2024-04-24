@@ -75,11 +75,11 @@ const formSchema = reactive<FormSchema[]>([
       },
       showWordLimit: true
     },
-    value: {
-      key: 1,
-      value:2,
-      remarks: ''
-    }
+    value: [{
+      key: "",
+      value:"",
+      remarks: ""
+    }]
   },
   {
     field: 'GenericConfig',
@@ -99,11 +99,11 @@ const formSchema = reactive<FormSchema[]>([
       },
       showWordLimit: true
     },
-    value: {
-      key: 1,
-      value: 2,
-      remarks: ''
-    }
+    value: [{
+      key: "",
+      value: "",
+      remarks: ""
+    }]
   }
 ])
 
