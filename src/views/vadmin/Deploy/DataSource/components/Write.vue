@@ -3,6 +3,7 @@ import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
+import { getDataSourceListApi} from '@/api/vadmin/deploy/data'
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -37,8 +38,18 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
+      props:{
+        label:'type_name',
+        value:'type.type_name'
+      },
       showWordLimit: true
+    },
+    // 下拉选择用户
+    optionApi: async () => {
+      const res = await getDataSourceListApi()
+      return res.data
     }
+    
   },
   {
     field: 'host',
@@ -51,7 +62,7 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
-      maxlength: 10,
+      maxlength: 20,
       showWordLimit: true
     }
   },
@@ -96,7 +107,7 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
-      maxlength: 10,
+      maxlength: 20,
       showWordLimit: true
     }
   }

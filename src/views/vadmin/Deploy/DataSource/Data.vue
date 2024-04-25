@@ -69,7 +69,7 @@ const tableColumns = reactive<TableColumn[]>([
     width: '170px'
   },
   {
-    field: 'type',
+    field: 'type.type_name',
     label: '类型'
   },
   {
