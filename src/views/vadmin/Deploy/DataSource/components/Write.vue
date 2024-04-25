@@ -3,7 +3,7 @@ import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
-import { getDataSourceListApi} from '@/api/vadmin/deploy/data'
+import { getDataTypeListApi} from '@/api/vadmin/deploy/data'
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -40,13 +40,13 @@ const formSchema = reactive<FormSchema[]>([
       },
       props:{
         label:'type_name',
-        value:'type.type_name'
+        value:'type_name'
       },
       showWordLimit: true
     },
-    // 下拉选择用户
+    // 下拉选择数据源类型
     optionApi: async () => {
-      const res = await getDataSourceListApi()
+      const res = await getDataTypeListApi()
       return res.data
     }
     
@@ -63,7 +63,8 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 20,
-      showWordLimit: true
+      showWordLimit: true,
+      placeholder: "127.0.0.1"
     }
   },
   {
@@ -78,8 +79,10 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 10,
-      showWordLimit: true
-    }
+      showWordLimit: true,
+      placeholder:"3306"
+    },
+    
   },
   {
     field: 'username',
@@ -93,7 +96,8 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 10,
-      showWordLimit: true
+      showWordLimit: true,
+      placeholder: "root"
     }
   },
   {
@@ -114,8 +118,13 @@ const formSchema = reactive<FormSchema[]>([
 ])
 
 const rules = reactive({
-  env_name: [required()],
-  dns: [required()]
+  data_name: [required()],
+  type: [required()],
+  host: [required()],
+  port: [required()],
+  username: [required()],
+  password: [required()]
+
 })
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose } = formMethods
