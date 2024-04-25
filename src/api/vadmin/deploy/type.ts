@@ -23,3 +23,19 @@ export type EnvType = {
     v_order_field?: string;
     v_order?: string;
 }
+
+
+export type DataType = {
+    data_name: string;
+    type?: number;
+    host: string;
+    port?: number;
+    user: string;
+    password: string;
+    create_user_id: number;
+    id?: number;
+    page?: number;
+    limit?: number;
+    v_order_field?: string;
+    v_order?: string;
+}
