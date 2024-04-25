@@ -139,7 +139,7 @@ const submit = async () => {
 watch(
   () => props.currentRow,
   (currentRow) => {
-    if (!currentRow) return
+    if (!currentRow) return 
     setValues(currentRow)
   },
   {
