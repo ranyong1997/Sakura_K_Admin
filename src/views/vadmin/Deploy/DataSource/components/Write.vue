@@ -112,6 +112,8 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 20,
+      type:"password",
+      showPassword: true,
       showWordLimit: true
     }
   }
