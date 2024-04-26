@@ -1,19 +1,19 @@
 <script setup lang="tsx">
-import {computed,onMounted, reactive, ref, unref } from 'vue'
+import { computed, onMounted, reactive, ref, unref } from 'vue'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
-import { ElRow, ElCol,ElMessage } from 'element-plus'
+import { ElRow, ElCol, ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getDataSourceListApi,addDataSourceApi,putDataSourceApi,delDataSourceApi } from '@/api/vadmin/deploy/data'
+import { getDataSourceListApi, addDataSourceApi, putDataSourceApi, delDataSourceApi } from '@/api/vadmin/deploy/data'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
 
 // 获取数据
-const getLists = async (data:any) => {
+const getLists = async (data: any) => {
   const { pageSize, currentPage } = tableState
   const res = await getDataSourceListApi({
     page: unref(currentPage),
@@ -39,13 +39,13 @@ const { tableRegister, tableState, tableMethods } = useTable({
       ...unref(searchParams),
     })
   },
-  fetchDelApi: async (value) =>{
+  fetchDelApi: async (value) => {
     const res = await delDataSourceApi(value)
     return res.code === 200
   }
 })
 const { dataList, loading, total, pageSize, currentPage } = tableState
-const { getList, delList} = tableMethods
+const { getList, delList } = tableMethods
 const tableColumns = reactive<TableColumn[]>([
   // 多选框
   {
@@ -105,10 +105,10 @@ const tableColumns = reactive<TableColumn[]>([
         const del = ['auth.user.delete'] // 删除权限控制
         return (
           <>
-            <BaseButton 
-              type="primary" 
-              link 
-              size="small" 
+            <BaseButton
+              type="primary"
+              link
+              size="small"
               v-hasPermi={update} // 检查更新权限
               onClick={() => editAction(row)}
             >
@@ -166,24 +166,32 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-    const res =  await getDataSourceListApi(row.id)
-    if(res) {
-      dialogTitle.value = '编辑数据源'
-      actionType.value = 'edit'
-      currentRow.value = row
-      dialogVisible.value = true
-    }
+  const res = await getDataSourceListApi(row.id)
+  if (res && res.data && Array.isArray(res.data)) {
+    res.data = res.data.map((item: any) => {
+      console.log("password",item.password);
+      return {
+        ...item,
+        password: ""
+      }
+    })
+    dialogTitle.value = '编辑数据源'
+    actionType.value = 'edit'
+    currentRow.value = row
+    row.password = res.data.password
+    dialogVisible.value = true
+  }
 }
 // 删除方法
 const delLoading = ref(false)
 
 const delData = async (row?: any) => {
   if (row) {
-    await delList(true, [row.id]).finally(()=>{
+    await delList(true, [row.id]).finally(() => {
       delLoading.value = false
     }) // 删除单个项目
   } else {
-    await delList(true).finally(()=>{
+    await delList(true).finally(() => {
       delLoading.value = false
     }) // 批量删除选中的项目
   }
@@ -191,7 +199,7 @@ const delData = async (row?: any) => {
 }
 
 // 保存方法
-const save = async () =>{
+const save = async () => {
   const write = unref(writeRef)
   const formData = await write?.submit()
   if (formData) {
@@ -206,7 +214,7 @@ const save = async () =>{
           getList()
           return ElMessage.success('新增成功')
         }
-      } else if (actionType.value === 'edit') {        
+      } else if (actionType.value === 'edit') {
         res.value = await putDataSourceApi(formData)
         if (res.value) {
           dialogVisible.value = false
@@ -228,22 +236,11 @@ onMounted(async () => {
 <template>
   <ContentWrap>
     <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams" />
-    <Table
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
-      showAction
-      :columns="tableColumns"
-      default-expand-all
-      node-key="id"
-      :data="dataList"
-      :loading="loading"
-      :pagination="{
+    <Table v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
+      default-expand-all node-key="id" :data="dataList" :loading="loading" :pagination="{
         total
-      }"
-      @register="tableRegister"
-      @refresh="getList"
-    >
-    <template #toolbar>
+      }" @register="tableRegister" @refresh="getList">
+      <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
             <BaseButton type="primary" @click="addAction">新增数据源</BaseButton>
