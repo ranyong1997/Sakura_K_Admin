@@ -21,8 +21,6 @@ const getLists = async (data:any) => {
     ...unref(searchParams)
   })
   res.data = res.data.map((item) => {
-    console.log("item",item);
-    
     return item
   })
   return {

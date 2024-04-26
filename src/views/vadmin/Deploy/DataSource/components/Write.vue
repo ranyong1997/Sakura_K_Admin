@@ -3,7 +3,7 @@ import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
-import { getDataTypeListApi} from '@/api/vadmin/deploy/data'
+import { getDataTypeListApi } from '@/api/vadmin/deploy/data'
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -38,9 +38,9 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
-      props:{
-        label:'type_name',
-        value:'type_name'
+      props: {
+        label: 'type_name',
+        value: 'type_name'
       },
       showWordLimit: true
     },
@@ -49,7 +49,7 @@ const formSchema = reactive<FormSchema[]>([
       const res = await getDataTypeListApi()
       return res.data
     }
-    
+
   },
   {
     field: 'host',
@@ -80,9 +80,9 @@ const formSchema = reactive<FormSchema[]>([
       },
       maxlength: 10,
       showWordLimit: true,
-      placeholder:"3306"
+      placeholder: "3306"
     },
-    
+
   },
   {
     field: 'username',
@@ -112,7 +112,7 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 20,
-      type:"password",
+      type: "password",
       showPassword: true,
       showWordLimit: true
     }
@@ -141,7 +141,7 @@ const submit = async () => {
 watch(
   () => props.currentRow,
   (currentRow) => {
-    if (!currentRow) return 
+    if (!currentRow) return
     setValues(currentRow)
   },
   {
