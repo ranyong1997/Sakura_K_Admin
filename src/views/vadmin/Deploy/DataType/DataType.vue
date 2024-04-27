@@ -7,7 +7,7 @@ import { ElRow, ElCol, ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getDataSourceListApi, addDataSourceApi, putDataSourceApi, delDataSourceApi } from '@/api/vadmin/deploy/data'
+import { getDataTypeListApi,addDataTypeApi, putDataTypeApi, delDataTypeApi} from '@/api/vadmin/deploy/data'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import Write from './components/Write.vue'
@@ -15,7 +15,7 @@ import Write from './components/Write.vue'
 // 获取数据
 const getLists = async (data: any) => {
   const { pageSize, currentPage } = tableState
-  const res = await getDataSourceListApi({
+  const res = await getDataTypeListApi({
     page: unref(currentPage),
     limit: unref(pageSize),
     ...unref(searchParams)
@@ -40,7 +40,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
     })
   },
   fetchDelApi: async (value) => {
-    const res = await delDataSourceApi(value)
+    const res = await delDataTypeApi(value)
     return res.code === 200
   }
 })
@@ -61,22 +61,16 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'data_name',
-    label: '数据源名称',
+    field: 'type_name',
+    label: '数据源类型',
     disabled: true,
     width: '170px'
   },
   {
-    field: 'type.type_name',
-    label: '类型'
-  },
-  {
-    field: 'host',
-    label: '地址'
-  },
-  {
-    field: 'port',
-    label: '端口'
+    field: 'type_id',
+    label: '数据源类型ID',
+    disabled: true,
+    width: '170px'
   },
   {
     field: 'create_datetime',
@@ -130,11 +124,11 @@ const tableColumns = reactive<TableColumn[]>([
     }
   }
 ])
-// 数据源名称
+// 数据源类型
 const searchSchema = reactive<FormSchema[]>([
   {
-    field: 'data_name',
-    label: '数据源名称',
+    field: 'type_name',
+    label: '数据源类型',
     component: 'Input',
     componentProps: {
       clearable: true,
@@ -166,7 +160,7 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-  const res = await getDataSourceListApi(row.id)
+  const res = await getDataTypeListApi(row.id)
   if (res && res.data && Array.isArray(res.data)) {
     res.data = res.data.map((item: any) => {
       console.log("password", item.password);
@@ -175,7 +169,7 @@ const editAction = async (row: any) => {
         password: ""
       }
     })
-    dialogTitle.value = '编辑数据源'
+    dialogTitle.value = '编辑数据源类型'
     actionType.value = 'edit'
     currentRow.value = row
     row.password = res.data.password
@@ -208,14 +202,14 @@ const save = async () => {
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        res.value = await addDataSourceApi(formData)
+        res.value = await addDataTypeApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
           return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {
-        res.value = await putDataSourceApi(formData)
+        res.value = await putDataTypeApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
@@ -236,7 +230,8 @@ onMounted(async () => {
 <template>
   <ContentWrap>
     <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams" />
-    <Table v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
+    <Table
+v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
       default-expand-all node-key="id" :data="dataList" :loading="loading" :pagination="{
         total
       }" @register="tableRegister" @refresh="getList">

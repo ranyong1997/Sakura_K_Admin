@@ -13,8 +13,8 @@ const props = defineProps({
 })
 const formSchema = reactive<FormSchema[]>([
   {
-    field: 'data_name',
-    label: '数据源名称',
+    field: 'type_name',
+    label: '数据源类型',
     component: 'Input',
     colProps: {
       span: 24
@@ -28,48 +28,8 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'type',
-    label: '类型',
-    colProps: {
-      span: 24
-    },
-    component: 'Select',
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      props: {
-        label: 'type_name',
-        value: 'type_name'
-      },
-      showWordLimit: true
-    },
-    // 下拉选择数据源类型
-    optionApi: async () => {
-      const res = await getDataTypeListApi()
-      return res.data
-    }
-
-  },
-  {
-    field: 'host',
-    label: '地址',
-    component: 'Input',
-    colProps: {
-      span: 24
-    },
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      maxlength: 20,
-      showWordLimit: true,
-      placeholder: "127.0.0.1"
-    }
-  },
-  {
-    field: 'port',
-    label: '端口',
+    field: 'type_id',
+    label: '类型ID',
     component: 'Input',
     colProps: {
       span: 24
@@ -79,54 +39,14 @@ const formSchema = reactive<FormSchema[]>([
         width: '100%'
       },
       maxlength: 10,
-      showWordLimit: true,
-      placeholder: "3306"
-    },
-
-  },
-  {
-    field: 'username',
-    label: '用户名',
-    component: 'Input',
-    colProps: {
-      span: 24
-    },
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      maxlength: 10,
-      showWordLimit: true,
-      placeholder: "root"
-    }
-  },
-  {
-    field: 'password',
-    label: '密码',
-    component: 'Input',
-    colProps: {
-      span: 24
-    },
-    componentProps: {
-      style: {
-        width: '100%'
-      },
-      maxlength: 20,
-      type: "password",
-      showPassword: true,
       showWordLimit: true
     }
   }
 ])
 
 const rules = reactive({
-  data_name: [required()],
-  type: [required()],
-  host: [required()],
-  port: [required()],
-  username: [required()],
-  password: [required()]
-
+  type_name: [required()],
+  type_id: [required()]
 })
 const { formRegister, formMethods } = useForm()
 const { setValues, getFormData, getElFormExpose } = formMethods
