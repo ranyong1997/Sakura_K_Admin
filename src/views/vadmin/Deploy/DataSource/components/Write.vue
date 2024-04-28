@@ -1,9 +1,13 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch } from 'vue'
+import { PropType, reactive, watch,ref,unref } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
 import { getDataTypeListApi } from '@/api/vadmin/deploy/data'
+import { useDictStore } from '@/store/modules/dict'
+import { selectDictLabel, DictDetail } from '@/utils/dict'
+
+
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -11,6 +15,18 @@ const props = defineProps({
     default: () => null
   }
 })
+
+const dataTypeOptions = ref<DictDetail[]>([])
+
+// 获取字典类型
+const getOptions = async () => {
+  const dictStore = useDictStore()
+  const dictOptions = await dictStore.getDictObj(['data_type'])
+  dataTypeOptions.value = dictOptions.data_type
+}
+
+getOptions()
+
 const formSchema = reactive<FormSchema[]>([
   {
     field: 'data_name',
@@ -28,8 +44,8 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'type',
-    label: '类型',
+    field: 'type_id',
+    label: '数据源类型',
     colProps: {
       span: 24
     },
@@ -38,18 +54,12 @@ const formSchema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
-      props: {
-        label: 'type_name',
-        value: 'type_name'
-      },
-      showWordLimit: true
     },
-    // 下拉选择数据源类型
     optionApi: async () => {
-      const res = await getDataTypeListApi()
-      return res.data
-    }
-
+      const dictStore = useDictStore()
+      const dictOptions = await dictStore.getDictObj(['data_type'])
+      return dictOptions.data_type
+    },
   },
   {
     field: 'host',
@@ -82,7 +92,6 @@ const formSchema = reactive<FormSchema[]>([
       showWordLimit: true,
       placeholder: "3306"
     },
-
   },
   {
     field: 'username',
@@ -121,7 +130,7 @@ const formSchema = reactive<FormSchema[]>([
 
 const rules = reactive({
   data_name: [required()],
-  type: [required()],
+  type_id: [required()],
   host: [required()],
   port: [required()],
   username: [required()],

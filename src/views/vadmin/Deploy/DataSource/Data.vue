@@ -10,6 +10,8 @@ import { Dialog } from '@/components/Dialog'
 import { getDataSourceListApi, addDataSourceApi, putDataSourceApi, delDataSourceApi } from '@/api/vadmin/deploy/data'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
+import { useDictStore } from '@/store/modules/dict'
+import { selectDictLabel, DictDetail } from '@/utils/dict'
 import Write from './components/Write.vue'
 
 // 获取数据
@@ -44,6 +46,17 @@ const { tableRegister, tableState, tableMethods } = useTable({
     return res.code === 200
   }
 })
+
+const dataTypeOptions = ref<DictDetail[]>([])
+
+const getOptions = async () => {
+  const dictStore = useDictStore()
+  const dictOptions = await dictStore.getDictObj(['data_type'])
+  dataTypeOptions.value = dictOptions.data_type
+}
+
+getOptions()
+
 const { dataList, loading, total, pageSize, currentPage } = tableState
 const { getList, delList } = tableMethods
 const tableColumns = reactive<TableColumn[]>([
@@ -67,8 +80,19 @@ const tableColumns = reactive<TableColumn[]>([
     width: '170px'
   },
   {
-    field: 'type.type_name',
-    label: '类型'
+    field: 'type_name',
+    label: '类型',
+    show: true,
+    slots: {
+      default: (data: any) => {
+        const row = data.row
+        return (
+          <>
+            <div>{selectDictLabel(dataTypeOptions.value, row.type_id)}</div>
+          </>
+        )
+      }
+    }
   },
   {
     field: 'host',
@@ -169,7 +193,6 @@ const editAction = async (row: any) => {
   const res = await getDataSourceListApi(row.id)
   if (res && res.data && Array.isArray(res.data)) {
     res.data = res.data.map((item: any) => {
-      console.log("password", item.password);
       return {
         ...item,
         password: ""
