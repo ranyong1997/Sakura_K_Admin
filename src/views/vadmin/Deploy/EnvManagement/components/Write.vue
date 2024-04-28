@@ -1,8 +1,11 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch } from 'vue'
+import { PropType, reactive, watch,ref } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
+import { useDictStore } from '@/store/modules/dict'
+import { DictDetail } from '@/utils/dict'
+
 const { required } = useValidator()
 const props = defineProps({
   currentRow: {
@@ -10,20 +13,35 @@ const props = defineProps({
     default: () => null
   }
 })
+
+const envOptions = ref<DictDetail[]>([])
+
+// 获取字典类型
+const getOptions = async () => {
+  const dictStore = useDictStore()
+  const dictOptions = await dictStore.getDictObj(['env_management'])
+  envOptions.value = dictOptions.env_management
+}
+
+getOptions()
+
 const formSchema = reactive<FormSchema[]>([
   {
     field: 'env_name',
     label: '环境名称',
-    component: 'Input',
+    component: 'Select',
     colProps: {
       span: 24
     },
     componentProps: {
       style: {
         width: '100%'
-      },
-      maxlength: 10,
-      showWordLimit: true
+      }
+    },
+    optionApi: async () => {
+      const dictStore = useDictStore()
+      const dictOptions = await dictStore.getDictObj(['env_management'])
+      return dictOptions.env_management
     }
   },
   {
@@ -48,7 +66,7 @@ const formSchema = reactive<FormSchema[]>([
       span: 24
     },
     componentProps: {
-      rows:4,
+      rows: 4,
       type: 'textarea',
       style: {
         width: '600px'
@@ -77,7 +95,7 @@ const formSchema = reactive<FormSchema[]>([
     },
     value: [{
       key: "",
-      value:"",
+      value: "",
       remarks: ""
     }]
   },

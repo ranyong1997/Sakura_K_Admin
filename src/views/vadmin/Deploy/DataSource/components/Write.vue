@@ -1,11 +1,10 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch,ref,unref } from 'vue'
+import { PropType, reactive, watch,ref } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
-import { getDataTypeListApi } from '@/api/vadmin/deploy/data'
 import { useDictStore } from '@/store/modules/dict'
-import { selectDictLabel, DictDetail } from '@/utils/dict'
+import { DictDetail } from '@/utils/dict'
 
 
 const { required } = useValidator()
@@ -53,13 +52,13 @@ const formSchema = reactive<FormSchema[]>([
     componentProps: {
       style: {
         width: '100%'
-      },
+      }
     },
     optionApi: async () => {
       const dictStore = useDictStore()
       const dictOptions = await dictStore.getDictObj(['data_type'])
       return dictOptions.data_type
-    },
+    }
   },
   {
     field: 'host',

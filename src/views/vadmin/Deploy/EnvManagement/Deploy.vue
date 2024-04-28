@@ -10,6 +10,8 @@ import { Dialog } from '@/components/Dialog'
 import { getEnvListApi,addEnvApi,putEnvApi,delEnvApi } from '@/api/vadmin/deploy/env'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
+import { useDictStore } from '@/store/modules/dict'
+import { selectDictLabel, DictDetail } from '@/utils/dict'
 import Write from './components/Write.vue'
 
 // 获取数据
@@ -46,6 +48,17 @@ const { tableRegister, tableState, tableMethods } = useTable({
     return res.code === 200
   }
 })
+
+const envOptions = ref<DictDetail[]>([])
+
+const getOptions = async () => {
+  const dictStore = useDictStore()
+  const dictOptions = await dictStore.getDictObj(['env_management'])
+  envOptions.value = dictOptions.env_management
+}
+
+getOptions()
+
 const { dataList, loading, total, pageSize, currentPage } = tableState
 const { getList, delList} = tableMethods
 const tableColumns = reactive<TableColumn[]>([
@@ -66,7 +79,17 @@ const tableColumns = reactive<TableColumn[]>([
     field: 'env_name',
     label: '环境名称',
     disabled: true,
-    width: '170px'
+    width: '170px',
+    slots: {
+      default: (data: any) => {
+        const row = data.row
+        return (
+          <>
+            <div>{selectDictLabel(envOptions.value, row.env_name)}</div>
+          </>
+        )
+      }
+    }
   },
   {
     field: 'dns',
