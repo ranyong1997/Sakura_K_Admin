@@ -279,7 +279,8 @@ onMounted(async () => {
 <template>
   <ContentWrap>
     <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams" />
-    <Table v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
+    <Table
+v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
       default-expand-all node-key="id" :data="dataList" :loading="loading" :pagination="{
         total
       }" @register="tableRegister" @refresh="getList">
