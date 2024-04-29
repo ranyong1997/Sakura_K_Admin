@@ -7,7 +7,7 @@ import { ElRow, ElCol, ElMessage } from 'element-plus'
 import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
-import { getDataSourceListApi, addDataSourceApi, putDataSourceApi, delDataSourceApi } from '@/api/vadmin/deploy/data'
+import { getDataSourceListApi, addDataSourceApi, putDataSourceApi, delDataSourceApi,testconnectSourceApi } from '@/api/vadmin/deploy/data'
 import { useAuthStoreWithOut } from '@/store/modules/auth'
 import { BaseButton } from '@/components/Button'
 import { useDictStore } from '@/store/modules/dict'
@@ -221,6 +221,26 @@ const delData = async (row?: any) => {
   delLoading.value = false
 }
 
+// 测试连接
+const testconnect = async () => {
+  const write = unref(writeRef)
+  const formData = await write?.submit()
+  if (formData) {
+    saveLoading.value = true
+    try {
+      const res = ref({})
+      res.value = await testconnectSourceApi(formData)
+      if (res.value) {
+        // dialogVisible.value = false
+        getList()
+        return ElMessage.success('MySQL服务器连接成功!')
+      }
+    } finally {
+      saveLoading.value = false
+    }
+  }
+}
+
 // 保存方法
 const save = async () => {
   const write = unref(writeRef)
@@ -259,8 +279,7 @@ onMounted(async () => {
 <template>
   <ContentWrap>
     <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams" />
-    <Table
-v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
+    <Table v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :columns="tableColumns"
       default-expand-all node-key="id" :data="dataList" :loading="loading" :pagination="{
         total
       }" @register="tableRegister" @refresh="getList">
@@ -279,6 +298,9 @@ v-model:current-page="currentPage" v-model:page-size="pageSize" showAction :colu
   <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
     <Write ref="writeRef" :current-row="currentRow" />
     <template #footer>
+      <BaseButton type="success" :loading="saveLoading" @click="testconnect">
+        测试连接
+      </BaseButton>
       <BaseButton type="primary" :loading="saveLoading" @click="save">
         {{ t('exampleDemo.save') }}
       </BaseButton>

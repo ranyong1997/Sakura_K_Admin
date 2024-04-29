@@ -93,7 +93,7 @@ const formSchema = reactive<FormSchema[]>([
     },
   },
   {
-    field: 'username',
+    field: 'user',
     label: '用户名',
     component: 'Input',
     colProps: {
@@ -132,7 +132,7 @@ const rules = reactive({
   type_id: [required()],
   host: [required()],
   port: [required()],
-  username: [required()],
+  user: [required()],
   password: [required()]
 
 })

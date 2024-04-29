@@ -21,3 +21,8 @@ export const putDataSourceApi = (data: any): Promise<IResponse> => {
 export const delDataSourceApi = (data: any): Promise<IResponse> => {
     return request.delete({ url: '/vadmin/autotest/datasource/softdeldatasource', data })
 }
+
+// 测试连接
+export const testconnectSourceApi = (data: any): Promise<IResponse> => {
+    return request.post({ url: '/vadmin/autotest/datasource/testconnect', data })
+}
