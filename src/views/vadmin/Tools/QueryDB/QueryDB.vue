@@ -5,17 +5,12 @@ import { computed, onMounted, reactive, ref, unref } from 'vue'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
-import { ElRow, ElCol, ElMessage, ElContainer, ElAside, ElMain, ElHeader, ElTree } from 'element-plus'
+import { ElContainer, ElAside, ElMain, ElHeader, ElTree } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
-import { Search } from '@/components/Search'
 import { ContentWrap } from '@/components/ContentWrap'
 import { Dialog } from '@/components/Dialog'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
 import { getDataSourceListApi } from '@/api/vadmin/deploy/data'
-
-import { useAuthStoreWithOut } from '@/store/modules/auth'
-import { BaseButton } from '@/components/Button'
-import Write from './components/Write.vue'
 
 // 获取数据
 const getLists = async (data: any) => {
@@ -40,7 +35,7 @@ const { tableRegister, tableState, tableMethods } = useTable({
         return getLists({
             page: unref(currentPage),
             limit: unref(pageSize),
-            ...unref(searchParams),
+            ...unref(searchParams)
         })
     },
 })
@@ -58,16 +53,15 @@ const formSchema = reactive<FormSchema[]>([
         componentProps: {
             style: {
                 width: '10%'
+            },
+            props: {
+                label: 'data_name',
+                value: 'data_name'
             }
-        },
-        props: {
-            label: 'data_name',
-            value: 'data_name'
         },
         // 下拉选择用户
         optionApi: async () => {
             const res = await getDataSourceListApi()
-            console.log("res", res);
             return res.data
         }
     }
