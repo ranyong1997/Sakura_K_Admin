@@ -39,9 +39,10 @@ const { tableRegister, tableState, tableMethods } = useTable({
         })
     },
 })
+let selectOptions = ref([])
 const formSchema = reactive<FormSchema[]>([
     {
-        field: 'type_id',
+        field: 'data_name',
         label: '数据源',
         colProps: {
             span: 24
@@ -56,12 +57,19 @@ const formSchema = reactive<FormSchema[]>([
             },
             props: {
                 label: 'data_name',
-                value: 'data_name'
-            }
+                value: 'id'
+            },
+            on: {
+                change: (e) => {
+                    let res = selectOptions.value.find(item => item.id == e);
+                    console.log(res);
+                }
+            },
         },
         // 下拉选择用户
         optionApi: async () => {
             const res = await getDataSourceListApi()
+            selectOptions.value = res.data;
             return res.data
         }
     }
@@ -101,7 +109,7 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
 
 <template>
     <ContentWrap>
-        <Form :rules="rules" @register="formRegister" :schema="formSchema" />
+        <Form @register="formRegister" :schema="formSchema" />
         <span>当前库:</span>
         <el-container>
             <!-- 左侧 -->
