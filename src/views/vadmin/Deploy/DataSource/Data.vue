@@ -230,10 +230,10 @@ const testconnect = async () => {
     try {
       const res = ref({})
       res.value = await testconnectSourceApi(formData)
-      if (res.value) {
-        // dialogVisible.value = false
-        getList()
-        return ElMessage.success('MySQL服务器连接成功!')
+      if (res.value.data.message == 'MySQL服务器连接失败!') {
+        return ElMessage.error(res.value.data.message)
+      }else if (res.value.data.message == 'MySQL服务器连接成功!') {
+        return ElMessage.success(res.value.data.message)
       }
     } finally {
       saveLoading.value = false
