@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { reactive, ref, unref, onMounted } from 'vue'
-import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton, ElDialog } from 'element-plus'
+import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton, ElDialog, ElTable, ElTableColumn, ElScrollbar } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { ContentWrap } from '@/components/ContentWrap'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
@@ -23,12 +23,95 @@ onMounted(() => {
     })
 })
 
+// Table 表格假数据
+const tableData = [
+    {
+        date: '2016-05-03',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-02',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-04',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-03',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-02',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-04',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+]
 
 // 下拉选择数据源
 let selectOptions = ref([])
 
 // 数据源表单
-const formSchema = reactive<FormSchema[]>([
+const selectSource = reactive<FormSchema[]>([
     {
         field: 'data_name',
         label: '数据源',
@@ -125,7 +208,7 @@ onMounted(async () => {
     <ContentWrap class="dbTreeForDbQuery">
         <div class="wrapper-op">
             <!-- 数据源表单 -->
-            <Form :schema="formSchema" />
+            <Form :schema="selectSource" />
             <ElRow :gutter="10">
                 <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
                     <BaseButton type="primary" @click="addSource">
@@ -145,10 +228,19 @@ onMounted(async () => {
             <ElContainer>
                 <!-- 右侧上半部分 -->
                 <ElHeader height="400px">
-                    <div ref="monacoContainer" style="height: 500px"></div>
+                    <div ref="monacoContainer" style="height: 400px"></div>
                 </ElHeader>
                 <!-- 右侧下半部分 -->
-                <ElMain>Main</ElMain>
+
+                <ElMain style="height: 400px">
+                    <ElScrollbar >
+                        <ElTable :data="tableData" style="width: 100%">
+                            <ElTableColumn prop="date" label="Date" width="180" />
+                            <ElTableColumn prop="name" label="Name" width="180" />
+                            <ElTableColumn prop="address" label="Address" />
+                        </ElTable>
+                    </ElScrollbar>
+                </ElMain>
             </ElContainer>
         </ElContainer>
     </ContentWrap>
@@ -156,6 +248,18 @@ onMounted(async () => {
 
 
 <style lang="less" scoped>
+.scrollbar-demo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin: 10px;
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-primary-light-9);
+    color: var(--el-color-primary);
+}
+
 .dbTreeForDbQuery {
     padding: 0 6px;
     width: 100%;
