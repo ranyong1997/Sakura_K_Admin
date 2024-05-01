@@ -1,14 +1,9 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
-import { useForm } from '@/hooks/web/useForm'
-import { computed, onMounted, reactive, ref, unref } from 'vue'
-import { useTable } from '@/hooks/web/useTable'
-import { useI18n } from '@/hooks/web/useI18n'
-import { Table, TableColumn } from '@/components/Table'
+import { reactive, ref, unref } from 'vue'
 import { ElContainer, ElAside, ElMain, ElHeader, ElTree } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { ContentWrap } from '@/components/ContentWrap'
-import { Dialog } from '@/components/Dialog'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
 import { getDataSourceListApi } from '@/api/vadmin/deploy/data'
 
@@ -28,17 +23,6 @@ const getLists = async (data: any) => {
         total: res.count || 0
     }
 }
-const { t } = useI18n()
-const { tableRegister, tableState, tableMethods } = useTable({
-    fetchDataApi: async () => {
-        const { pageSize, currentPage } = tableState
-        return getLists({
-            page: unref(currentPage),
-            limit: unref(pageSize),
-            ...unref(searchParams)
-        })
-    },
-})
 let selectOptions = ref([])
 const formSchema = reactive<FormSchema[]>([
     {
@@ -85,7 +69,7 @@ const props = {
     children: 'zones',
     isLeaf: 'leaf',
 }
-const { formRegister, formMethods } = useForm()
+
 const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
     if (node.level === 0) {
         return resolve([{ name: 'region' }])
@@ -109,19 +93,19 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
 
 <template>
     <ContentWrap>
-        <Form @register="formRegister" :schema="formSchema" />
+        <Form :schema="formSchema" />
         <span>当前库:</span>
-        <el-container>
+        <ElContainer>
             <!-- 左侧 -->
-            <el-aside width="400px">
-                <el-tree style="max-width: 600px" :props="props" :load="loadNode" lazy show-checkbox bag />
-            </el-aside>
-            <el-container>
+            <ElAside width="400px">
+                <ElTree style="max-width: 600px" :props="props" :load="loadNode" lazy show-checkbox bag />
+            </ElAside>
+            <ElContainer>
                 <!-- 右侧上半部分 -->
-                <el-header height="400px">Header</el-header>
+                <ElHeader height="400px">Header</ElHeader>
                 <!-- 右侧下半部分 -->
-                <el-main>Main</el-main>
-            </el-container>
-        </el-container>
+                <ElMain>Main</ElMain>
+            </ElContainer>
+        </ElContainer>
     </ContentWrap>
 </template>
