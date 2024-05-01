@@ -1,47 +1,33 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
-import { reactive, ref, unref } from 'vue'
-import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton } from 'element-plus'
+import { reactive, ref, unref, onMounted } from 'vue'
+import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton, ElDialog } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { ContentWrap } from '@/components/ContentWrap'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
 import { getDataSourceListApi } from '@/api/vadmin/deploy/data'
 import { BaseButton } from '@/components/Button'
+import * as monaco from 'monaco-editor'
+import type { editor } from 'monaco-editor'
 
-const dialogVisible = ref(false)
-const dialogTitle = ref('')
-const currentRow = ref({})
-const actionType = ref('')
 
-// 获取数据
-const getLists = async (data: any) => {
-    const { pageSize, currentPage } = tableState
-    const res = await getDataSourceListApi({
-        page: unref(currentPage),
-        limit: unref(pageSize),
-        ...unref(searchParams)
+let monacoEditor: editor.IStandaloneCodeEditor
+
+const monacoContainer = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+    monacoEditor = monaco.editor.create(monacoContainer.value!, {
+        value: 'select  * from ',
+        language: 'SQL',
+        theme: 'vs'
     })
-    res.data = res.data.map((item) => {
-        return item
-    })
-    return {
-        list: res.data || [],
-        total: res.count || 0
-    }
-}
+})
 
-// 编辑方法
-const editAction = async (row: any) => {
-    const res = await getProjectListApi(row.id)
-    if (res) {
-        dialogTitle.value = '编辑项目'
-        actionType.value = 'edit'
-        currentRow.value = row
-        dialogVisible.value = true
-    }
-}
-const currentDb = ref(''); // 使用ref
+
+// 下拉选择数据源
 let selectOptions = ref([])
+
+// 数据源表单
 const formSchema = reactive<FormSchema[]>([
     {
         field: 'data_name',
@@ -75,16 +61,17 @@ const formSchema = reactive<FormSchema[]>([
             return res.data
         }
     },
+    // 新增按钮
     {
         slots: {
             default: (data: any) => {
                 const row = data.row
-                const add = ['auth.user.cereate'] // 编辑权限控制
+                const add = ['auth.user.cereate'] // 新增权限控制
                 return (
                     <>
                         <BaseButton
                             size="small"
-                            v-hasPermi={add} // 检查更新权限
+                            v-hasPermi={add} // 检查新增权限
                             onClick={() => addSource(row)}
                         >
                             新增
@@ -97,7 +84,7 @@ const formSchema = reactive<FormSchema[]>([
 ])
 
 
-const searchParams = ref({})
+// 树形结构
 interface Tree {
     name: string
     leaf?: boolean
@@ -128,11 +115,16 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
         resolve(data)
     }, 500)
 }
+onMounted(async () => {
+
+})
+
 </script>
 
 <template>
     <ContentWrap class="dbTreeForDbQuery">
         <div class="wrapper-op">
+            <!-- 数据源表单 -->
             <Form :schema="formSchema" />
             <ElRow :gutter="10">
                 <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
@@ -152,7 +144,9 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
             </ElAside>
             <ElContainer>
                 <!-- 右侧上半部分 -->
-                <ElHeader height="400px">Header</ElHeader>
+                <ElHeader height="400px">
+                    <div ref="monacoContainer" style="height: 500px"></div>
+                </ElHeader>
                 <!-- 右侧下半部分 -->
                 <ElMain>Main</ElMain>
             </ElContainer>
