@@ -2,14 +2,14 @@ import request from '@/config/axios'
 
 
 // 获取数据库中的所有库
-export const getDbListApi = (data: any): Promise<IResponse> => {
-    return request.post({ url: '/vadmin/autotest/datasource/dbList', data })
+export const getDbListApi = (params: any): Promise<IResponse> => {
+    return request.post({ url: '/vadmin/autotest/datasource/dbList', params })
 }
 
 
 // 获取指定数据库中的所有表名
-export const getTableListApi = (data: any): Promise<IResponse> => {
-    return request.post({ url: '/vadmin/autotest/datasource/tableList', data })
+export const getTableListApi = (params: any): Promise<IResponse> => {
+    return request.post({ url: '/vadmin/autotest/datasource/tableList', params })
 }
 
 
