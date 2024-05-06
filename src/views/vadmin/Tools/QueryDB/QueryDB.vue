@@ -106,7 +106,7 @@ const tableData = [
         address: 'No. 189, Grove St, Los Angeles',
     },
 ]
-
+let source_id = ref('')
 // 下拉选择数据源
 let selectOptions = ref([])
 // 当前库
@@ -136,6 +136,7 @@ const selectSource = reactive<FormSchema[]>([
                     const res = selectOptions.value.find(item => item.id == e)
                     currentLib.value = res.data_name
                     console.log(res);
+                    console.log("--->", res.id);
                 }
             }
         },
