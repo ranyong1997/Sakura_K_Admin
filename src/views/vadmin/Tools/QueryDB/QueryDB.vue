@@ -109,7 +109,8 @@ const tableData = [
 
 // 下拉选择数据源
 let selectOptions = ref([])
-
+// 当前库
+let currentLib = ref('')
 // 数据源表单
 const selectSource = reactive<FormSchema[]>([
     {
@@ -132,7 +133,8 @@ const selectSource = reactive<FormSchema[]>([
             },
             on: {
                 change: (e) => {
-                    const res = selectOptions.value.find(item => item.id == e);
+                    const res = selectOptions.value.find(item => item.id == e)
+                    currentLib.value = res.data_name
                     console.log(res);
                 }
             }
@@ -218,7 +220,7 @@ onMounted(async () => {
             </ElRow>
         </div>
         <div class="tree-current-node">
-            <span>当前库:</span>
+            <span>当前库: {{ currentLib }}</span>
         </div>
         <ElContainer>
             <!-- 左侧 -->
@@ -233,7 +235,7 @@ onMounted(async () => {
                 <!-- 右侧下半部分 -->
 
                 <ElMain style="height: 400px">
-                    <ElScrollbar >
+                    <ElScrollbar>
                         <ElTable :data="tableData" style="width: 100%">
                             <ElTableColumn prop="date" label="Date" width="180" />
                             <ElTableColumn prop="name" label="Name" width="180" />
@@ -278,6 +280,7 @@ onMounted(async () => {
         padding: 0 0 8px 6px;
         border-bottom: 1px solid #dee2ea;
         margin-bottom: 6px;
+        margin-top: -40px;
 
         span {
             color: #2c2f37;
