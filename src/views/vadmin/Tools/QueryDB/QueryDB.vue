@@ -135,8 +135,6 @@ const selectSource = reactive<FormSchema[]>([
                 change: (e) => {
                     const res = selectOptions.value.find(item => item.id == e)
                     currentLib.value = res.data_name
-                    console.log(res);
-                    console.log("--->", res.id);
                     getDbListApi({source_id: res.id})
                 }
             }
