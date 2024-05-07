@@ -41,6 +41,7 @@ const formSchema = reactive<FormSchema[]>([
     optionApi: async () => {
       const dictStore = useDictStore()
       const dictOptions = await dictStore.getDictObj(['env_management'])
+      console.log("dictOptions",dictOptions.env_management)
       return dictOptions.env_management
     }
   },

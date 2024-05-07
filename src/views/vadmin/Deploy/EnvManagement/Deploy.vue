@@ -242,9 +242,6 @@ const save = async () =>{
   }
 }
 const user = computed(() => authStore.getUser)
-onMounted(async () => {
-  getLists({});
-})
 </script>
 
 <template>
