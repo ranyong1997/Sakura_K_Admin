@@ -34,79 +34,8 @@ const tableData = [
         date: '2016-05-02',
         name: 'Tom',
         address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
+    }
 ]
-let source_id = ref('')
 // 下拉选择数据源
 let selectOptions = ref([])
 // 当前库
@@ -134,8 +63,10 @@ const selectSource = reactive<FormSchema[]>([
             on: {
                 change: (e) => {
                     const res = selectOptions.value.find(item => item.id == e)
+                    // 每次选择数据源发起请求
+                    getDbListApi({ source_id: res.id })
+                    // 渲染当前库名
                     currentLib.value = res.data_name
-                    getDbListApi({source_id: res.id})
                 }
             }
         },
@@ -181,28 +112,35 @@ const props = {
     isLeaf: 'leaf',
 }
 
-const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
+const handleNodeClick = (data: Tree) => {
+    console.log(data)
+}
+
+let time = 0
+
+const loadNode = (
+    node: Node,
+    resolve: (data: Tree[]) => void,
+    reject: () => void
+) => {
     if (node.level === 0) {
         return resolve([{ name: 'region' }])
     }
-    if (node.level > 1) return resolve([])
-
-    setTimeout(() => {
-        const data: Tree[] = [
-            {
-                name: 'leaf',
-                leaf: true,
-            },
-            {
-                name: 'zone',
-            },
-        ]
-        resolve(data)
-    }, 500)
+    time++
+    if (node.level >= 1) {
+        setTimeout(() => {
+            if (time > 3) {
+                return resolve([
+                    { name: 'zone1', leaf: true },
+                    { name: 'zone2', leaf: true },
+                    { name: 'zone3', leaf: true },
+                ])
+            } else {
+                return reject()
+            }
+        }, 3000)
+    }
 }
-onMounted(async () => {
-
-})
 
 </script>
 
@@ -225,7 +163,7 @@ onMounted(async () => {
         <ElContainer>
             <!-- 左侧 -->
             <ElAside width="400px">
-                <ElTree style="max-width: 600px" :props="props" :load="loadNode" lazy show-checkbox bag />
+                <ElTree style="max-width: 600px" :props="props" :load="loadNode" @node-click="handleNodeClick" lazy />
             </ElAside>
             <ElContainer>
                 <!-- 右侧上半部分 -->
@@ -233,7 +171,6 @@ onMounted(async () => {
                     <div ref="monacoContainer" style="height: 400px"></div>
                 </ElHeader>
                 <!-- 右侧下半部分 -->
-
                 <ElMain style="height: 400px">
                     <ElScrollbar>
                         <ElTable :data="tableData" style="width: 100%">
