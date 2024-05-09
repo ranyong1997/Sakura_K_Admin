@@ -40,6 +40,8 @@ const tableData = [
 let selectOptions = ref([])
 // 当前库
 let currentLib = ref('')
+// 当前表
+let currentTab = ref('')
 // 数据源表单
 // source_id 其他请求也需要
 let source_id = ref();
@@ -74,9 +76,9 @@ const selectSource = reactive<FormSchema[]>([
                     // 每次选择数据源发起请求
                     let result = await getDbListApi({ source_id: res.id })
                     // 初始化组织树结构
-                    if (Array.isArray(result.data.databases)){
-                        for (let item of result.data.databases){
-                            oriTreeData.value.push({name:item});
+                    if (Array.isArray(result.data.databases)) {
+                        for (let item of result.data.databases) {
+                            oriTreeData.value.push({ name: item });
                         }
                     }
                 }
@@ -129,15 +131,17 @@ const handleNodeClick = (data: Tree) => {
 }
 
 const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
-    
+
     if (node.level === 0) {
         return resolve(oriTreeData.value)
     }
     if (node.level > 1) return resolve([])
-    
+
     // 构成组织树结构
     let resArr: Tree[] = [];
-    getTableListApi({ source_id: source_id.value, databases: node.data.name }).then(result =>{
+    // 渲染当前表名
+    currentTab.value = node.data.name
+    getTableListApi({ source_id: source_id.value, databases: node.data.name }).then(result => {
         if (Array.isArray(result.data.tables)) {
             for (let item of result.data.tables) {
                 resArr.push({ name: item, leaf: true });
@@ -163,7 +167,9 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
         </div>
         <div class="tree-current-node">
             <span>当前库: {{ currentLib }}</span>
+            <span>当前表: {{ currentTab }}</span>
         </div>
+
         <ElContainer>
             <!-- 左侧 -->
             <ElAside width="400px">
@@ -195,40 +201,39 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
 <style lang="less" scoped>
 .scrollbar-demo-item {
     display: flex;
-    align-items: center;
-    justify-content: center;
     height: 50px;
     margin: 10px;
-    text-align: center;
-    border-radius: 4px;
-    background: var(--el-color-primary-light-9);
     color: var(--el-color-primary);
+    text-align: center;
+    background: var(--el-color-primary-light-9);
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
 }
 
 .dbTreeForDbQuery {
-    padding: 0 6px;
     width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
     height: 100%;
+    padding: 0 6px;
+    overflow: auto hidden;
 
     .wrapper-op {
+        display: flex;
         min-width: 220px;
         margin-bottom: 8px;
-        display: flex;
         align-items: stretch;
     }
 
     .tree-current-node {
         padding: 0 0 8px 6px;
-        border-bottom: 1px solid #dee2ea;
-        margin-bottom: 6px;
         margin-top: -40px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid #dee2ea;
 
         span {
-            color: #2c2f37;
+            font-size: 12px;
             font-weight: 600;
-            font-size: 12px
+            color: #2c2f37
         }
     }
 
