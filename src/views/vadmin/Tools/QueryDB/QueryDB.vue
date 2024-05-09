@@ -41,6 +41,10 @@ let selectOptions = ref([])
 // 当前库
 let currentLib = ref('')
 // 数据源表单
+// source_id 其他请求也需要
+let source_id = ref();
+// 定义一个变量 存储初始化的树结构
+let oriTreeData = ref([]);
 const selectSource = reactive<FormSchema[]>([
     {
         field: 'data_name',
@@ -61,12 +65,20 @@ const selectSource = reactive<FormSchema[]>([
                 value: 'id'
             },
             on: {
-                change: (e) => {
+                change: async (e) => {
                     const res = selectOptions.value.find(item => item.id == e)
-                    // 每次选择数据源发起请求
-                    getDbListApi({ source_id: res.id })
                     // 渲染当前库名
                     currentLib.value = res.data_name
+                    source_id.value = res.id;
+                    oriTreeData.value = [];
+                    // 每次选择数据源发起请求
+                    let result = await getDbListApi({ source_id: res.id })
+                    // 初始化组织树结构
+                    if (Array.isArray(result.data.databases)){
+                        for (let item of result.data.databases){
+                            oriTreeData.value.push({name:item});
+                        }
+                    }
                 }
             }
         },
@@ -116,32 +128,24 @@ const handleNodeClick = (data: Tree) => {
     console.log(data)
 }
 
-let time = 0
-
-const loadNode = (
-    node: Node,
-    resolve: (data: Tree[]) => void,
-    reject: () => void
-) => {
+const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
+    
     if (node.level === 0) {
-        return resolve([{ name: 'region' }])
+        return resolve(oriTreeData.value)
     }
-    time++
-    if (node.level >= 1) {
-        setTimeout(() => {
-            if (time > 3) {
-                return resolve([
-                    { name: 'zone1', leaf: true },
-                    { name: 'zone2', leaf: true },
-                    { name: 'zone3', leaf: true },
-                ])
-            } else {
-                return reject()
+    if (node.level > 1) return resolve([])
+    
+    // 构成组织树结构
+    let resArr: Tree[] = [];
+    getTableListApi({ source_id: source_id.value, databases: node.data.name }).then(result =>{
+        if (Array.isArray(result.data.tables)) {
+            for (let item of result.data.tables) {
+                resArr.push({ name: item, leaf: true });
             }
-        }, 3000)
-    }
+        }
+        resolve(resArr)
+    })
 }
-
 </script>
 
 <template>
@@ -163,7 +167,9 @@ const loadNode = (
         <ElContainer>
             <!-- 左侧 -->
             <ElAside width="400px">
-                <ElTree style="max-width: 600px" :props="props" :load="loadNode" @node-click="handleNodeClick" lazy />
+                <ElTree
+:data="oriTreeData" style="max-width: 600px" :props="props" :load="loadNode"
+                    @node-click="handleNodeClick" lazy />
             </ElAside>
             <ElContainer>
                 <!-- 右侧上半部分 -->
