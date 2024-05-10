@@ -1,26 +1,3 @@
-<template>
-    <div class="httpTable">
-        <ElTable :data="tableData" style="width: 100%" border>
-            <ElTableColumn label="参数名">
-                <template #default="scope">
-                    <ElInput v-model="scope.row.name" placeholder="添加参数" clearable @input="addRow" />
-                </template>
-            </ElTableColumn>
-            <ElTableColumn label="参数值">
-                <template #default="scope">
-                    <ElInput v-model="scope.row.value" clearable />
-                </template>
-            </ElTableColumn>
-            <ElTableColumn label="操作" width="80">
-                <template #default="scope">
-                    <Icon icon="ep:remove" color="var(--el-color-error)" size="18"
-                        v-if="scope.$index != tableData.length - 1" @click="removeItem(scope.$index)" />
-                </template>
-            </ElTableColumn>
-        </ElTable>
-    </div>
-</template>
-
 <script setup lang="ts" name="httpTable">
 import { ElTable, ElTableColumn, ElInput, } from 'element-plus';
 import { Icon } from '@/components/Icon'
@@ -62,4 +39,29 @@ watch(
 )
 
 </script>
+
+<template>
+    <div class="httpTable">
+        <ElTable :data="tableData" style="width: 100%" border>
+            <ElTableColumn label="参数名">
+                <template #default="scope">
+                    <ElInput v-model="scope.row.name" placeholder="添加参数" clearable @input="addRow" />
+                </template>
+            </ElTableColumn>
+            <ElTableColumn label="参数值">
+                <template #default="scope">
+                    <ElInput v-model="scope.row.value" clearable />
+                </template>
+            </ElTableColumn>
+            <ElTableColumn label="操作" width="80">
+                <template #default="scope">
+                    <Icon icon="ep:remove" color="var(--el-color-error)" size="18"
+                        v-if="scope.$index != tableData.length - 1" @click="removeItem(scope.$index)" />
+                </template>
+            </ElTableColumn>
+        </ElTable>
+    </div>
+</template>
+
+
 <style lang="less" scoped></style> 

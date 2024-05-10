@@ -1,44 +1,9 @@
-<template>
-    <ContentWrap class="el-card__body">
-        <ElCard class="h100" shadow="always">
-            <ElCard class="api-case" shadow="always">
-                <div class="input-button-container">
-                    <ElInput v-model="url" class="my-input" placeholder="输入 http 或 https 起始的完整 URL">
-                        <template #prepend>
-                            <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
-                                @change="changeClass" :class="selectClass">
-                                <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
-                                    :value="method.value" :style="{ color: method.color, fontWeight: method.fontWeight }">
-                                    <span :style="{ color: select === method.value ? method.color : '' }">{{
-                                        method.label
-                                    }}</span>
-                                </ElOption>
-                            </ElSelect>
-                        </template>
-                    </ElInput>
-                    <div style="display: flex; padding: 10px;">
-                        <ElButton type="primary" @click="send">发送</ElButton>
-                        <ElButton type="warning" @click="clear">刷新</ElButton>
-                    </div>
-                </div>
-                <el-tabs v-model="activeName" class="demo-tabs">
-                    <el-tab-pane label="Params" name="first">
-                        <div>Query 参数</div>
-                        <httpTable @change="setParams" />
-                    </el-tab-pane>
-                    <el-tab-pane label="Body" name="second">Body</el-tab-pane>
-                    <el-tab-pane label="Headers" name="third">Headers</el-tab-pane>
-                </el-tabs>
-            </ElCard>
-        </ElCard>
-    </ContentWrap>
-</template>
-
 <script setup lang="tsx">
 import { ContentWrap } from '@/components/ContentWrap'
 import { reactive, ref } from 'vue'
 import { ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane } from 'element-plus'
 import httpTable from './components/httpTable.vue';
+
 
 let url = ref('')
 let select = ref('2')
@@ -79,6 +44,44 @@ const clear = () => {
     console.log('刷新按钮');
 }
 </script>
+
+<template>
+    <ContentWrap class="el-card__body">
+        <ElCard class="h100" shadow="always">
+            <ElCard class="api-case" shadow="always">
+                <div class="input-button-container">
+                    <ElInput v-model="url" class="my-input" placeholder="输入 http 或 https 起始的完整 URL">
+                        <template #prepend>
+                            <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
+                                @change="changeClass" :class="selectClass">
+                                <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
+                                    :value="method.value" :style="{ color: method.color, fontWeight: method.fontWeight }">
+                                    <span :style="{ color: select === method.value ? method.color : '' }">{{
+                                        method.label
+                                    }}</span>
+                                </ElOption>
+                            </ElSelect>
+                        </template>
+                    </ElInput>
+                    <div style="display: flex; padding: 10px;">
+                        <ElButton type="primary" @click="send">发送</ElButton>
+                        <ElButton type="warning" @click="clear">刷新</ElButton>
+                    </div>
+                </div>
+                <el-tabs v-model="activeName" class="demo-tabs">
+                    <el-tab-pane label="Params" name="first">
+                        <div>Query 参数</div>
+                        <httpTable @change="setParams" />
+                    </el-tab-pane>
+                    <el-tab-pane label="Body" name="second">Body</el-tab-pane>
+                    <el-tab-pane label="Headers" name="third">Headers</el-tab-pane>
+                </el-tabs>
+            </ElCard>
+        </ElCard>
+    </ContentWrap>
+</template>
+
+
 
 
 <style lang="less" scoped>
