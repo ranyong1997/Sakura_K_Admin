@@ -4,7 +4,7 @@ import { Http } from '@/api/vadmin/tools/httptest'
 import { reactive, ref } from 'vue'
 import { ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane } from 'element-plus'
 import httpTable from './components/httpTable.vue';
-
+import httpRequest from './components/httpRequest.vue'
 
 let url = ref('')
 let select = ref('GET')
@@ -27,13 +27,15 @@ const changeClass = (e) => {
     }
 }
 
+// body的单选框
+const radio = ref(3)
+
 // Query 参数
 let params = ref();
 const setParams = e => {
     params.value = e;
 }
 
-// Body
 // Headers
 let headers = ref();
 const setHeaders = e => {
@@ -72,13 +74,16 @@ const clear = () => {
                 <div class="input-button-container">
                     <ElInput v-model="url" class="my-input" placeholder="输入 http 或 https 起始的完整 URL">
                         <template #prepend>
-                            <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
+                            <ElSelect
+v-model="select" placeholder="GET" style="width: 115px" class="my-select"
                                 @change="changeClass" :class="selectClass">
-                                <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
-                                    :value="method.value" :style="{ color: method.color, fontWeight: method.fontWeight }">
+                                <ElOption
+v-for="method in state.methodList" :key="method.value" :label="method.label"
+                                    :value="method.value"
+                                    :style="{ color: method.color, fontWeight: method.fontWeight }">
                                     <span :style="{ color: select === method.value ? method.color : '' }">{{
-                                        method.label
-                                    }}</span>
+                        method.label
+                    }}</span>
                                 </ElOption>
                             </ElSelect>
                         </template>
@@ -90,10 +95,11 @@ const clear = () => {
                 </div>
                 <el-tabs v-model="activeName" class="demo-tabs">
                     <el-tab-pane label="Params" name="first">
-                        <div>Query 参数</div>
                         <httpTable @change="setParams" />
                     </el-tab-pane>
-                    <el-tab-pane label="Body" name="second">Body</el-tab-pane>
+                    <el-tab-pane label="Body" name="second">
+                        <httpRequest />
+                    </el-tab-pane>
                     <el-tab-pane label="Headers" name="third">Headers</el-tab-pane>
                 </el-tabs>
             </ElCard>

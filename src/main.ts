@@ -36,6 +36,9 @@ import App from './App.vue'
 
 import './permission'
 
+// 引入代码编辑器
+import { Monaco } from './components/Monaco/index'
+
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
@@ -51,7 +54,7 @@ const setupAll = async () => {
   setupRouter(app)
 
   setupPermission(app)
-
+  
   app.mount('#app')
 }
 
