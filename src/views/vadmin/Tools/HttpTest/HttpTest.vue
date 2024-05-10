@@ -1,28 +1,29 @@
 <script setup lang="tsx">
 import { ContentWrap } from '@/components/ContentWrap'
+import { Http } from '@/api/vadmin/tools/httptest'
 import { reactive, ref } from 'vue'
 import { ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane } from 'element-plus'
 import httpTable from './components/httpTable.vue';
 
 
 let url = ref('')
-let select = ref('2')
+let select = ref('GET')
 const state = reactive({
     methodList: [
-        { label: 'POST', value: '1', color: 'rgb(73, 204, 144)', fontWeight: 600 },
-        { label: 'GET', value: '2', color: 'rgb(97, 175, 254)', fontWeight: 600 },
-        { label: 'PUT', value: '3', color: 'rgb(252, 161, 48)', fontWeight: 600 },
-        { label: 'DELETE', value: '4', color: 'rgb(249, 62, 61)', fontWeight: 600 },
+        { label: 'POST', value: 'POST', color: 'rgb(73, 204, 144)', fontWeight: 600 },
+        { label: 'GET', value: 'GET', color: 'rgb(97, 175, 254)', fontWeight: 600 },
+        { label: 'PUT', value: 'PUT', color: 'rgb(252, 161, 48)', fontWeight: 600 },
+        { label: 'DELETE', value: 'DELETE', color: 'rgb(249, 62, 61)', fontWeight: 600 },
     ]
 })
 // 下拉框选中样式
 let selectClass = ref('get');
 const changeClass = (e) => {
     switch (e) {
-        case '1': selectClass.value = 'post'; break;
-        case '2': selectClass.value = 'get'; break;
-        case '3': selectClass.value = 'put'; break;
-        case '4': selectClass.value = 'delete'; break;
+        case 'POST': selectClass.value = 'post'; break;
+        case 'GET': selectClass.value = 'get'; break;
+        case 'PUT': selectClass.value = 'put'; break;
+        case 'DELETE': selectClass.value = 'delete'; break;
     }
 }
 
@@ -32,12 +33,31 @@ const setParams = e => {
     params.value = e;
 }
 
+// Body
+// Headers
+let headers = ref();
+const setHeaders = e => {
+    headers.value = e;
+}
+
+// Body
+let body = ref();
+const setBody = e => {
+    body.value = e;
+}
+
 // tab
 const activeName = ref('first')
 
 // 发送请求
 const send = () => {
-    console.log('发送请求', select.value, url.value, params.value);
+    Http({
+        "method": select.value,
+        "url": url.value,
+        "body": JSON.stringify(params.value),
+        "body_type": 0,
+        "headers": headers.value
+    })
 }
 // 刷新
 const clear = () => {
