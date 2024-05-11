@@ -7,7 +7,7 @@ const monacoEditRef = ref()
 const state = reactive({
     mode: 'raw',
     language: 'JSON',
-    languageList: ['JSON', 'Text'],
+    languageList: ['JSON', 'Text','JavaScript','HTML','XML'],
     popoverOpen: false,
     bodyData: [],
     rawData: "",
@@ -115,6 +115,7 @@ defineExpose({
                 </span>
                 <template #dropdown>
                     <ElDropdownMenu style="width: 150px">
+                        <!-- 下拉选项 -->
                         <ElDropdownItem v-for="language in state.languageList" :key="language" :command="language">
                             {{ language }}
                         </ElDropdownItem>
@@ -130,15 +131,17 @@ defineExpose({
     </div>
     <!---------------------------form_data------------------------------------>
     <div v-if="state.mode === 'form_data'">
+        <!-- 上传文件之类的 -->
         <span>form_data</span>
     </div>
     <!---------------------------x-www-form-urlencoded------------------------------------>
     <div v-if="state.mode === 'x_www_form_urlencoded'">
-        <span>x_www_form_urlencoded</span>
+        <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
     </div>
     <!---------------------------json------------------------------------>
     <div v-if="state.mode === 'json'">
-        <span>json</span>
+        <!-- 需要引入json格式化工具 -->
+        <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
     </div>
     <!---------------------------raw------------------------------------>
     <div v-if="state.mode === 'raw'" style="padding-top: 8px;">
