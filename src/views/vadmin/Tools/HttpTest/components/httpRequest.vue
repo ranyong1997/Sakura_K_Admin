@@ -1,12 +1,9 @@
 <script setup lang="ts" name="httpRequest">
 import { ElTable, ElOption, ElIcon, ElButton, ElSelect, ElInput, ElCol, ElRadio, ElRadioGroup, ElDropdownMenu, ElDropdownItem, ElDropdown, ElRow } from 'element-plus';
-import { ref, reactive, onMounted } from 'vue'
-import type { editor } from 'monaco-editor'
-import * as monaco from 'monaco-editor'
-let monacoEditor: editor.IStandaloneCodeEditor
+import { ref, reactive } from 'vue'
 
-const monacoContainer = ref<HTMLElement | null>(null)
-
+const monacoEditRef = ref()
+// 初始化状态
 const state = reactive({
     mode: 'raw',
     language: 'JSON',
@@ -20,10 +17,9 @@ const state = reactive({
     formDatatypeOptions: ['text', 'file'],
     fileData: {},
     x_www_form_urlencoded: [],
-
-    //monaco
     lang: 'json',
 });
+
 const radioChange = (value) => {
     state.mode = value
     state.popoverOpen = false
@@ -61,12 +57,43 @@ const updateContentType = (remove = false) => {
     emit('updateContentType', state.mode, state.language, remove)
 }
 
-onMounted(() => {
-    monacoEditor = monaco.editor.create(monacoContainer.value!, {
-        value: 'select  * from ',
-        language: 'SQL',
-        theme: 'vs'
-    })
+
+// 初始化数据
+const initData = () => {
+    state.mode = "raw"
+    state.language = "JSON"
+    state.rawData = ""
+    state.formData = []
+    state.x_www_form_urlencoded = []
+    state.fileData = {}
+}
+// 
+
+// 初始化表单
+const setData = (data) => {
+    initData()
+    if (!data) return
+    let mode = state.mode = data.mode
+    switch (mode) {
+        case 'form_data':
+            state.formData = data.data ? data.data : []
+            break
+        case 'x_www_form_urlencoded':
+            state.x_www_form_urlencoded = data.data ? data.data : []
+            break
+        case 'raw':
+            state.rawData = data.data
+            state.language = data.language
+            break
+        case 'params':
+            break
+        default:
+            break
+    }
+}
+
+defineExpose({
+    setData
 })
 
 </script>
@@ -82,7 +109,9 @@ onMounted(() => {
             <ElDropdown @command="handleLanguage" trigger="click" v-if="state.mode === 'raw'" placement="bottom-start">
                 <span class="el-button--text">
                     {{ state.language }}
-                    <el-icon class="el-icon--right" />
+                    <ElIcon class="el-icon--right">
+                        <arrowDown />
+                    </ElIcon>
                 </span>
                 <template #dropdown>
                     <ElDropdownMenu style="width: 150px">
@@ -95,7 +124,8 @@ onMounted(() => {
         </ElRadioGroup>
     </div>
     <!---------------------------none------------------------------------>
-    <div v-if="state.mode === 'none'" style="text-align: center; padding-top: 10px">
+    <div v-if="state.mode === 'none'"
+        style="text-align: center; padding-top: 10px;     border-radius: 4px;border:1px solid rgb(230, 230, 230);height:100px;line-height:100px;">
         <span style="color: darkgray">当前请求没有请求体</span>
     </div>
     <!---------------------------form_data------------------------------------>
@@ -111,8 +141,10 @@ onMounted(() => {
         <span>json</span>
     </div>
     <!---------------------------raw------------------------------------>
-    <div v-if="state.mode === 'raw'" height="400px">
-        <div ref="monacoContainer" style="height: 400px"></div>
+    <div v-if="state.mode === 'raw'" style="padding-top: 8px;">
+        <div style="border: 1px solid #E6E6E6">
+            <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
+        </div>
     </div>
 </template>
 
