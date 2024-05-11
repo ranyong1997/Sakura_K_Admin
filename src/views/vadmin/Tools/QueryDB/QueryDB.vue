@@ -1,27 +1,15 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
-import { reactive, ref, unref, onMounted } from 'vue'
+import { reactive, ref } from 'vue'
 import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton, ElDialog, ElTable, ElTableColumn, ElScrollbar } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { ContentWrap } from '@/components/ContentWrap'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
 import { getDataSourceListApi } from '@/api/vadmin/deploy/data'
 import { BaseButton } from '@/components/Button'
-import * as monaco from 'monaco-editor'
-import type { editor } from 'monaco-editor'
 
 
-let monacoEditor: editor.IStandaloneCodeEditor
 
-const monacoContainer = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-    monacoEditor = monaco.editor.create(monacoContainer.value!, {
-        value: 'select  * from ',
-        language: 'SQL',
-        theme: 'vs'
-    })
-})
 
 // Table 表格假数据
 const tableData = [
@@ -180,7 +168,7 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
             <ElContainer>
                 <!-- 右侧上半部分 -->
                 <ElHeader height="400px">
-                    <div ref="monacoContainer" style="height: 400px"></div>
+                    <Monaco/>
                 </ElHeader>
                 <!-- 右侧下半部分 -->
                 <ElMain style="height: 400px">
