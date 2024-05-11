@@ -1,13 +1,40 @@
 <script setup lang="tsx">
 import { Form, FormSchema } from '@/components/Form'
 import { reactive, ref } from 'vue'
-import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElButton, ElDialog, ElTable, ElTableColumn, ElScrollbar } from 'element-plus'
+import { ElContainer, ElAside, ElMain, ElHeader, ElTree, ElTable, ElTableColumn, ElScrollbar } from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 import { ContentWrap } from '@/components/ContentWrap'
 import { getDbListApi, getTableListApi, mysqlExecuteApi } from '@/api/vadmin/tools/querydb'
 import { getDataSourceListApi } from '@/api/vadmin/deploy/data'
 import { BaseButton } from '@/components/Button'
 
+
+const monacoEditRef = ref()
+
+const state = reactive({
+    lang: 'sql',
+    height: 300,
+    dbs: [],
+    sql: 'select  * from ',
+    executeForm: {
+        sql: '',
+        source_id: "",
+        database: "",
+    }
+});
+
+
+// 下拉选择数据源
+let selectOptions = ref([])
+// 当前库
+let currentLib = ref('')
+// 当前表
+let currentTab = ref('')
+// 数据源表单
+// source_id 其他请求也需要
+let source_id = ref();
+// 定义一个变量 存储初始化的树结构
+let oriTreeData = ref([]);
 
 
 
@@ -24,17 +51,7 @@ const tableData = [
         address: 'No. 189, Grove St, Los Angeles',
     }
 ]
-// 下拉选择数据源
-let selectOptions = ref([])
-// 当前库
-let currentLib = ref('')
-// 当前表
-let currentTab = ref('')
-// 数据源表单
-// source_id 其他请求也需要
-let source_id = ref();
-// 定义一个变量 存储初始化的树结构
-let oriTreeData = ref([]);
+// 下拉选择数据源并列出库名
 const selectSource = reactive<FormSchema[]>([
     {
         field: 'data_name',
@@ -107,24 +124,22 @@ interface Tree {
     name: string
     leaf?: boolean
 }
-
+// 罗列组织树
 const props = {
     label: 'name',
-    children: 'zones',
-    isLeaf: 'leaf',
+    isLeaf: 'leaf'
 }
 
 const handleNodeClick = (data: Tree) => {
+    // 将值传给SQL语句中
     console.log(data)
 }
-
+// 渲染
 const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
-
     if (node.level === 0) {
         return resolve(oriTreeData.value)
     }
     if (node.level > 1) return resolve([])
-
     // 构成组织树结构
     let resArr: Tree[] = [];
     // 渲染当前表名
@@ -157,18 +172,17 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
             <span>当前库: {{ currentLib }}</span>
             <span>当前表: {{ currentTab }}</span>
         </div>
-
         <ElContainer>
             <!-- 左侧 -->
             <ElAside width="400px">
-                <ElTree
-:data="oriTreeData" style="max-width: 600px" :props="props" :load="loadNode"
+                <ElTree :data="oriTreeData" style="max-width: 600px" :props="props" :load="loadNode"
                     @node-click="handleNodeClick" lazy />
             </ElAside>
             <ElContainer>
                 <!-- 右侧上半部分 -->
                 <ElHeader height="400px">
-                    <Monaco/>
+                    <Monaco ref="monacoEditRef" :style="{ height: state.height + 'px' }" :dbs="state.dbs"
+                        v-model:value="state.sql" v-model:lang="state.lang" />
                 </ElHeader>
                 <!-- 右侧下半部分 -->
                 <ElMain style="height: 400px">
