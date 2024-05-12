@@ -1,6 +1,7 @@
 <script setup lang="ts" name="httpRequest">
 import { ElTable, ElOption, ElIcon, ElButton, ElSelect, ElInput, ElCol, ElRadio, ElRadioGroup, ElDropdownMenu, ElDropdownItem, ElDropdown, ElRow } from 'element-plus';
 import { ref, reactive } from 'vue'
+import httpFormData from './httpFormData.vue'
 
 const monacoEditRef = ref()
 // 初始化状态
@@ -95,7 +96,6 @@ const setData = (data) => {
 defineExpose({
     setData
 })
-
 </script>
 
 <template>
@@ -131,8 +131,7 @@ defineExpose({
     </div>
     <!---------------------------form_data------------------------------------>
     <div v-if="state.mode === 'form_data'">
-        <!-- 上传文件之类的 -->
-        <span>form_data</span>
+        <httpFormData />
     </div>
     <!---------------------------x-www-form-urlencoded------------------------------------>
     <div v-if="state.mode === 'x_www_form_urlencoded'">
