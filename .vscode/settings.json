@@ -3,9 +3,6 @@
   "prettier.enable": false,
   "editor.formatOnSave": true,
   "eslint.format.enable": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
   },

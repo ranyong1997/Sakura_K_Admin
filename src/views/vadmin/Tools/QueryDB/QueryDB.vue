@@ -175,15 +175,13 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
         <ElContainer>
             <!-- 左侧 -->
             <ElAside width="400px">
-                <ElTree
-:data="oriTreeData" style="max-width: 600px" :props="props" :load="loadNode"
+                <ElTree :data="oriTreeData" style="max-width: 600px" :props="props" :load="loadNode"
                     @node-click="handleNodeClick" lazy />
             </ElAside>
             <ElContainer>
                 <!-- 右侧上半部分 -->
                 <ElHeader height="400px">
-                    <Monaco
-ref="monacoEditRef" :style="{ height: state.height + 'px' }" :dbs="state.dbs"
+                    <Monaco ref="monacoEditRef" :style="{ height: state.height + 'px' }" :dbs="state.dbs"
                         v-model:value="state.sql" v-model:lang="state.lang" />
                 </ElHeader>
                 <!-- 右侧下半部分 -->

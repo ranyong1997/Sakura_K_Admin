@@ -2,9 +2,11 @@
 import { ContentWrap } from '@/components/ContentWrap'
 import { Http } from '@/api/vadmin/tools/httptest'
 import { reactive, ref } from 'vue'
-import { ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane } from 'element-plus'
+import { ElMessage, ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane } from 'element-plus'
 import httpTable from './components/httpTable.vue';
 import httpRequest from './components/httpRequest.vue'
+
+
 
 let url = ref('')
 let select = ref('GET')
@@ -49,10 +51,14 @@ const setBody = e => {
 }
 
 // tab
-const activeName = ref('first')
+const activeName = ref('Params')
 
 // 发送请求
 const send = () => {
+    if (!url.value) {
+        ElMessage.error('请输入 URL')
+        return
+    }
     Http({
         "method": select.value,
         "url": url.value,
@@ -65,6 +71,7 @@ const send = () => {
 const clear = () => {
     console.log('刷新按钮');
 }
+
 </script>
 
 <template>
@@ -79,9 +86,9 @@ const clear = () => {
                                 <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
                                     :value="method.value"
                                     :style="{ color: method.color, fontWeight: method.fontWeight }">
-                                    <span :style="{ color: select === method.value ? method.color : '' }">{{
-                        method.label
-                    }}</span>
+                                    <span :style="{ color: select === method.value ? method.color : '' }">
+                                        {{ method.label }}
+                                    </span>
                                 </ElOption>
                             </ElSelect>
                         </template>
@@ -92,13 +99,13 @@ const clear = () => {
                     </div>
                 </div>
                 <el-tabs v-model="activeName" class="demo-tabs">
-                    <el-tab-pane label="Params" name="first">
+                    <el-tab-pane label="Params" name="Params">
                         <httpTable @change="setParams" />
                     </el-tab-pane>
-                    <el-tab-pane label="Body" name="second">
+                    <el-tab-pane label="Body" name="Body">
                         <httpRequest />
                     </el-tab-pane>
-                    <el-tab-pane label="Headers" name="third">
+                    <el-tab-pane label="Headers" name="Headers">
                         <httpTable @change="setParams" />
                     </el-tab-pane>
                 </el-tabs>
