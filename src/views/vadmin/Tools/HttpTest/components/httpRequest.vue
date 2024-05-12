@@ -125,7 +125,8 @@ defineExpose({
         </ElRadioGroup>
     </div>
     <!---------------------------none------------------------------------>
-    <div v-if="state.mode === 'none'"
+    <div
+v-if="state.mode === 'none'"
         style="text-align: center; padding-top: 10px; border-radius: 4px;border:1px solid rgb(230, 230, 230);height:100px;line-height:100px;">
         <span style="color: darkgray">该请求没有 Body 体</span>
     </div>

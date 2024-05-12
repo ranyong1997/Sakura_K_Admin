@@ -55,7 +55,8 @@ watch(
             </ElTableColumn>
             <ElTableColumn label="操作" width="80">
                 <template #default="scope">
-                    <Icon icon="ep:remove" color="var(--el-color-error)" size="18"
+                    <Icon
+icon="ep:remove" color="var(--el-color-error)" size="18"
                         v-if="scope.$index != tableData.length - 1" @click="removeItem(scope.$index)" />
                 </template>
             </ElTableColumn>

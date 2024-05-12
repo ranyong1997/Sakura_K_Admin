@@ -78,9 +78,11 @@ const clear = () => {
                 <div class="input-button-container">
                     <ElInput v-model="url" class="my-input" placeholder="输入 http 或 https 起始的完整 URL">
                         <template #prepend>
-                            <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
+                            <ElSelect
+v-model="select" placeholder="GET" style="width: 115px" class="my-select"
                                 @change="changeClass" :class="selectClass">
-                                <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
+                                <ElOption
+v-for="method in state.methodList" :key="method.value" :label="method.label"
                                     :value="method.value"
                                     :style="{ color: method.color, fontWeight: method.fontWeight }">
                                     <span :style="{ color: select === method.value ? method.color : '' }">
@@ -147,44 +149,31 @@ const clear = () => {
 }
 
 // 下拉框的样式
-/deep/.my-select {
-    .el-select__wrapper.el-tooltip__trigger.el-tooltip__trigger {
-        background: #fff;
-    }
-
-    .el-select__selected-item span {
-        font-weight: bold;
-    }
+:deep(.my-select) .el-select__wrapper.el-tooltip__trigger.el-tooltip__trigger {
+    background: #fff;
 }
 
-/deep/.my-input {
-
-    .el-input__inner {
-        font-weight: bold;
-    }
+:deep(.my-select) .el-select__selected-item span {
+    font-weight: bold;
 }
 
-/deep/.get {
-    .el-select__selected-item span {
-        color: rgb(97, 175, 254);
-    }
+:deep(.my-input) .el-input__inner {
+    font-weight: bold;
 }
 
-/deep/.post {
-    .el-select__selected-item span {
-        color: rgb(73, 204, 144);
-    }
+:deep(.get) .el-select__selected-item span {
+    color: rgb(97, 175, 254);
 }
 
-/deep/.put {
-    .el-select__selected-item span {
-        color: rgb(252, 161, 48);
-    }
+:deep(.post) .el-select__selected-item span {
+    color: rgb(73, 204, 144);
 }
 
-/deep/.delete {
-    .el-select__selected-item span {
-        color: rgb(249, 62, 61);
-    }
+:deep(.put) .el-select__selected-item span {
+    color: rgb(252, 161, 48);
+}
+
+:deep(.delete) .el-select__selected-item span {
+    color: rgb(249, 62, 61);
 }
 </style>
