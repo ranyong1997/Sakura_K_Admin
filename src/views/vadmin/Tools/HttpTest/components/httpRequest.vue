@@ -10,12 +10,9 @@ const state = reactive({
     language: 'JSON',
     languageList: ['JSON', 'Text', 'JavaScript', 'HTML', 'XML'],
     popoverOpen: false,
-    bodyData: [],
     rawData: "",
-    paramsData: [],
     dataTypeOptions: ['string', 'int', 'float', 'boolean'],
     formData: [],
-    formDatatypeOptions: ['text', 'file'],
     fileData: {},
     x_www_form_urlencoded: [],
     lang: 'json',
@@ -125,8 +122,7 @@ defineExpose({
         </ElRadioGroup>
     </div>
     <!---------------------------none------------------------------------>
-    <div
-v-if="state.mode === 'none'"
+    <div v-if="state.mode === 'none'"
         style="text-align: center; padding-top: 10px; border-radius: 4px;border:1px solid rgb(230, 230, 230);height:100px;line-height:100px;">
         <span style="color: darkgray">该请求没有 Body 体</span>
     </div>
@@ -136,12 +132,16 @@ v-if="state.mode === 'none'"
     </div>
     <!---------------------------x-www-form-urlencoded------------------------------------>
     <div v-if="state.mode === 'x_www_form_urlencoded'">
-        <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
+        <div style="border: 1px solid #E6E6E6">
+            <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
+        </div>
     </div>
     <!---------------------------json------------------------------------>
     <div v-if="state.mode === 'json'">
         <!-- 需要引入json格式化工具 -->
-        <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
+        <div style="border: 1px solid #E6E6E6">
+            <Monaco ref="monacoEditRef" style="height: 420px" v-model:value="state.rawData" v-model:lang="state.lang" />
+        </div>
     </div>
     <!---------------------------raw------------------------------------>
     <div v-if="state.mode === 'raw'" style="padding-top: 8px;">

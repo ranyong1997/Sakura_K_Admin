@@ -78,11 +78,9 @@ const clear = () => {
                 <div class="input-button-container">
                     <ElInput v-model="url" class="my-input" placeholder="输入 http 或 https 起始的完整 URL">
                         <template #prepend>
-                            <ElSelect
-v-model="select" placeholder="GET" style="width: 115px" class="my-select"
+                            <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
                                 @change="changeClass" :class="selectClass">
-                                <ElOption
-v-for="method in state.methodList" :key="method.value" :label="method.label"
+                                <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
                                     :value="method.value"
                                     :style="{ color: method.color, fontWeight: method.fontWeight }">
                                     <span :style="{ color: select === method.value ? method.color : '' }">
@@ -102,6 +100,7 @@ v-for="method in state.methodList" :key="method.value" :label="method.label"
                         <httpTable @change="setParams" />
                     </el-tab-pane>
                     <el-tab-pane label="Body" name="Body">
+                        <!-- 切换不同的传参要传不同的值 none 传0(默认) json 传1 form 传2 x_form 传3 raw 传4  -->
                         <httpRequest @change="setBody" />
                     </el-tab-pane>
                     <el-tab-pane label="Headers" name="Headers">

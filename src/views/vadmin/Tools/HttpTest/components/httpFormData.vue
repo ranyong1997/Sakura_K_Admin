@@ -41,7 +41,7 @@ watch(
         deep: true
     }
 )
-const select = ref('')
+const select = ref('text')
 
 </script>
 
@@ -51,20 +51,20 @@ const select = ref('')
             <ElTableColumn label="参数名">
                 <template #default="scope">
                     <ElInput v-model="scope.row.name" placeholder="添加参数" clearable @input="addRow" />
-                    <el-select v-model="select" placeholder="Select" style="width: 115px">
-                        <el-option v-for="item in state.formDatatypeOptions" :key="item" :label="item" :value="item"/>
-                    </el-select>
+                    <ElSelect v-model="select">
+                        <ElOption v-for="item in state.formDatatypeOptions" :key="item" :label="item" :value="item" />
+                    </ElSelect>
                 </template>
             </ElTableColumn>
             <ElTableColumn label="参数值">
                 <template #default="scope">
+                    <!-- 切换到file 时需要上传文件 -->
                     <ElInput v-model="scope.row.value" clearable />
                 </template>
             </ElTableColumn>
             <ElTableColumn label="操作" width="80">
                 <template #default="scope">
-                    <Icon
-icon="ep:remove" color="var(--el-color-error)" size="18"
+                    <Icon icon="ep:remove" color="var(--el-color-error)" size="18"
                         v-if="scope.$index != tableData.length - 1" @click="removeItem(scope.$index)" />
                 </template>
             </ElTableColumn>
