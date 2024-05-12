@@ -55,14 +55,17 @@ const send = () => {
     if (!url.value) {
         ElMessage.error('请输入 URL')
         return
+    } else {
+        Http({
+            "method": select.value,
+            "url": url.value,
+            "body": JSON.stringify(params.value),
+            "body_type": 0,
+            "headers": headers.value
+        })
+        ElMessage.success('操作成功')
     }
-    Http({
-        "method": select.value,
-        "url": url.value,
-        "body": JSON.stringify(params.value),
-        "body_type": 0,
-        "headers": headers.value
-    })
+
 }
 // 刷新
 const clear = () => {
