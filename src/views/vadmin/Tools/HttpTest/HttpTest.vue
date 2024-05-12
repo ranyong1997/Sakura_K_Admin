@@ -77,10 +77,11 @@ const clear = () => {
                             <ElSelect v-model="select" placeholder="GET" style="width: 115px" class="my-select"
                                 @change="changeClass" :class="selectClass">
                                 <ElOption v-for="method in state.methodList" :key="method.value" :label="method.label"
-                                    :value="method.value" :style="{ color: method.color, fontWeight: method.fontWeight }">
+                                    :value="method.value"
+                                    :style="{ color: method.color, fontWeight: method.fontWeight }">
                                     <span :style="{ color: select === method.value ? method.color : '' }">{{
-                                        method.label
-                                    }}</span>
+                        method.label
+                    }}</span>
                                 </ElOption>
                             </ElSelect>
                         </template>

@@ -7,7 +7,7 @@ const monacoEditRef = ref()
 const state = reactive({
     mode: 'raw',
     language: 'JSON',
-    languageList: ['JSON', 'Text','JavaScript','HTML','XML'],
+    languageList: ['JSON', 'Text', 'JavaScript', 'HTML', 'XML'],
     popoverOpen: false,
     bodyData: [],
     rawData: "",
@@ -127,7 +127,7 @@ defineExpose({
     <!---------------------------none------------------------------------>
     <div v-if="state.mode === 'none'"
         style="text-align: center; padding-top: 10px;     border-radius: 4px;border:1px solid rgb(230, 230, 230);height:100px;line-height:100px;">
-        <span style="color: darkgray">当前请求没有请求体</span>
+        <span style="color: darkgray">该请求没有 Body 体</span>
     </div>
     <!---------------------------form_data------------------------------------>
     <div v-if="state.mode === 'form_data'">
