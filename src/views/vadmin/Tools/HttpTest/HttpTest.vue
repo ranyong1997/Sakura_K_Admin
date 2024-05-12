@@ -29,9 +29,6 @@ const changeClass = (e) => {
     }
 }
 
-// body的单选框
-const radio = ref(3)
-
 // Query 参数
 let params = ref();
 const setParams = e => {
@@ -103,10 +100,10 @@ const clear = () => {
                         <httpTable @change="setParams" />
                     </el-tab-pane>
                     <el-tab-pane label="Body" name="Body">
-                        <httpRequest />
+                        <httpRequest @change="setBody" />
                     </el-tab-pane>
                     <el-tab-pane label="Headers" name="Headers">
-                        <httpTable @change="setParams" />
+                        <httpTable @change="setHeaders" />
                     </el-tab-pane>
                 </el-tabs>
             </ElCard>
