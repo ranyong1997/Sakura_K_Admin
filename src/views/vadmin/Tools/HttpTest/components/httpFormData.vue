@@ -2,6 +2,8 @@
 import {ElButton, ElSelect, ElOption, ElTable, ElTableColumn, ElInput,} from 'element-plus';
 import {Icon} from '@/components/Icon'
 import {ref, watch, reactive} from 'vue'
+import {Upload} from '@/api/vadmin/tools/httptest'
+
 
 function defineEmits(strings: string[]) {
 

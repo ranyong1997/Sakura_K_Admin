@@ -4,5 +4,5 @@ export type QueryType = {
     host: number
     port: string
     user: string
-    password:string
+    password: string
 }
