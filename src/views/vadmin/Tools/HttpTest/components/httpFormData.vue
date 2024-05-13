@@ -8,16 +8,10 @@ import { Upload } from '@/api/vadmin/tools/httptest'
 const file = ref(null);
 // 上传文件需要异步
 const handleFileChange = (event, name) => {
+  console.log("event, name",event, name);
   if (event.target && event.target.files && event.target.files[0]) {
     const formData = new FormData();
     formData.append(name, event.target.files[0]);
-    Upload('/demo', formData)
-      .then((response) => {
-        console.log('Request successful:', response);
-      })
-      .catch((error) => {
-        console.error('Request failed:', error);
-      });
   }
 };
 
@@ -50,42 +44,13 @@ const selectFile = (index) => {
   let fileRef = document.getElementById('selectFile' + index)
   if (fileRef) fileRef.click()
 }
-console.log("selectFile",selectFile)
-
-// 选择文件时触发，上传文件，回写地址
-const fileChange = (e, row, index) => {
-  state.fileData = e.target.files[0]
-  let file = e.target.files[0]
-  let formData = new FormData
-  // formData.append('name', file.name)
-  formData.append('file', file)
-  useFileApi().upload(formData)
-      .then((res) => {
-        row.value = res.data
-      })
-      .catch(() => {
-        let fileRef = document.getElementById('selectFile' + index)
-        if (fileRef) fileRef.value = ''
-        row.value = ""
-      })
-
-}
 
 watch(
   () => tableData,
   (val) => {
-    let formData = new FormData();
-    for (let item of val.value) {
-      if (item.name != null) {
-        console.log("--->",item)
-        if (item.type !== 'file') {
-          formData.append(item.name, item.value);
-        }
-      }
-    }
+    console.log("val",val)
     // 默认写死的路径
-    const path = '/demo';
-    Upload(path, formData)
+    Upload(file)
       .then(response => {
         console.log('Request successful:', response);
       })
@@ -105,10 +70,12 @@ const select = ref('text')
       <ElTableColumn label="参数名">
         <template #default="scope">
           <ElInput v-model="scope.row.name" placeholder="添加参数" clearable @input="addRow" />
-          <ElSelect v-model="select">
+        </template>
+      </ElTableColumn>
+      <ElTableColumn label="类型">
+        <ElSelect v-model="select">
             <ElOption v-for="item in state.formDatatypeOptions" :key="item" :label="item" :value="item" />
           </ElSelect>
-        </template>
       </ElTableColumn>
       <ElTableColumn label="参数值">
         <template #default="scope">
