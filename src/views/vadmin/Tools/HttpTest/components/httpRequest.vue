@@ -1,20 +1,6 @@
 <script setup lang="ts" name="httpRequest">
-import {
-  ElTable,
-  ElOption,
-  ElIcon,
-  ElButton,
-  ElSelect,
-  ElInput,
-  ElCol,
-  ElRadio,
-  ElRadioGroup,
-  ElDropdownMenu,
-  ElDropdownItem,
-  ElDropdown,
-  ElRow
-} from 'element-plus';
-import {ref, reactive} from 'vue'
+import {ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElRadio, ElRadioGroup} from 'element-plus';
+import {reactive, ref} from 'vue'
 import HttpFormData from "./httpFormData.vue";
 
 const monacoEditRef = ref()

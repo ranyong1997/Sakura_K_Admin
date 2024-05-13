@@ -1,0 +1,11 @@
+# 默认忽略的文件
+/shelf/
+/workspace.xml
+# 基于编辑器的 HTTP 客户端请求
+/httpRequests/
+/inspectionProfiles/Project_Default.xml
+/material_theme_project_new.xml
+/modules.xml
+/Sakura_K_Admin.iml
+/vcs.xml
+/webResources.xml
