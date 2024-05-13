@@ -7,7 +7,6 @@ import httpTable from './components/httpTable.vue';
 import httpRequest from './components/httpRequest.vue'
 
 
-
 let url = ref('')
 let select = ref('GET')
 const state = reactive({
