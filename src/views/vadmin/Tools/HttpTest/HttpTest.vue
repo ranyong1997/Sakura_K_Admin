@@ -1,10 +1,28 @@
 <script setup lang="tsx">
 import {ContentWrap} from '@/components/ContentWrap'
-import {Http} from '@/api/vadmin/tools/httptest'
-import {reactive, ref} from 'vue'
-import {ElMessage, ElCard, ElInput, ElSelect, ElOption, ElButton, ElTabs, ElTabPane} from 'element-plus'
+import {reactive, ref, watch} from 'vue'
+import {ElButton, ElCard, ElInput, ElMessage, ElOption, ElSelect, ElTabPane, ElTabs} from 'element-plus'
 import httpTable from './components/httpTable.vue';
 import httpRequest from './components/httpRequest.vue'
+import { Http } from '@/api/vadmin/tools/httptest'
+
+// 所有的参数使用 v-model 传输
+const myForm = ref({
+  params: {},
+  body: {
+    mode: 4,
+  },
+  headers: {}
+})
+watch(
+    () => myForm,
+    val => {
+      console.log("需要提交的 form", val)
+    },
+    {
+      deep: true
+    }
+)
 
 
 let url = ref('')
@@ -63,14 +81,21 @@ const send = () => {
     ElMessage.error('请输入 URL')
     return
   } else {
-    Http({
+    console.log('send', {
       "method": select.value,
       "url": url.value,
       "body": JSON.stringify(params.value),
       "body_type": 0,
       "headers": headers.value
     })
-    ElMessage.success('操作成功')
+    // Http({
+    //   "method": select.value,
+    //   "url": url.value,
+    //   "body": JSON.stringify(params.value),
+    //   "body_type": 0,
+    //   "headers": headers.value
+    // })
+    // ElMessage.success('操作成功')
   }
 
 }
@@ -78,7 +103,6 @@ const send = () => {
 const clear = () => {
   console.log('刷新按钮');
 }
-
 </script>
 
 <template>
@@ -113,7 +137,7 @@ const clear = () => {
           </el-tab-pane>
           <el-tab-pane label="Body" name="Body">
             <!-- 切换不同的传参要传不同的值 none 传0(默认) json 传1 form 传2 x_form 传3 raw 传4  -->
-            <httpRequest @change="setBody"/>
+            <httpRequest v-model="myForm" @change="setBody"/>
           </el-tab-pane>
           <el-tab-pane label="Headers" name="Headers">
             <httpTable @change="setHeaders"/>

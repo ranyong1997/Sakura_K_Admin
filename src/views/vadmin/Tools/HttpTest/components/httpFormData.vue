@@ -1,38 +1,27 @@
 <script setup lang="ts" name="httpFormData">
 import {
-  ElUpload,
-  ElMessageBox,
-  ElMessage,
-  UploadProps,
-  UploadUserFile,
   ElButton,
   ElInput,
   ElOption,
   ElSelect,
   ElTable,
   ElTableColumn,
+  ElUpload,
+  genFileId,
+  UploadInstance,
+  UploadProps,
+  UploadRawFile
 } from 'element-plus';
 import {Icon} from '@/components/Icon'
 import {reactive, ref, watch} from 'vue'
-import {Upload} from '@/api/vadmin/tools/httptest'
-
-// 文件
-const file = ref('');
-// 上传文件需要异步
-const handleFileChange = (event, name) => {
-  console.log("event, name", event, name);
-  if (event.target && event.target.files && event.target.files[0]) {
-    const formData = new FormData();
-    formData.append(name, event.target.files[0]);
-  }
-};
 
 const emit = defineEmits(['change'])
 // 该组件用于：form_data 单独处理
 const tableData = ref([
-  {name: null, value: null},
+  {name: null, value: null, type: 'text', file: []}
 ])
 
+// 用于下拉框
 const state = reactive({
   formDatatypeOptions: ['text', 'file']
 });
@@ -41,9 +30,9 @@ const state = reactive({
  * 当输入框输入时
  * 如果后边没有 则加一行
  */
-const addRow = (e) => {
+const addRow = () => {
   if (tableData.value[tableData.value.length - 1].name != null) {
-    tableData.value.push({name: null, value: null});
+    tableData.value.push({name: null, value: null, type: 'text', file: []})
   }
 }
 // 删除当前行
@@ -51,66 +40,24 @@ const removeItem = (e) => {
   tableData.value.splice(e, 1);
 }
 
-// 选择文件
-const selectFile = (index) => {
-  let fileRef = document.getElementById('selectFile' + index)
-  if (fileRef) fileRef.click()
-}
+// 上传
+const upload = ref<UploadInstance>()
 
-// 假文件数据
-const fileList = ref<UploadUserFile[]>([
-  {
-    name: 'element-plus-logo.svg',
-    url: 'https://element-plus.org/images/element-plus-logo.svg',
-  },
-  {
-    name: 'element-plus-logo2.svg',
-    url: 'https://element-plus.org/images/element-plus-logo.svg',
-  },
-])
-
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-  console.log(uploadFile)
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  upload.value!.clearFiles()
+  let file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  upload.value!.handleStart(file)
 }
-
-const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
-  console.log(file, uploadFiles)
-}
-const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
-  ElMessage.warning(
-      `The limit is 3, you selected ${files.length} files this time, add up to ${
-          files.length + uploadFiles.length
-      } totally`
-  )
-}
-
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
-  return ElMessageBox.confirm(
-      `Cancel the transfer of ${uploadFile.name} ?`
-  ).then(
-      () => true,
-      () => false
-  )
-}
-
 
 watch(
     () => tableData,
     (val) => {
-      console.log("val", val)
-      // 默认写死的路径
-      Upload(file)
-          .then(response => {
-            console.log('Request successful:', response);
-          })
-          .catch(error => {
-            console.error('Request failed:', error);
-          });
+      console.log("val", val);
+      // 构造后台需要的结果
     },
     {deep: true}
 );
-// 默认选择为text
-const select = ref('text')
 </script>
 
 <template>
@@ -122,39 +69,28 @@ const select = ref('text')
         </template>
       </ElTableColumn>
       <ElTableColumn label="类型">
-        <ElSelect v-model="select">
-          <ElOption v-for="item in state.formDatatypeOptions" :key="item" :label="item" :value="item"/>
-        </ElSelect>
+        <template #default="scope">
+          <ElSelect v-model="scope.row.type">
+            <ElOption v-for="item in state.formDatatypeOptions" :key="item" :label="item" :value="item"/>
+          </ElSelect>
+        </template>
       </ElTableColumn>
       <ElTableColumn label="参数值">
         <template #default="scope">
-          <div v-if="select === 'file'" class="file-input">
-            <ElUpload v-model:file-list="fileList"
-                      class="upload-demo"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                      :limit="3"
-                      :on-exceed="handleExceed">
-              <ElButton :id="selectFile" @change="handleFileChange($event, scope.row.name)">
-                <Icon icon="ep:upload"/>
-                Upload
-              </ElButton>
-            </ElUpload>
+          <el-upload v-if="scope.row.type === 'file'" ref="upload" class="upload" :limit="1" :on-exceed="handleExceed"
+                     v-model:file-list="scope.row.file" :auto-upload="false">
+            <template #trigger>
+              <el-button type="primary">选择文件</el-button>
+            </template>
+          </el-upload>
 
-          </div>
           <ElInput v-else v-model="scope.row.value" clearable/>
         </template>
       </ElTableColumn>
       <ElTableColumn label="操作" width="80">
         <template #default="scope">
-          <Icon
-              icon="ep:remove"
-              color="var(--el-color-error)"
-              size="18"
-              v-if="scope.$index != tableData.length - 1"
-              @click="removeItem(scope.$index)"
-          />
+          <Icon icon="ep:remove" color="var(--el-color-error)" size="18" v-if="scope.$index != tableData.length - 1"
+                @click="removeItem(scope.$index)"/>
         </template>
       </ElTableColumn>
     </ElTable>
