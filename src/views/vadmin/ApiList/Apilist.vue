@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import {computed, onMounted, reactive, ref, unref} from 'vue'
+import {computed, reactive, ref, unref} from 'vue'
 import {useTable} from '@/hooks/web/useTable'
 import {useI18n} from '@/hooks/web/useI18n'
 import {Table, TableColumn} from '@/components/Table'
@@ -140,11 +140,11 @@ const tableColumns = reactive<TableColumn[]>([
     }
   }
 ])
-// 项目名称
+// 搜索接口名称
 const searchSchema = reactive<FormSchema[]>([
   {
     field: 'project_name',
-    label: '项目名称',
+    label: '接口名称',
     component: 'Input',
     componentProps: {
       clearable: true,
@@ -172,7 +172,7 @@ const saveLoading = ref(false)
 const writeRef = ref<ComponentRef<typeof Write>>()
 // 新增方法
 const addAction = () => {
-  dialogTitle.value = '新增项目'
+  dialogTitle.value = '新增接口'
   actionType.value = 'add'
   currentRow.value = {}
   dialogVisible.value = true
@@ -181,7 +181,7 @@ const addAction = () => {
 const editAction = async (row: any) => {
   const res = await getProjectListApi(row.id)
   if (res) {
-    dialogTitle.value = '编辑项目'
+    dialogTitle.value = '编辑接口'
     actionType.value = 'edit'
     currentRow.value = row
     dialogVisible.value = true
@@ -257,7 +257,7 @@ const user = computed(() => authStore.getUser)
       <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
-            <BaseButton type="primary" @click="addAction">新增项目</BaseButton>
+            <BaseButton type="primary" @click="addAction">新增接口</BaseButton>
           </ElCol>
           <ElCol :span="1.5" v-hasPermi="['auth.user.delete']">
             <BaseButton type="danger" @click="delData(null)">批量删除</BaseButton>
@@ -266,8 +266,8 @@ const user = computed(() => authStore.getUser)
       </template>
     </Table>
   </ContentWrap>
-  <Dialog v-model="dialogVisible" :title="dialogTitle" :height="650">
-    <Write ref="writeRef" :current-row="currentRow" />
+  <Dialog v-model="dialogVisible" :title="dialogTitle" :width="1800" :height="650">
+    <Write ref="writeRef" :current-row="currentRow"/>
     <template #footer>
       <BaseButton type="primary" :loading="saveLoading" @click="save">
         {{ t('exampleDemo.save') }}
