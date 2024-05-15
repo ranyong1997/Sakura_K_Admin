@@ -1,5 +1,6 @@
 import Form from './src/Form.vue'
-import type { FormSchema, FormSetProps } from './src/types'
+import type {FormSchema, FormSetProps} from './src/types'
+
 export type {
   ComponentNameEnum,
   ComponentName,

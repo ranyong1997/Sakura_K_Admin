@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import {ContentWrap} from '@/components/ContentWrap'
-import {HttpTable,HttpRequest} from '@/components/HttpRequest'
+import {HttpTable, HttpRequest} from '@/components/HttpRequest'
 import {reactive, ref, watch} from 'vue'
 import {ElButton, ElCard, ElInput, ElMessage, ElOption, ElSelect, ElTabPane, ElTabs} from 'element-plus'
 
@@ -129,18 +129,18 @@ const clear = () => {
             <ElButton type="warning" @click="clear">刷新</ElButton>
           </div>
         </div>
-        <el-tabs v-model="activeName" class="demo-tabs">
-          <el-tab-pane label="Params" name="Params">
+        <ElTabs v-model="activeName" class="demo-tabs">
+          <ElTabPane label="Params" name="Params">
             <httpTable @change="setParams"/>
-          </el-tab-pane>
-          <el-tab-pane label="Body" name="Body">
+          </ElTabPane>
+          <ElTabPane label="Body" name="Body">
             <!-- 切换不同的传参要传不同的值 none 传0(默认) json 传1 form 传2 x_form 传3 raw 传4  -->
             <httpRequest v-model="myForm" @change="setBody"/>
-          </el-tab-pane>
-          <el-tab-pane label="Headers" name="Headers">
+          </ElTabPane>
+          <ElTabPane label="Headers" name="Headers">
             <httpTable @change="setHeaders"/>
-          </el-tab-pane>
-        </el-tabs>
+          </ElTabPane>
+        </ElTabs>
       </ElCard>
     </ElCard>
   </ContentWrap>
