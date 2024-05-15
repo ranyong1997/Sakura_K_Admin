@@ -1,20 +1,21 @@
 <script setup lang="tsx">
-import {computed,onMounted, reactive, ref, unref } from 'vue'
-import { useTable } from '@/hooks/web/useTable'
-import { useI18n } from '@/hooks/web/useI18n'
-import { Table, TableColumn } from '@/components/Table'
-import { ElRow, ElCol,ElMessage } from 'element-plus'
-import { Search } from '@/components/Search'
-import { ContentWrap } from '@/components/ContentWrap'
-import { Dialog } from '@/components/Dialog'
-import { getProjectListApi,addProjectApi,putProjectApi,delProjectApi } from '@/api/vadmin/project/project'
-import { useAuthStoreWithOut } from '@/store/modules/auth'
-import { BaseButton } from '@/components/Button'
+import {computed, onMounted, reactive, ref, unref} from 'vue'
+import {useTable} from '@/hooks/web/useTable'
+import {useI18n} from '@/hooks/web/useI18n'
+import {Table, TableColumn} from '@/components/Table'
+import {ElRow, ElCol, ElMessage} from 'element-plus'
+import {Search} from '@/components/Search'
+import {ContentWrap} from '@/components/ContentWrap'
+import {Dialog} from '@/components/Dialog'
+import {getProjectListApi, addProjectApi, putProjectApi, delProjectApi} from '@/api/vadmin/project/project'
+import {useAuthStoreWithOut} from '@/store/modules/auth'
+import {BaseButton} from '@/components/Button'
 import Write from './components/Write.vue'
 
+
 // 获取数据
-const getLists = async (data:any) => {
-  const { pageSize, currentPage } = tableState
+const getLists = async (data: any) => {
+  const {pageSize, currentPage} = tableState
   const res = await getProjectListApi({
     page: unref(currentPage),
     limit: unref(pageSize),
@@ -28,24 +29,24 @@ const getLists = async (data:any) => {
     total: res.count || 0
   }
 }
-const { t } = useI18n()
+const {t} = useI18n()
 const authStore = useAuthStoreWithOut()
-const { tableRegister, tableState, tableMethods } = useTable({
+const {tableRegister, tableState, tableMethods} = useTable({
   fetchDataApi: async () => {
-    const { pageSize, currentPage } = tableState
+    const {pageSize, currentPage} = tableState
     return getLists({
       page: unref(currentPage),
       limit: unref(pageSize),
       ...unref(searchParams),
     })
   },
-  fetchDelApi: async (value) =>{
+  fetchDelApi: async (value) => {
     const res = await delProjectApi(value)
     return res.code === 200
   }
 })
-const { dataList, loading, total, pageSize, currentPage } = tableState
-const { getList, delList} = tableMethods
+const {dataList, loading, total, pageSize, currentPage} = tableState
+const {getList, delList} = tableMethods
 const tableColumns = reactive<TableColumn[]>([
   // 多选框
   {
@@ -62,35 +63,30 @@ const tableColumns = reactive<TableColumn[]>([
   },
   {
     field: 'project_name',
-    label: '项目名称',
+    label: '用例名',
     disabled: true,
     width: '170px'
   },
   {
     field: 'responsible_name',
-    label: '负责人',
+    label: '接口路径',
   },
   {
     field: 'test_user',
-    label: '测试人员',
+    label: '所属项目',
   },
   {
     field: 'dev_user',
-    label: '开发人员',
+    label: '接口状态',
     disabled: true
   },
   {
     field: 'publish_app',
     label: '发布应用',
-    disabled: true
   },
   {
     field: 'simple_desc',
     label: '简要描述',
-  },
-  {
-    field: 'remarks',
-    label: '备注',
   },
   {
     field: 'create_datetime',
@@ -118,27 +114,27 @@ const tableColumns = reactive<TableColumn[]>([
         const update = ['auth.user.update'] // 编辑权限控制
         const del = ['auth.user.delete'] // 删除权限控制
         return (
-          <>
-            <BaseButton 
-              type="primary" 
-              link 
-              size="small" 
-              v-hasPermi={update} // 检查更新权限
-              onClick={() => editAction(row)}
-            >
-              编辑
-            </BaseButton>
-            <BaseButton
-              type="danger"
-              link
-              size="small"
-              v-hasPermi={del} // 检查删除权限
-              loading={delLoading.value}
-              onClick={() => delData(row)} // 调用delData方法
-            >
-              删除
-            </BaseButton>
-          </>
+            <>
+              <BaseButton
+                  type="primary"
+                  link
+                  size="small"
+                  v-hasPermi={update} // 检查更新权限
+                  onClick={() => editAction(row)}
+              >
+                编辑
+              </BaseButton>
+              <BaseButton
+                  type="danger"
+                  link
+                  size="small"
+                  v-hasPermi={del} // 检查删除权限
+                  loading={delLoading.value}
+                  onClick={() => delData(row)} // 调用delData方法
+              >
+                删除
+              </BaseButton>
+            </>
         )
       }
     }
@@ -183,24 +179,24 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-    const res =  await getProjectListApi(row.id)
-    if(res) {
-      dialogTitle.value = '编辑项目'
-      actionType.value = 'edit'
-      currentRow.value = row
-      dialogVisible.value = true
-    }
+  const res = await getProjectListApi(row.id)
+  if (res) {
+    dialogTitle.value = '编辑项目'
+    actionType.value = 'edit'
+    currentRow.value = row
+    dialogVisible.value = true
+  }
 }
 // 删除方法
 const delLoading = ref(false)
 
 const delData = async (row?: any) => {
   if (row) {
-    await delList(true, [row.id]).finally(()=>{
+    await delList(true, [row.id]).finally(() => {
       delLoading.value = false
     }) // 删除单个项目
   } else {
-    await delList(true).finally(()=>{
+    await delList(true).finally(() => {
       delLoading.value = false
     }) // 批量删除选中的项目
   }
@@ -208,7 +204,7 @@ const delData = async (row?: any) => {
 }
 
 // 保存方法
-const save = async () =>{
+const save = async () => {
   const write = unref(writeRef)
   const formData = await write?.submit()
   if (formData) {
@@ -223,7 +219,7 @@ const save = async () =>{
           getList()
           return ElMessage.success('新增成功')
         }
-      } else if (actionType.value === 'edit') {        
+      } else if (actionType.value === 'edit') {
         res.value = await putProjectApi(formData)
         if (res.value) {
           dialogVisible.value = false
@@ -242,23 +238,23 @@ const user = computed(() => authStore.getUser)
 
 <template>
   <ContentWrap>
-    <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams" />
+    <Search :schema="searchSchema" @reset="setSearchParams" @search="setSearchParams"/>
     <Table
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
-      showAction
-      :columns="tableColumns"
-      default-expand-all
-      node-key="id"
-      :data="dataList"
-      :loading="loading"
-      :pagination="{
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        showAction
+        :columns="tableColumns"
+        default-expand-all
+        node-key="id"
+        :data="dataList"
+        :loading="loading"
+        :pagination="{
         total
       }"
-      @register="tableRegister"
-      @refresh="getList"
+        @register="tableRegister"
+        @refresh="getList"
     >
-    <template #toolbar>
+      <template #toolbar>
         <ElRow :gutter="10">
           <ElCol :span="1.5" v-hasPermi="['auth.user.create']">
             <BaseButton type="primary" @click="addAction">新增项目</BaseButton>

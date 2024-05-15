@@ -2,9 +2,9 @@
 import {ContentWrap} from '@/components/ContentWrap'
 import {reactive, ref, watch} from 'vue'
 import {ElButton, ElCard, ElInput, ElMessage, ElOption, ElSelect, ElTabPane, ElTabs} from 'element-plus'
-// import httpTable from './components/httpTable.vue';
-import httpTable from './httpTable.vue';
-import httpRequest from './httpRequest.vue'
+import httpTable from './components/httpTable.vue';
+import httpRequest from './components/httpRequest.vue'
+import { Http } from '@/api/vadmin/tools/httptest'
 
 // 所有的参数使用 v-model 传输
 const myForm = ref({
