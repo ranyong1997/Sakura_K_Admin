@@ -1,10 +1,8 @@
 <script setup lang="tsx">
 import {ContentWrap} from '@/components/ContentWrap'
+import {HttpTable,HttpRequest} from '@/components/HttpRequest'
 import {reactive, ref, watch} from 'vue'
 import {ElButton, ElCard, ElInput, ElMessage, ElOption, ElSelect, ElTabPane, ElTabs} from 'element-plus'
-// import httpTable from './components/httpTable.vue';
-import httpTable from './httpTable.vue';
-import httpRequest from './httpRequest.vue'
 
 // 所有的参数使用 v-model 传输
 const myForm = ref({
