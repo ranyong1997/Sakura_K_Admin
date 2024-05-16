@@ -69,15 +69,15 @@ const tableColumns = reactive<TableColumn[]>([
   },
   {
     field: 'method',
-    label: '请求方式',
+    label: '请求方式'
   },
   {
     field: 'project_id',
-    label: '请求地址',
+    label: '请求地址'
   },
   {
     field: 'project_id',
-    label: '所属项目',
+    label: '所属项目'
   },
   {
     field: 'module_id',
