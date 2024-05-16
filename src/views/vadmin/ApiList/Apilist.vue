@@ -7,7 +7,7 @@ import {ElRow, ElCol, ElMessage} from 'element-plus'
 import {Search} from '@/components/Search'
 import {ContentWrap} from '@/components/ContentWrap'
 import {Dialog} from '@/components/Dialog'
-import {getProjectListApi, addProjectApi, putProjectApi, delProjectApi} from '@/api/vadmin/project/project'
+import {getApi, addApi, putApi, delApi} from '@/api/vadmin/apiManage/api'
 import {useAuthStoreWithOut} from '@/store/modules/auth'
 import {BaseButton} from '@/components/Button'
 import Write from './components/Write.vue'
@@ -16,7 +16,7 @@ import Write from './components/Write.vue'
 // 获取数据
 const getLists = async (data: any) => {
   const {pageSize, currentPage} = tableState
-  const res = await getProjectListApi({
+  const res = await getApi({
     page: unref(currentPage),
     limit: unref(pageSize),
     ...unref(searchParams)
@@ -41,7 +41,7 @@ const {tableRegister, tableState, tableMethods} = useTable({
     })
   },
   fetchDelApi: async (value) => {
-    const res = await delProjectApi(value)
+    const res = await delApi(value)
     return res.code === 200
   }
 })
@@ -62,30 +62,34 @@ const tableColumns = reactive<TableColumn[]>([
     disabled: true
   },
   {
-    field: 'project_name',
+    field: 'api_name',
     label: '用例名',
     disabled: true,
     width: '170px'
   },
   {
-    field: 'responsible_name',
-    label: '接口路径',
+    field: 'method',
+    label: '请求方式',
   },
   {
-    field: 'test_user',
+    field: 'project_id',
+    label: '请求地址',
+  },
+  {
+    field: 'project_id',
     label: '所属项目',
   },
   {
-    field: 'dev_user',
-    label: '接口状态',
+    field: 'module_id',
+    label: '所属模块',
+  },
+  {
+    field: 'priority',
+    label: '优先级',
     disabled: true
   },
   {
-    field: 'publish_app',
-    label: '发布应用',
-  },
-  {
-    field: 'simple_desc',
+    field: 'description',
     label: '简要描述',
   },
   {
@@ -143,7 +147,7 @@ const tableColumns = reactive<TableColumn[]>([
 // 搜索接口名称
 const searchSchema = reactive<FormSchema[]>([
   {
-    field: 'project_name',
+    field: 'api_name',
     label: '接口名称',
     component: 'Input',
     componentProps: {
@@ -179,7 +183,7 @@ const addAction = () => {
 }
 // 编辑方法
 const editAction = async (row: any) => {
-  const res = await getProjectListApi(row.id)
+  const res = await getApi(row.id)
   if (res) {
     dialogTitle.value = '编辑接口'
     actionType.value = 'edit'
@@ -213,14 +217,14 @@ const save = async () => {
       const res = ref({})
       if (actionType.value === 'add') {
         formData.create_user_id = user.value.id;
-        res.value = await addProjectApi(formData)
+        res.value = await addApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
           return ElMessage.success('新增成功')
         }
       } else if (actionType.value === 'edit') {
-        res.value = await putProjectApi(formData)
+        res.value = await putApi(formData)
         if (res.value) {
           dialogVisible.value = false
           getList()
