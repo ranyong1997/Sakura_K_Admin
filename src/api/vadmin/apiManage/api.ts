@@ -2,7 +2,7 @@ import request from '@/config/axios'
 import type { ApiType } from './type'
 
 // 获取接口信息详情
-export const getApiListApi = (params: ApiType): Promise<IResponse> => {
+export const getApi = (params: ApiType): Promise<IResponse> => {
     return request.get({ url: '/vadmin/autotest/apinfo/apilist', params })
 }
 // 新增接口
