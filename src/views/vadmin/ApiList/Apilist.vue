@@ -148,7 +148,7 @@ const tableColumns = reactive<TableColumn[]>([
 const searchSchema = reactive<FormSchema[]>([
   {
     field: 'api_name',
-    label: '接口名称',
+    label: '用例名称',
     component: 'Input',
     componentProps: {
       clearable: true,
